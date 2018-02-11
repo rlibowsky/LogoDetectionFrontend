@@ -44,16 +44,19 @@ export default class Header extends React.Component {
                 <NavLink href="/">4254427300</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="https://www.facebook.com/">Facebook
-                </NavLink>
+                <a href="https://www.facebook.com/">
+                  <img src={require('./images/socialmedia/facebook.png')} width="30" height="30" alt="facebook"/>
+                </a>
               </NavItem>
               <NavItem>
-                <NavLink href="https://www.twitter.com/">Instagram
-                </NavLink>
+                <a href="https://www.twitter.com/">
+                <img src={require('./images/socialmedia/twitter.png')} width="30" height="30" alt="twitter"/>
+                </a>
               </NavItem>
               <NavItem>
-                <NavLink href="https://www.instagram.com/">Twitter
-                </NavLink>
+                <a href="https://www.instagram.com/">
+                <img src={require('./images/socialmedia/instagram.png')} width="30" height="30" alt="instagram"/>
+                </a>
               </NavItem>
             </Nav>
           </Collapse>
