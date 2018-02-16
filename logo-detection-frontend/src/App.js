@@ -5,6 +5,7 @@ import Header from './components/header.js';
 import Landing from './components/landing.js';
 import Login from './components/login.js';
 import SignUp from './components/signup.js';
+import Portal from './components/portal.js';
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
           <Route exact path="/" component={Landing}/>
           <Route exact path="/login" component={Login}/>
           <Route exact path="/signup" component={SignUp}/>
+          <Route exact path="/portal" component={Portal} />
           </div>
         </div>
     </BrowserRouter>

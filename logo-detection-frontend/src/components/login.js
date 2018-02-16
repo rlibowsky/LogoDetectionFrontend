@@ -1,7 +1,16 @@
 import React from 'react';
 import { Container, Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
-export default class Login extends React.Component { 
+export default class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onSubmit(ev) {
+    this.props.history.push('/portal');
+    /* TODO: validate the data */
+  }
 
   render() {
     return (
@@ -20,7 +29,7 @@ export default class Login extends React.Component {
         <FormGroup>
             <a href="/"> Forgot Password? </a>
         </FormGroup>
-        <Button>Go</Button>
+        <Button onClick={this.onSubmit} >Go</Button>
         <FormGroup>
             <div> Don't have an account? </div>
             <a href="/signup"> Sign up </a>
