@@ -23,33 +23,53 @@ import {
   DropdownItem } from 'reactstrap';
 
   export default class Portal extends React.Component { 
+    constructor(props) {
+      super(props);
+      this.state = {
+        isOpen: false
+      };
+    }
+  onTrain(ev) {
+  
+  }
+  onSearch(ev) {
+
+  }
   render() {
     return (
     <Container>
         <center>
             <h2> OUR SERVICES </h2>
             <h5> Here for you </h5>
-            <div class="bt-space"></div>
+            <div class="header-space"></div>
 
             <div class="row">
-              
+
               <div class="column">
                 <div class="row">
-                  <img class="demo" src={require('./images/services/train.jpg')} alt="Image" height="300" width="400"/>
-                </div>
-                <div class="row">
-                  <Button onClick={this.onSubmit}> Go </Button>
-                </div>
+                  <div class="imgContainer">
+                    <div>
+                      <img src={require('./images/services/train.jpg')} alt="Image" height="350" width="450"/>
+                    </div>
+                    <div class="imgButton">
+                      <Button onTrain={this.onTrain}> Train Your Logo </Button>
+                    </div>
+                    </div>
+                  </div>
               </div>
-
+              
               <div class="bt-space"></div>
 
               <div class="column">
                 <div class="row">
-                  <img class="demo" src={require('./images/services/search.jpg')} alt="Image" height="300" width="400"/>
-                </div>
-                <div class="row">
-                  <Button onClick={this.onSubmit}> Go </Button>
+                  <div class="imgContainer">
+                    <div>
+                      <img src={require('./images/services/search.jpg')} alt="Image" height="350" width="450"/>
+                    </div>
+                    <div class="imgButton">
+                      <Button onSearch={this.onSearch}> Search Social Media </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
 
