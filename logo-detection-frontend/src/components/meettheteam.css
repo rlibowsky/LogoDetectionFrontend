@@ -3,22 +3,37 @@
     width: 100%; /* for IE 6 */
   }
   
-  h2 { 
-    position: absolute; 
-    top: 300px; 
-    left: 0; 
-    width: 100%; 
-  }
-  
-  h2 span { 
-    color: white; 
-    font: bold 24px/45px Helvetica, Sans-Serif; 
-    letter-spacing: -1px;  
-    background: rgb(0, 0, 0); /* fallback color */
-    background: rgba(0, 0, 0, 0.7);
-    padding: 10px; 
-  }
-  
-  h2 span.spacer {
-    padding:0 10px;
-  }
+  .wp-caption {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    }
+    .wp-caption img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    }
+    .wp-caption:after {
+    content: "";
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0) linear-gradient(to bottom, rgba(0, 0, 0, 0) 0px, rgba(0, 0, 0, 0.6) 100%) repeat 0 0;
+    z-index: 1;
+    }
+    .wp-caption-text {
+    display: block;
+    position: absolute;
+    width: 100%;
+    color: #fff;
+    left: 0;
+    bottom: 0;
+    padding: 1em;
+    font-weight: 700;
+    z-index: 2;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    }
