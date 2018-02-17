@@ -16,7 +16,7 @@ export default class Login extends React.Component {
     return (
     <Container>
         <center>
-            <h2> Login </h2>
+            <h1> Login </h1>
     <Form>
         <FormGroup>
           <Label for="email">Email</Label>

@@ -1,4 +1,5 @@
 import React from 'react';
+import MeetTheTeam from './meettheteam.js';
 import { Container, Row, Col, Table } from 'reactstrap';
 
 const Landing = () => {
@@ -16,7 +17,10 @@ const Landing = () => {
             <h5>with accurate results regarding where and who to sell your brand to.</h5>
             </p>
             <img src={require('./images/landingpage/logodetectlandingpagehands.png')} width="100%" alt="hands"/>
-            <p> MEET OUR TEAM </p>
+            <h1> MEET OUR TEAM </h1>
+            <div>
+            <MeetTheTeam />
+            </div>
             </center>
         </Container>
     );
