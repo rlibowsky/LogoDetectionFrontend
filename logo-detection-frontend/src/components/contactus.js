@@ -21,8 +21,11 @@ export default class ContactUs extends React.Component {
     <Form>
     <FormGroup>
           <Input type="string" name="name" id="name" required="true" placeholder="Name *" />
-          <Input class="inline" type="email" name="email" required="true" placeholder="Email *" />
+          
         </FormGroup>
+        <FormGroup>
+        <Input class="inline" type="email" name="email" required="true" placeholder="Email *" />
+          </FormGroup>
         
         <FormGroup>
             <Input type="string" name="subject" placeholder="Subject" />
