@@ -20,21 +20,21 @@ export default class MeetTheTeam extends React.Component {
     return (
       <div align = "center">
       <Carousel width="40%">
-      <figure class="wp-caption">
-        <img class="demo" src={require('./images/meettheteam/anubhav.jpg')} alt="Image" />
-        <figcaption class="wp-caption-text">Anubhav Sarkar: Full Stack Developer</figcaption>
+      <figure className="wp-caption">
+        <img className="demo" src={require('./images/meettheteam/anubhav.jpg')} alt="Image" />
+        <figcaption className="wp-caption-text">Anubhav Sarkar: Full Stack Developer</figcaption>
       </figure>
-      <figure class="wp-caption">
-        <img class="demo" src={require('./images/meettheteam/shabina.jpg')} alt="Image" />
-        <figcaption class="wp-caption-text">Shabina Rayan: Frontend Developer</figcaption>
+      <figure className="wp-caption">
+        <img className="demo" src={require('./images/meettheteam/shabina.jpg')} alt="Image" />
+        <figcaption className="wp-caption-text">Shabina Rayan: Frontend Developer</figcaption>
       </figure>
-      <figure class="wp-caption">
-        <img class="demo" src={require('./images/meettheteam/ruth.jpg')} alt="Image" />
-        <figcaption class="wp-caption-text">Ruth Libowsky: Frontend Developer</figcaption>
+      <figure className="wp-caption">
+        <img className="demo" src={require('./images/meettheteam/ruth.jpg')} alt="Image" />
+        <figcaption className="wp-caption-text">Ruth Libowsky: Frontend Developer</figcaption>
       </figure>
-      <figure class="wp-caption">
-        <img class="demo" src={require('./images/meettheteam/kevin.jpg')} alt="Image" />
-        <figcaption class="wp-caption-text">Kevin Wang: Backend Developer</figcaption>
+      <figure className="wp-caption">
+        <img className="demo" src={require('./images/meettheteam/kevin.jpg')} alt="Image" />
+        <figcaption className="wp-caption-text">Kevin Wang: Backend Developer</figcaption>
       </figure>
       </Carousel>
       </div>
