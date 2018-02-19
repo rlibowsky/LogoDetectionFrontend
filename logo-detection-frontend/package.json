@@ -5,12 +5,12 @@
   "dependencies": {
     "bootstrap": "^4.0.0",
     "file-loader": "^1.1.6",
-    "google-map-react": "^0.31.0",
     "jquery": "^3.3.1",
     "nuka-carousel": "^3.0.1",
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.2.0",
+    "react-google-maps": "^9.4.5",
     "react-image-carousel": "^1.0.17",
     "react-responsive-carousel": "^3.1.33",
     "react-router-dom": "^4.2.2",

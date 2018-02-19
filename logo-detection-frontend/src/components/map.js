@@ -1,41 +1,31 @@
 import React, { Component } from 'react';
-import GoogleMapReact from 'google-map-react';
-import { Container, Row, Col, Table } from 'reactstrap';
- 
-const AnyReactComponent = ({ text }) =>   <div style={{
-  position: 'relative', color: 'white', background: 'red',
-  height: 100, width: 100,
-}}>{text}</div>;
+import {
+  withScriptjs,
+  withGoogleMap,
+  GoogleMap,
+  Marker,
+} from "react-google-maps";
 
-// const AnyReactComponent = ({ text }) => <div>{text}</div>;
- 
-export default class SimpleMap extends Component {
-  static defaultProps = {
-    center: {lat: 59.95, lng: 30.33},
-    zoom: 11
-  };
- 
+const MapWithAMarker = withScriptjs(withGoogleMap(props =>
+  <GoogleMap
+    defaultZoom={15}
+    defaultCenter={{ lat: 34.019359, lng: -118.282858 }}
+  >
+    <Marker
+      position={{ lat: 34.019359, lng: -118.282858 }}
+    />
+  </GoogleMap>
+));
+
+export default class Map extends Component {
   render() {
     return (
-      <Container>
-      {/* <div className="box box-default" style={{height: '948px, width: 1000px'}}>
-      <div className="box-body">
-      <div className="row"> */}
-      <GoogleMapReact
-    bootstrapURLKeys={{ key: [''] }}
-    defaultCenter={{lat: 59.95, lng: 30.33}}
-    defaultZoom={this.props.zoom}
-    >
-    <AnyReactComponent
-    lat={59.955413}
-    lng={30.337844}
-    text={'sample text'}
+    <MapWithAMarker
+      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyArOJzTpHkpinV-nSLodCOFLBX3jBHC1VQ&v=3.exp&libraries=geometry,drawing,places"
+      loadingElement={<div style={{ height: `100%` }} />}
+      containerElement={<div style={{ height: `400px` }} />}
+      mapElement={<div style={{ height: `100%` }} />}
     />
-  </GoogleMapReact>
-      {/* </div>
-    </div>
-    </div> */}
-      </Container>
-    );
+    )
   }
 }
