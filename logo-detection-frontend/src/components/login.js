@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Container,  Button, Form, FormGroup,  Input } from 'reactstrap';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -15,24 +15,26 @@ export default class Login extends React.Component {
   render() {
     return (
     <Container>
-        <center>
+        <center class="credentialContainer">
             <h1> Login </h1>
     <Form>
         <FormGroup>
-          <Label for="email">Email</Label>
           <Input type="email" name="email" placeholder="Email" />
         </FormGroup>
         <FormGroup>
-          <Label for="password">Password</Label>
           <Input type="password" name="password" id="password" placeholder="Password" />
         </FormGroup>
         <FormGroup>
-            <a href="/"> Forgot Password? </a>
+            <div class="switchCheckBox"> 
+              <Input addon type="checkbox"/> 
+              Remember Me
+            </div>
+            <a class="switchLinkRight" href="/"> Forgot Password? </a>
         </FormGroup>
         <Button onClick={this.onSubmit} >Go</Button>
         <FormGroup>
-            <div> Don't have an account? </div>
-            <a href="/signup"> Sign up </a>
+            <div class="switchText"> Don't have an account? </div>
+            <a class="switchLink" href="/signup"> Sign up </a>
         </FormGroup>
       </Form>
       </center>

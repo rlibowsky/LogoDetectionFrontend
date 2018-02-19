@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
 
 export default class ContactUs extends React.Component {
   constructor(props) {
@@ -25,6 +25,7 @@ export default class ContactUs extends React.Component {
         </FormGroup>
         <FormGroup>
         <Input className="inline" type="email" name="email" required="true" placeholder="Email *" />
+
           </FormGroup>
         
         <FormGroup>

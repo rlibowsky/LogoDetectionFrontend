@@ -2,7 +2,7 @@ import React from 'react';
 import MeetTheTeam from './meettheteam.js';
 import ContactUs from './contactus.js';
 import Map from './map.js';
-import { Container, Row, Col, Table } from 'reactstrap';
+import { Container } from 'reactstrap';
 import './landing.css';
 
 

@@ -1,25 +1,6 @@
 import React from 'react';
 
-import {
-  Container,
-  Col,
-  Button,
-  Form,
-  FormGroup, 
-  Label, 
-  Input, 
-  FormText,
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+import { Container } from 'reactstrap';
 
   export default class Train extends React.Component { 
     constructor(props) {

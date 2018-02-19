@@ -2,3 +2,50 @@ body {
     font-family: "Arial", Helvetica, sans-serif;
     font-weight:100;
 }
+
+.form-control {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 1px;
+    border-color:black;
+    color: black;
+    display: inline-block;
+}
+
+.btn-secondary {
+    color: white;
+    background-color: black;
+    border-radius: 1px;
+    width: 100%;
+}
+
+.switchText {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.switchCheckBox {
+    display: inline-block;
+    float: left;
+    margin-right: 10px;
+}
+
+.switchLinkRight {
+    display: inline-block;
+    float: right;
+    color: black;
+    font-weight: bold;
+}
+
+.switchLink {
+    color: black;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.credentialContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

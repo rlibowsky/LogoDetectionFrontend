@@ -1,26 +1,7 @@
 import React from 'react';
 import './portal.css';
 
-import {
-  Container,
-  Col,
-  Button,
-  Form,
-  FormGroup, 
-  Label, 
-  Input, 
-  FormText,
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem } from 'reactstrap';
+import { Container, Button } from 'reactstrap';
 
   export default class Portal extends React.Component { 
     constructor(props) {

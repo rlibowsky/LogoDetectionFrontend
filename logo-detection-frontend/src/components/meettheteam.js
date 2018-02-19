@@ -1,6 +1,5 @@
 import React from 'react';
 import './meettheteam.css';
-import ReactDOM from 'react-dom';
 var Carousel = require('nuka-carousel');
 
 export default class MeetTheTeam extends React.Component {
