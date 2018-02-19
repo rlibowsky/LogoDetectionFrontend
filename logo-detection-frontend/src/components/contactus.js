@@ -20,20 +20,14 @@ export default class ContactUs extends React.Component {
             <h5> love to hear from you, so don’t hesitate in reaching out today. </h5>
     <Form>
     <FormGroup>
-          <Label for="name">Name</Label>
-          <Input type="string" name="name" id="name" required="true" placeholder="Name" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="email">Email</Label>
-          <Input type="email" name="email" required="true" placeholder="Email" />
+          <Input type="string" name="name" id="name" required="true" placeholder="Name *" />
+          <Input class="inline" type="email" name="email" required="true" placeholder="Email *" />
         </FormGroup>
         
         <FormGroup>
-            <Label for="subject">Subject</Label>
             <Input type="string" name="subject" placeholder="Subject" />
         </FormGroup>
         <FormGroup>
-            <Label for="message">Message</Label>
             <Input type="string" name="message" placeholder="Message" />
         </FormGroup>
         <Button onClick={this.onSubmit} >Send </Button>
