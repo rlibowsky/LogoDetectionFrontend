@@ -1,5 +1,7 @@
 import React from 'react';
 import MeetTheTeam from './meettheteam.js';
+import ContactUs from './contactus.js';
+import SimpleMap from './map.js';
 import { Container, Row, Col, Table } from 'reactstrap';
 
 const Landing = () => {
@@ -21,6 +23,9 @@ const Landing = () => {
             <div>
             <MeetTheTeam />
             </div>
+            <SimpleMap height="100%" width="100%"/>
+            <ContactUs />
+
             </center>
         </Container>
     );
