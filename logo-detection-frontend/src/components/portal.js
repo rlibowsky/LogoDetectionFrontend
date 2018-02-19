@@ -28,13 +28,17 @@ import {
       this.state = {
         isOpen: false
       };
+      this.onTrain = this.onTrain.bind(this);
+      this.onSearch = this.onSearch.bind(this);
     }
-  onTrain(ev) {
-  
-  }
-  onSearch(ev) {
 
-  }
+    onTrain(ev) {
+      this.props.history.push('/train');
+    }
+    onSearch(ev) {
+      this.props.history.push('/search');
+    }
+
   render() {
     return (
     <Container>
@@ -52,10 +56,10 @@ import {
                       <img src={require('./images/services/train.jpg')} alt="Image" height="350" width="450"/>
                     </div>
                     <div class="imgButton">
-                      <Button onTrain={this.onTrain}> Train Your Logo </Button>
-                    </div>
+                      <Button onClick={this.onTrain}> Train Your Logo</Button>
                     </div>
                   </div>
+                </div>
               </div>
               
               <div class="bt-space"></div>
@@ -67,7 +71,7 @@ import {
                       <img src={require('./images/services/search.jpg')} alt="Image" height="350" width="450"/>
                     </div>
                     <div class="imgButton">
-                      <Button onSearch={this.onSearch}> Search Social Media </Button>
+                      <Button onClick ={this.onSearch}> Search Social Media </Button>
                     </div>
                   </div>
                 </div>
