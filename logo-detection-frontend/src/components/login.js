@@ -10,6 +10,24 @@ export default class Login extends React.Component {
   onSubmit(ev) {
     this.props.history.push('/portal');
     /* TODO: validate the data */
+    console.log("here")
+    fetch('http://localhost:2000/users/signup/', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            "email": "testing@gmail.com",
+            "password": "secret",
+            "name": "matthew",
+            "organization": "Apple"
+          })
+    }).then(function(response) {
+     return response.json();
+    }).then(function(data) {
+      console.log(data)
+     });
   }
 
   render() {
