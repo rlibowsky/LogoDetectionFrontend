@@ -1,6 +1,8 @@
 import React from 'react';
 import './portal.css';
 
+import Footer from './footer.js';
+
 import { Container, Button } from 'reactstrap';
 
   export default class Portal extends React.Component { 
@@ -11,6 +13,7 @@ import { Container, Button } from 'reactstrap';
       };
       this.onTrain = this.onTrain.bind(this);
       this.onSearch = this.onSearch.bind(this);
+      this.learnMore = this.learnMore.bind(this);
     }
 
     onTrain(ev) {
@@ -18,6 +21,10 @@ import { Container, Button } from 'reactstrap';
     }
     onSearch(ev) {
       this.props.history.push('/search');
+    }
+
+    learnMore(ev) {
+      this.props.history.push('/');
     }
 
   render() {
@@ -59,7 +66,10 @@ import { Container, Button } from 'reactstrap';
               </div>
 
           </div>
+          <h5> Interested in how our services can help you? Give us a call! </h5>
+          <Button className="learnMoreButton" onClick={this.learnMore}> Learn More </Button>
         </center>
+        <Footer/>
     </Container>  
     );
   }

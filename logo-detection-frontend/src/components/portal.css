@@ -3,3 +3,16 @@
 .imgButton{
     text-align:center;
 }
+
+.footer-align {
+    position: fixed;
+    margin-right: 20%;
+    margin-left: 20%;
+}
+
+.learnMoreButton {
+    background-color: white;
+    color: black;
+    border-radius: 20px;
+    width: 12%;
+}
