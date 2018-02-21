@@ -15,7 +15,16 @@ export default class Footer extends React.Component {
 
               <div class="column">
                 <div class="row">
-                    Row 1
+                    Address
+                </div>
+                <div class="row">
+                    610 Childs Way
+                </div>
+                <div class="row">
+                    Los Angeles, Los Angeles County 90007
+                </div>
+                <div class="row">
+                    USA
                 </div>
               </div>
 
@@ -23,7 +32,13 @@ export default class Footer extends React.Component {
 
               <div class="column">
                 <div class="row">
-                    Row 2
+                    Contact
+                </div>
+                <div class="row">
+                    help@logodetect.com
+                </div>
+                <div class="row">
+                    4254427300
                 </div>
               </div>
 
@@ -31,7 +46,7 @@ export default class Footer extends React.Component {
 
               <div class="column">
                 <div class="row">
-                    Row 3
+                    Follow
                 </div>
               </div>
               
