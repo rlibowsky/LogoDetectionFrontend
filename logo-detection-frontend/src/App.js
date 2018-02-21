@@ -8,6 +8,7 @@ import SignUp from './components/signup.js';
 import Portal from './components/portal.js';
 import Train from './components/train.js';
 import Search from './components/search.js';
+import SearchResults from './components/searchresults.js';
 
 class App extends Component {
   render() {
@@ -22,7 +23,7 @@ class App extends Component {
           <Route exact path="/portal" component={Portal} />
           <Route exact path="/train" component={Train} />
           <Route exact path="/search" component={Search} />
-
+          <Route path="/searchresults" component={SearchResults} />
           </div>
         </div>
     </BrowserRouter>
