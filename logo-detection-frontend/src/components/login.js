@@ -79,7 +79,7 @@ export default class Login extends React.Component {
 
         <div> 
               {this.state.wrongLogin ? (
-              <h5> incorrect password </h5>
+              <h5> Invalid username or password </h5>
             ) : (
               <h5> </h5>
             )}
