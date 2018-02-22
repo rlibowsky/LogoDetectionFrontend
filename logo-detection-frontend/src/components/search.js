@@ -12,7 +12,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         data: '',
         imageJSON: []
       }
-      this.searchLogo = this.searchLogo.bind(this);
     }
     handleLogoNameChange = (e) => {
       this.setState({
@@ -38,17 +37,14 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         this.state.imageJSON = json;
         console.log(this.state.imageJSON );
       })
-
-    }
-
-    searchLogo(ev) {
       const data = {
         val: document.getElementById("searchTerms").value
       }
       this.props.history.push({
         pathname: '/searchresults',
         params: {
-          searchTerms: data.val
+          searchTerms: data.val,
+          searchResults: this.state.imageJSON
         }
       });
     }

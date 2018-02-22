@@ -7,20 +7,7 @@ import Footer from './footer.js';
     constructor(props) {
       super(props);
       this.searchTerms = props.location.params["searchTerms"];
-      this.searchResults = [
-        "Photo 1",
-        "Photo 2",
-        "Photo 3",
-        "Photo 4",
-        "Photo 5",
-        "Photo 6",
-        "Photo 7",
-        "Photo 8",
-        "Photo 9",
-        "Photo 10",
-        "Photo 11",
-        "Photo 12",
-      ]
+      this.searchResults = props.location.params["searchResults"];
 
       this.searchResultsList = this.searchResults.map(function(photo){
         return <li>{photo}</li>;
