@@ -34,7 +34,7 @@ export default class ContactUs extends React.Component {
         <FormGroup>
             <Input type="string" name="message" placeholder="Message" />
         </FormGroup>
-        <Button onClick={this.onSubmit} >Send </Button>
+        <Button onClick={this.onSubmit}> Send </Button>
       </Form>
       </center>
     </Container>
