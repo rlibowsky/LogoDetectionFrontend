@@ -27,7 +27,7 @@ export default class Login extends React.Component {
     e.preventDefault();
     console.log(this.state.email)
     console.log(this.state.password)
-    fetch('http://localhost:3000/users/login/', {
+    fetch('http://localhost:2000/users/login/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

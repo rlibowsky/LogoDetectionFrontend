@@ -20,7 +20,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
     handleSubmit = (e) => {
       e.preventDefault();
-      fetch('http://localhost:3000/users/scraper/', {
+      fetch('http://localhost:2000/scraper/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

@@ -47,7 +47,7 @@ export default class SignUp extends React.Component {
       return;
     }
     e.preventDefault();
-    fetch('http://localhost:3000/users/signup/', {
+    fetch('http://localhost:2000/users/signup/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
