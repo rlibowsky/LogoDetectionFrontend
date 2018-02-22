@@ -9,7 +9,8 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       super(props);
       this.state = {
         logoName: '',
-        data: ''
+        data: '',
+        imageJSON: []
       }
       this.searchLogo = this.searchLogo.bind(this);
     }
@@ -20,6 +21,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     }
 
     handleSubmit = (e) => {
+      console.log(this.state.logoName);
       e.preventDefault();
       fetch('http://localhost:2000/scraper/', {
         method: 'POST',
@@ -31,12 +33,11 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
           "hashtag": this.state.logoName,
           "image_count": "30"
         })
-      }).then(response => {
-        console.log(response.status)
-      }).then(data => {
-        this.setState({data: data })
-        alert(JSON.stringify(this.state.data))
-    });  
+      }).then(response => response.json())
+      .then(json => {
+        this.state.imageJSON = json;
+        console.log(this.state.imageJSON );
+      })
     }
 
     searchLogo(ev) {
