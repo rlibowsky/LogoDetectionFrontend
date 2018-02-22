@@ -4,11 +4,17 @@ import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
 export default class ContactUs extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      showPopup: false
+    };
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   onSubmit(ev) {
-    /* TODO: send email to LogoDetect */
+    document.getElementById("name").value="";
+    document.getElementById("email").value="";
+    document.getElementById("subject").value="";
+    document.getElementById("message").value="";
   }
 
   render() {
@@ -24,15 +30,15 @@ export default class ContactUs extends React.Component {
           
         </FormGroup>
         <FormGroup>
-        <Input className="inline" type="email" name="email" required="true" placeholder="Email *" />
+        <Input className="inline" id="email" type="email" name="email" required="true" placeholder="Email *" />
 
           </FormGroup>
         
         <FormGroup>
-            <Input type="string" name="subject" placeholder="Subject" />
+            <Input type="string" id="subject" name="subject" placeholder="Subject" />
         </FormGroup>
         <FormGroup>
-            <Input type="string" name="message" placeholder="Message" />
+            <Input type="string" id="message" name="message" placeholder="Message" />
         </FormGroup>
         <Button onClick={this.onSubmit}> Send </Button>
       </Form>
