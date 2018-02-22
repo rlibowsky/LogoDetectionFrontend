@@ -30,7 +30,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "hashtag": this.state.logoName,
+          "hashtag": (this.state.logoName).toLowerCase(),
           "image_count": "30"
         })
       }).then(response => response.json())
@@ -38,6 +38,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         this.state.imageJSON = json;
         console.log(this.state.imageJSON );
       })
+
     }
 
     searchLogo(ev) {
@@ -70,6 +71,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                 />
               <Button onClick={this.handleSubmit}  className="searchBtn"> Search </Button>
               </FormGroup>
+              
             </Form>
             <div>
           </div>
