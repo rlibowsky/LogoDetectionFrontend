@@ -11,55 +11,55 @@ export default class Footer extends React.Component {
       return (
         <Container className="footer-align">
         <center>
-            <div class="row">
+            <div className="row">
 
-              <div class="column">
-                <div class="row">
+              <div className="column">
+                <div className="row">
                     Address
                 </div>
-                <div class="row">
+                <div className="row">
                     610 Childs Way
                 </div>
-                <div class="row">
+                <div className="row">
                     Los Angeles, Los Angeles County 90007
                 </div>
-                <div class="row">
+                <div className="row">
                     USA
                 </div>
               </div>
 
-              <div class="bt-space"></div>
+              <div className="bt-space"></div>
 
-              <div class="column">
-                <div class="row">
+              <div className="column">
+                <div className="row">
                     Contact
                 </div>
-                <div class="row">
+                <div className="row">
                     help@logodetect.com
                 </div>
-                <div class="row">
+                <div className="row">
                     4254427300
                 </div>
               </div>
 
-              <div class="bt-space"></div>
+              <div className="bt-space"></div>
 
-              <div class="column">
-                <div class="row">
+              <div className="column">
+                <div className="row">
                     Follow
                 </div>
-                <div class="row">
-                    <div class="column">
+                <div className="row">
+                    <div className="column">
                         <a href="https://www.facebook.com/">
                             <img src={require('./images/socialmedia/facebook.png')} width="30" height="30" alt="facebook"/>
                         </a>
                     </div>
-                    <div class="column">
+                    <div className="column">
                         <a href="https://www.twitter.com/">
                             <img src={require('./images/socialmedia/twitter.png')} width="30" height="30" alt="twitter"/>
                         </a>
                     </div>
-                    <div class="column">
+                    <div className="column">
                         <a href="https://www.instagram.com/">
                             <img src={require('./images/socialmedia/instagram.png')} width="30" height="30" alt="instagram"/>
                         </a>

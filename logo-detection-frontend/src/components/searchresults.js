@@ -7,10 +7,11 @@ import Footer from './footer.js';
     constructor(props) {
       super(props);
       this.searchTerms = props.location.params["searchTerms"];
-      this.searchResults = props.location.params["searchResults"];
+      this.searchResults = props.location.params["searchResults"].filePaths;
+      console.log(props.location.params["searchResults"].filePaths);
 
       this.searchResultsList = this.searchResults.map(function(photo){
-        return <li>{photo}</li>;
+        return <li key={photo.toString()} ><img src={photo} alt="Image" height="350" width="450"/></li>;
       })
     }
 
