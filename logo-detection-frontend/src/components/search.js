@@ -8,7 +8,8 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     constructor(props) {
       super(props);
       this.state = {
-        logoName: ''
+        logoName: '',
+        data: ''
       }
       this.searchLogo = this.searchLogo.bind(this);
     }
@@ -34,6 +35,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         console.log(response.status)
       }).then(data => {
         this.setState({data: data })
+        alert(JSON.stringify(this.state.data))
     });  
     }
 
