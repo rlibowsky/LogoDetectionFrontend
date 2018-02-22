@@ -7,7 +7,34 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
   export default class Search extends React.Component { 
     constructor(props) {
       super(props);
+      this.state = {
+        logoName: ''
+      }
       this.searchLogo = this.searchLogo.bind(this);
+    }
+    handleLogoNameChange = (e) => {
+      this.setState({
+        logoName: e.target.value
+      })
+    }
+
+    handleSubmit = (e) => {
+      e.preventDefault();
+      fetch('http://localhost:3000/users/scraper/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "hashtag": this.state.logoName,
+          "image_count": "30"
+        })
+      }).then(response => {
+        console.log(response.status)
+      }).then(data => {
+        this.setState({data: data })
+    });  
     }
 
     searchLogo(ev) {
@@ -30,8 +57,15 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
             <div className="header-space"></div>
             <Form>
             <FormGroup> 
-              <Input type="text" id="searchTerms" placeholder="Enter logo name" className="searchBox"/>
-              <Button onClick={this.searchLogo}  className="searchBtn"> Search </Button>
+              <Input 
+                type="text" 
+                id="searchTerms" 
+                placeholder="Enter logo name" 
+                className="searchBox"
+                value={this.state.logoName}
+                onChange={this.handleLogoNameChange}
+                />
+              <Button onClick={this.handleSubmit}  className="searchBtn"> Search </Button>
               </FormGroup>
             </Form>
             <div>
