@@ -18,13 +18,11 @@ export default class SignUp extends React.Component {
   }
 
   clearForm(errorStr) {
-    console.log("clearing form");
     document.getElementById("email").value="";
     document.getElementById("password").value="";
     document.getElementById("passwordVerify").value="";
     document.getElementById("name").value="";
     document.getElementById("organization").value="";
-    console.log("str is " + errorStr);
     this.setState({
       email: '',
       password: '',

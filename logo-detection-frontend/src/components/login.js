@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container,  Button, Form, FormGroup,  Input } from 'reactstrap';
+import './login.css';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -10,6 +11,18 @@ export default class Login extends React.Component {
       data: '',
       wrongLogin: false
     }
+    this.clearForm = this.clearForm.bind(this);
+  }
+
+  clearForm(wrongLoginVal) {
+    document.getElementById("email").value="";
+    document.getElementById("password").value="";
+    this.setState({
+      email: '',
+      password: '',
+      data: '',
+      wrongLogin: wrongLoginVal
+    });
   }
 
   handleEmailChange = (e) => {
@@ -44,7 +57,7 @@ export default class Login extends React.Component {
         this.props.history.push('/portal');
       }
       else {
-        this.state.wrongLogin = true;
+        this.clearForm(true);
       }
     }).then(data => {
       this.setState({data: data })
@@ -61,6 +74,7 @@ export default class Login extends React.Component {
           <Input 
             type="email" 
             name="email" 
+            id="email"
             placeholder="Email"  
             value={this.state.email}
             onChange={this.handleEmailChange}
@@ -79,7 +93,7 @@ export default class Login extends React.Component {
 
         <div> 
               {this.state.wrongLogin ? (
-              <h5> Invalid username or password </h5>
+              <h5 className="errorText"> Invalid username or password </h5>
             ) : (
               <h5> </h5>
             )}
