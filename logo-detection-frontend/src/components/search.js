@@ -10,8 +10,11 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       this.state = {
         logoName: '',
         data: '',
-        imageJSON: []
+        imageJSON: [],
+        ready: false
       }
+      this.nextPage = this.nextPage.bind(this);
+
     }
     handleLogoNameChange = (e) => {
       this.setState({
@@ -37,6 +40,10 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         this.state.imageJSON = json;
         console.log(this.state.imageJSON );
       })
+      .then(this.nextPage);
+    }
+
+    nextPage() {
       const data = {
         val: document.getElementById("searchTerms").value
       }
@@ -46,9 +53,8 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
           searchTerms: data.val,
           searchResults: this.state.imageJSON
         }
-      });
+      })
     }
-
   render() {
     return (
     <Container>
