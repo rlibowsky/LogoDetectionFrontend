@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
+import './signup.css';
 
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -13,6 +14,26 @@ export default class SignUp extends React.Component {
       error: '',
       data: ''
     }
+    this.clearForm = this.clearForm.bind(this);
+  }
+
+  clearForm(errorStr) {
+    console.log("clearing form");
+    document.getElementById("email").value="";
+    document.getElementById("password").value="";
+    document.getElementById("passwordVerify").value="";
+    document.getElementById("name").value="";
+    document.getElementById("organization").value="";
+    console.log("str is " + errorStr);
+    this.setState({
+      email: '',
+      password: '',
+      passwordVerify: '',
+      name: '',
+      organization: '',
+      error: errorStr,
+      data: ''
+    });
   }
 
   handleEmailChange = (e) => {
@@ -43,7 +64,7 @@ export default class SignUp extends React.Component {
 
   handleSubmit = (e) => {
     if (this.state.password != this.state.passwordVerify){
-      this.state.error = 'Passwords do not match';
+      this.clearForm("passwords don't match");
       return;
     }
     e.preventDefault();
@@ -66,26 +87,29 @@ export default class SignUp extends React.Component {
         this.props.history.push('/portal');
       }
       else if (response.status == 409) {
-        this.state.error = 'User already registered';
+        this.clearForm('User already registered');
       }
       else {
-        this.state.error = 'Fields not entered correctly';
+        this.clearForm('Fields not entered correctly');
       }
     }).then(data => {
-      this.setState({data: data })
+      this.setState({data: data });
   });  
   }
 
   render() {
+    console.log("in render");
+    console.log(this.state.error);
     return (
     <Container >
-        <center class="credentialContainer">
+        <center className="credentialContainer">
             <h2> Sign Up </h2>
     <Form>
         <FormGroup>
           <Input 
             type="email" 
-            name="email" 
+            name="email"
+            id="email"
             placeholder="Email"
             value={this.state.email}
             onChange={this.handleEmailChange}
@@ -121,6 +145,7 @@ export default class SignUp extends React.Component {
             onChange={this.handleNameChange}
           />
         </FormGroup>
+        
         <FormGroup>
           <Input 
             type="organization" 
@@ -131,16 +156,14 @@ export default class SignUp extends React.Component {
             onChange={this.handleOrganizationChange}
           />
         </FormGroup>
-
         <div>
-          <h5>
+          <h5 className="errorText">
             {this.state.error}
           </h5>
         </div>
-
         <Button onClick={this.handleSubmit}> Go </Button>
-        <div class="switchText" > Already have an account? </div>
-        <a class="switchLink" href="/login"> Log In </a>
+        <div className="switchText" > Already have an account? </div>
+        <a className="switchLink" href="/login"> Log In </a>
       </Form>
       </center>
     </Container>
