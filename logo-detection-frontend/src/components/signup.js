@@ -83,7 +83,12 @@ export default class SignUp extends React.Component {
       console.log(response.status)
       if (response.status == 201) {
         this.state.error = '';
-        this.props.history.push('/portal');
+        this.props.history.push({
+          pathname: '/portal',
+          params: {
+            email: this.state.email
+          }
+        });
       }
       else if (response.status == 409) {
         this.clearForm('User already registered');

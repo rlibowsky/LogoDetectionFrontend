@@ -20,7 +20,6 @@ import { Container, Button } from 'reactstrap';
       this.onTrain = this.onTrain.bind(this);
       this.onSearch = this.onSearch.bind(this);
       this.learnMore = this.learnMore.bind(this);
-      console.log("email is " + this.email);
     }
 
     onTrain(ev) {

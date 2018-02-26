@@ -39,10 +39,10 @@ export default class Header extends React.Component {
                 <NavLink href="/login"> { this.state.loggedIn } </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">help@logodetect.com</NavLink>
+                <NavLink>help@logodetect.com</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/">4254427300</NavLink>
+                <NavLink>4254427300</NavLink>
               </NavItem>
               <NavItem>
                 <a href="https://www.facebook.com/">
