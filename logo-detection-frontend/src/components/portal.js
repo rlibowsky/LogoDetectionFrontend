@@ -1,5 +1,6 @@
 import React from 'react';
 import './portal.css';
+import Header from './header.js';
 
 import Footer from './footer.js';
 
@@ -11,16 +12,32 @@ import { Container, Button } from 'reactstrap';
       this.state = {
         isOpen: false
       };
+      if (!props.location.params) {
+        this.props.history.push("/login");
+        return;
+      }
+      this.email = props.location.params["email"];
       this.onTrain = this.onTrain.bind(this);
       this.onSearch = this.onSearch.bind(this);
       this.learnMore = this.learnMore.bind(this);
+      console.log("email is " + this.email);
     }
 
     onTrain(ev) {
-      this.props.history.push('/train');
+      this.props.history.push({
+        pathname: '/train',
+        params: {
+          email: this.state.email
+        }
+      });
     }
     onSearch(ev) {
-      this.props.history.push('/search');
+      this.props.history.push({
+        pathname: '/search',
+        params: {
+          email: this.state.email
+        }
+      });
     }
 
     learnMore(ev) {
@@ -30,35 +47,36 @@ import { Container, Button } from 'reactstrap';
   render() {
     return (
     <Container>
+    <Header {...this.props}/>
         <center>
             <h2> OUR SERVICES </h2>
             <h5> Here for you </h5>
-            <div class="header-space"></div>
+            <div className="header-space"></div>
 
-            <div class="row">
+            <div className="row">
 
-              <div class="column">
-                <div class="row">
-                  <div class="imgContainer">
+              <div className="column">
+                <div className="row">
+                  <div className="imgContainer">
                     <div>
                       <img src={require('./images/services/train.jpg')} alt="Image" height="350" width="450"/>
                     </div>
-                    <div class="imgButton">
+                    <div className="imgButton">
                       <Button onClick={this.onTrain}> Train Your Logo</Button>
                     </div>
                   </div>
                 </div>
               </div>
               
-              <div class="bt-space"></div>
+              <div className="bt-space"></div>
 
-              <div class="column">
-                <div class="row">
-                  <div class="imgContainer">
+              <div className="column">
+                <div className="row">
+                  <div className="imgContainer">
                     <div>
                       <img src={require('./images/services/search.jpg')} alt="Image" height="350" width="450"/>
                     </div>
-                    <div class="imgButton">
+                    <div className="imgButton">
                       <Button onClick ={this.onSearch}> Search Social Media </Button>
                     </div>
                   </div>

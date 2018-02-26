@@ -1,20 +1,26 @@
 import React from 'react';
 import './search.css';
 import Footer from './footer.js';
+import Header from './header.js';
 
 import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
   export default class Search extends React.Component { 
     constructor(props) {
       super(props);
+      if (!props.location.params) {
+        this.props.history.push("/login");
+        return;
+      }
+      this.email = props.location.params["email"];
       this.state = {
         logoName: '',
         data: '',
         imageJSON: [],
         ready: false
       }
+      
       this.nextPage = this.nextPage.bind(this);
-
     }
     handleLogoNameChange = (e) => {
       this.setState({
@@ -50,6 +56,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       this.props.history.push({
         pathname: '/searchresults',
         params: {
+          email: this.email,
           searchTerms: data.val,
           searchResults: this.state.imageJSON
         }
@@ -58,6 +65,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
   render() {
     return (
     <Container>
+    <Header {...this.props}/>
         <center>
             <h2> SEARCH </h2>
             <div className="header-space"></div>

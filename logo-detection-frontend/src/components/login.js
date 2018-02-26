@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container,  Button, Form, FormGroup,  Input } from 'reactstrap';
 import './login.css';
+import Header from './header.js';
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -54,7 +55,12 @@ export default class Login extends React.Component {
       console.log(response.status)
       if (response.status == 200) {
         this.state.wrongLogin = false;
-        this.props.history.push('/portal');
+        this.props.history.push({
+          pathname: '/portal',
+          params: {
+            email: this.state.email
+          }
+        });
       }
       else {
         this.clearForm(true);
@@ -67,7 +73,8 @@ export default class Login extends React.Component {
   render() {
     return (
     <Container>
-        <center class="credentialContainer">
+      <Header {...this.props}/>
+        <center className="credentialContainer">
             <h1> Login </h1>
     <Form>
         <FormGroup>
@@ -100,16 +107,16 @@ export default class Login extends React.Component {
         </div>
 
         <FormGroup>
-            <div class="switchCheckBox"> 
+            <div className="switchCheckBox"> 
               <Input addon type="checkbox"/> 
               Remember Me
             </div>
-            <a class="switchLinkRight" href="/"> Forgot Password? </a>
+            <a className="switchLinkRight" href="/"> Forgot Password? </a>
         </FormGroup>
         <Button onClick={this.handleSubmit} >Go</Button>
         <FormGroup>
-            <div class="switchText"> Don't have an account? </div>
-            <a class="switchLink" href="/signup"> Sign up </a>
+            <div className="switchText"> Don't have an account? </div>
+            <a className="switchLink" href="/signup"> Sign up </a>
         </FormGroup>
       </Form>
       </center>

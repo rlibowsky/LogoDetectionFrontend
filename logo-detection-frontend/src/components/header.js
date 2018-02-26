@@ -11,11 +11,16 @@ import {
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
-
-    this.toggle = this.toggle.bind(this);
+    var loggedIn = (props.location.params !== undefined);
+    var userText = "Login/Sign Up";
+    if (props.location.params !== undefined) {
+      userText = "Logout";
+    }
     this.state = {
+      loggedIn: userText,
       isOpen: false
-    };
+    }
+    this.toggle = this.toggle.bind(this);
   }
   toggle() {
     this.setState({
@@ -31,7 +36,7 @@ export default class Header extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/login">Login/Sign Up</NavLink>
+                <NavLink href="/login"> { this.state.loggedIn } </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink href="/">help@logodetect.com</NavLink>

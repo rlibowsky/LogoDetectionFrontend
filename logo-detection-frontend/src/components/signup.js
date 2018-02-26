@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
 import './signup.css';
+import Header from './header.js';
 
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -96,10 +97,9 @@ export default class SignUp extends React.Component {
   }
 
   render() {
-    console.log("in render");
-    console.log(this.state.error);
     return (
     <Container >
+    <Header {...this.props}/>
         <center className="credentialContainer">
             <h2> Sign Up </h2>
     <Form>

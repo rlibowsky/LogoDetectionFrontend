@@ -4,10 +4,16 @@ import { Container, Button } from 'reactstrap';
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
+import Header from './header.js';
 
   export default class Train extends React.Component { 
     constructor(props) {
       super(props);
+      if (!props.location.params) {
+        this.props.history.push("/login");
+        return;
+      }
+      this.email = props.location.params["email"];
       this.state = { pictures: [] };
       this.onSubmit = this.onSubmit.bind(this);
     }
@@ -19,6 +25,7 @@ import 'react-images-uploader/font.css';
     render() {
       return (
       <Container>
+      <Header {...this.props}/>
           <center>
               <h5> Upload images containing your brand logo </h5>
               <div class="header-space"></div>
