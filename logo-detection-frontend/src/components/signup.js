@@ -62,7 +62,7 @@ export default class SignUp extends React.Component {
   }
 
   handleSubmit = (e) => {
-    if (this.state.password != this.state.passwordVerify){
+    if (this.state.password !== this.state.passwordVerify){
       this.clearForm("passwords don't match");
       return;
     }
@@ -81,7 +81,7 @@ export default class SignUp extends React.Component {
       })
     }).then(response => {
       console.log(response.status)
-      if (response.status == 201) {
+      if (response.status === 201) {
         this.state.error = '';
         this.props.history.push({
           pathname: '/portal',
@@ -90,7 +90,7 @@ export default class SignUp extends React.Component {
           }
         });
       }
-      else if (response.status == 409) {
+      else if (response.status === 409) {
         this.clearForm('User already registered');
       }
       else {

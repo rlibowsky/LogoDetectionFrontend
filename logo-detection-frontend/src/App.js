@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter, Route } from 'react-router-dom';
-import Header from './components/header.js';
 import Landing from './components/landing.js';
 import Login from './components/login.js';
 import SignUp from './components/signup.js';

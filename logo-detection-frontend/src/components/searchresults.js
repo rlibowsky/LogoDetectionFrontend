@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
+import { Container } from 'reactstrap';
 import Footer from './footer.js';
 import Header from './header.js';
 

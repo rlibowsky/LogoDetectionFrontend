@@ -13,25 +13,40 @@ export default class Header extends React.Component {
     super(props);
     var loggedIn = (props.location.params !== undefined);
     var userText = "Login/Sign Up";
+    var userEmail = "";
     if (props.location.params !== undefined) {
       userText = "Logout";
+      userEmail = props.location.params["email"];
     }
     this.state = {
       loggedIn: userText,
+      email: userEmail,
       isOpen: false
     }
     this.toggle = this.toggle.bind(this);
+    this.homeButtonClicked = this.homeButtonClicked.bind(this);
   }
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
   }
+
+  homeButtonClicked() {
+    console.log("home button was clicked");
+    this.props.history.push({
+      pathname: '/',
+      params: {
+        email: this.state.email
+      }
+    });
+  }
+
   render() {
     return (
       <div>
         <Navbar color="faded" light expand="md">
-          <NavbarBrand href="/"> <img src={require('./images/landingpage/detective.png')} width="30" height="30" alt="detective"/> LOGODETECT</NavbarBrand>
+          <NavbarBrand onClick={this.homeButtonClicked}> <img src={require('./images/landingpage/detective.png')} width="30" height="30" alt="detective"/> LOGODETECT</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>

@@ -3,10 +3,6 @@ import React from 'react';
 import { Container } from 'reactstrap';
 
 export default class Footer extends React.Component {
-    constructor(props) {
-      super(props);
-  
-    }
     render() {
       return (
         <Container className="footer-align">

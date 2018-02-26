@@ -53,7 +53,7 @@ export default class Login extends React.Component {
       })
     }).then(response => {
       console.log(response.status)
-      if (response.status == 200) {
+      if (response.status === 200) {
         this.state.wrongLogin = false;
         this.props.history.push({
           pathname: '/portal',
