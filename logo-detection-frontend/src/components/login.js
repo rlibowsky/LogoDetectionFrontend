@@ -2,6 +2,7 @@ import React from 'react';
 import { Container,  Button, Form, FormGroup,  Input } from 'reactstrap';
 import './login.css';
 import Header from './header.js';
+import cookie from "react-cookies";
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -10,7 +11,7 @@ export default class Login extends React.Component {
       email: '',
       password: '',
       data: '',
-      wrongLogin: false
+      wrongLogin: false,
     }
     this.clearForm = this.clearForm.bind(this);
   }
@@ -57,6 +58,7 @@ export default class Login extends React.Component {
         response.json().then(json => {
           console.log(json.token);
           this.state.wrongLogin = false;
+          cookie.save('token', json.token, { path: '/' });
         this.props.history.push({
             pathname: '/portal',
             params: {

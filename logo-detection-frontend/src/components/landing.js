@@ -5,12 +5,13 @@ import Map from './map.js';
 import { Container } from 'reactstrap';
 import './landing.css';
 import Header from './header.js';
-
+import cookie from "react-cookies";
 
 
 export default class Landing extends React.Component {
     constructor(props) {
         super(props);
+        this.state =  { token: cookie.load('token') };
     }
 
     render () {
