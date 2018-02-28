@@ -10,6 +10,7 @@ import Search from './components/search.js';
 import SearchResults from './components/searchresults.js';
 
 class App extends Component {
+
   render() {
     return (
       <BrowserRouter>

@@ -49,17 +49,21 @@ export default class Login extends React.Component {
       },
       body: JSON.stringify({
         "email": this.state.email,
-        "password": this.state.password,
+        "password": this.state.password
       })
     }).then(response => {
-      console.log(response.status)
+      console.log(response.json);
       if (response.status === 200) {
-        this.state.wrongLogin = false;
+        response.json().then(json => {
+          console.log(json.token);
+          this.state.wrongLogin = false;
         this.props.history.push({
-          pathname: '/portal',
-          params: {
-            email: this.state.email
+            pathname: '/portal',
+            params: {
+              email: this.state.email,
+              token:json.token
           }
+        });
         });
       }
       else {

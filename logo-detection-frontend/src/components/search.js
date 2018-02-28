@@ -8,6 +8,9 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
   export default class Search extends React.Component { 
     constructor(props) {
       super(props);
+      this.state = {
+        loading: false
+      }
       if (!props.location.params) {
         this.props.history.push("/login");
         return;
@@ -31,6 +34,9 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     handleSubmit = (e) => {
       console.log(this.state.logoName);
       e.preventDefault();
+      this.setState({
+        loading: true
+      })
       fetch('http://localhost:2000/scraper/', {
         method: 'POST',
         headers: {
@@ -45,6 +51,9 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       .then(json => {
         this.state.imageJSON = json;
         console.log(this.state.imageJSON );
+        this.setState({
+          loading: false
+        })
       })
       .then(this.nextPage);
     }
