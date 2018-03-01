@@ -18,6 +18,11 @@ import cookie from "react-cookies";
         this.props.history.push('/login');
         return;
       }
+      var dummyBrandNames = ["Nike", "Patagonia", "Lululemon", "Adidas", "Reebok", "Under Armour"];
+
+      this.dummyBrandNamesList = dummyBrandNames.map(function(brandName){
+        return <li key={brandName.toString()} > {brandName} </li>;
+      })
       this.onSubmit = this.onSubmit.bind(this);
     }
 
@@ -29,8 +34,8 @@ import cookie from "react-cookies";
       return (
       <Container>
           <center>
+              <h5> CREATE A NEW DATA SET </h5>
               <h5> Upload images containing your brand logo </h5>
-              <div class="header-space"></div>
               <ImagesUploader
                 url="http://localhost:9090/multiple"
                 optimisticPreviews
@@ -42,10 +47,11 @@ import cookie from "react-cookies";
                 label=""
                 />
                 <Button className="searchBtn" disabled={this.state.pictures.length > 0} onClick={this.onSubmit}> Submit </Button>
-              <div class="header-space"></div>
-              <h5> Upload all the photos that resemble your brand's logo. We will do the work from 
-                there to assess and determine how to best </h5>
-              <h5> recognize your logo on social media. </h5>
+              <div className="header-space"></div>
+              <h5> YOUR DATA SETS </h5>
+              <ul>
+                  {this.dummyBrandNamesList}
+              </ul>
               <div>
             </div>
           </center>

@@ -35,7 +35,6 @@ export default class Header extends React.Component {
     if (tokenExists) {
       loginText = "Logout";
     }
-    console.log("rerendered and token is " + this.state.token);
     return (
       <div>
         <Navbar color="faded" light expand="md">

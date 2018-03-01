@@ -33,7 +33,6 @@ export default class Landing extends React.Component {
                 </div>
                 <Map height="100%" width="100%"/>
                 <ContactUs />
-    
                 </center>
             </Container>
         );
