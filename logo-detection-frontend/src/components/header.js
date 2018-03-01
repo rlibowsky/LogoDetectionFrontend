@@ -13,13 +13,12 @@ export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
-      token: cookie.load('token')
+      isOpen: false
     }
     this.toggle = this.toggle.bind(this);
     this.logout = this.logout.bind(this);
-    this.homeButtonClicked = this.homeButtonClicked.bind(this);
   }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
@@ -30,23 +29,17 @@ export default class Header extends React.Component {
     cookie.remove('token', { path: '/' });
   }
 
-  homeButtonClicked() {
-    console.log("home button was clicked");
-    this.props.history.push({
-      pathname: '/'
-    });
-  }
-
   render() {
-    const tokenExists = this.state.token !== undefined;
+    const tokenExists = cookie.load('token') !== undefined;
     var loginText = "Login/Sign Up";
     if (tokenExists) {
       loginText = "Logout";
     }
+    console.log("rerendered and token is " + this.state.token);
     return (
       <div>
         <Navbar color="faded" light expand="md">
-          <NavbarBrand onClick={this.homeButtonClicked}> <img src={require('./images/landingpage/detective.png')} width="30" height="30" alt="detective"/> LOGODETECT</NavbarBrand>
+          <NavbarBrand href="/"> <img src={require('./images/landingpage/detective.png')} width="30" height="30" alt="detective"/> LOGODETECT</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>

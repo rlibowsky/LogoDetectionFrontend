@@ -1,7 +1,6 @@
 import React from 'react';
 import './search.css';
 import Footer from './footer.js';
-import Header from './header.js';
 import cookie from "react-cookies";
 
 import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
@@ -17,7 +16,10 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         token: cookie.load('token'),
         loading: false
       }
-      
+      if (this.state.token === undefined) {
+        this.props.history.push('/login');
+        return;
+      }
       this.nextPage = this.nextPage.bind(this);
     }
     handleLogoNameChange = (e) => {
@@ -69,7 +71,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
   render() {
     return (
     <Container>
-    <Header {...this.props}/>
         <center>
             <h2> SEARCH </h2>
             <div className="header-space"></div>

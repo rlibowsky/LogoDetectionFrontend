@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
 import './signup.css';
-import Header from './header.js';
 import cookie from "react-cookies";
 
 export default class SignUp extends React.Component {
@@ -85,12 +84,9 @@ export default class SignUp extends React.Component {
       console.log(response.status)
       if (response.status === 201) {
         response.json().then(json => {
-          console.log(json.token);
-          cookie.save('token', json.token, { path: '/' });
-        this.state.error = '';
-        this.props.history.push({
-          pathname: '/portal',
-        });
+          this.state.error = '';
+          cookie.save('token', json.token, { path: '/' , 'maxAge': 100000});
+          this.props.history.push('/portal');
       });
       }
       else if (response.status === 409) {
@@ -107,7 +103,6 @@ export default class SignUp extends React.Component {
   render() {
     return (
     <Container >
-    <Header {...this.props}/>
         <center className="credentialContainer">
             <h2> Sign Up </h2>
     <Form>

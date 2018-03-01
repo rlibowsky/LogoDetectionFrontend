@@ -1,6 +1,5 @@
 import React from 'react';
 import './portal.css';
-import Header from './header.js';
 
 import Footer from './footer.js';
 import cookie from "react-cookies";
@@ -14,11 +13,10 @@ import { Container, Button } from 'reactstrap';
         isOpen: false,
         token: cookie.load('token')
       };
-      // if (!props.location.params) {
-      //   this.props.history.push("/login");
-      //   return;
-      // }
-      // this.email = props.location.params["email"];
+      if (this.state.token === undefined) {
+        this.props.history.push('/login');
+        return;
+      }
       this.onTrain = this.onTrain.bind(this);
       this.onSearch = this.onSearch.bind(this);
       this.learnMore = this.learnMore.bind(this);
@@ -48,7 +46,6 @@ import { Container, Button } from 'reactstrap';
   render() {
     return (
     <Container>
-    <Header {...this.props}/>
         <center>
             <h2> OUR SERVICES </h2>
             <h5> Here for you </h5>

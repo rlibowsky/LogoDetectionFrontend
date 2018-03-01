@@ -4,7 +4,6 @@ import { Container, Button } from 'reactstrap';
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
-import Header from './header.js';
 import cookie from "react-cookies";
 
   export default class Train extends React.Component { 
@@ -15,6 +14,10 @@ import cookie from "react-cookies";
         pictures: [],
         token: cookie.load('token')
        };
+       if (this.state.token === undefined) {
+        this.props.history.push('/login');
+        return;
+      }
       this.onSubmit = this.onSubmit.bind(this);
     }
 
@@ -25,7 +28,6 @@ import cookie from "react-cookies";
     render() {
       return (
       <Container>
-      <Header {...this.props}/>
           <center>
               <h5> Upload images containing your brand logo </h5>
               <div class="header-space"></div>

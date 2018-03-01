@@ -4,7 +4,6 @@ import ContactUs from './contactus.js';
 import Map from './map.js';
 import { Container } from 'reactstrap';
 import './landing.css';
-import Header from './header.js';
 import cookie from "react-cookies";
 
 
@@ -18,7 +17,6 @@ export default class Landing extends React.Component {
         
         return(
             <Container>
-            <Header {...this.props}/>
                 <center>
                 <h1> WELCOME TO LOGODETECT </h1>
                 <h5> Give us your logo and we will tell you the best way to attract new customers.</h5>

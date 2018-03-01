@@ -60,9 +60,7 @@ export default class Login extends React.Component {
           console.log(json.token);
           this.state.wrongLogin = false;
           cookie.save('token', json.token, { path: '/' , 'maxAge': 100000});
-        this.props.history.push({
-            pathname: '/portal'
-        });
+          this.props.history.push('/portal');
         });
       }
       else {
@@ -76,7 +74,6 @@ export default class Login extends React.Component {
   render() {
     return (
     <Container>
-      <Header {...this.props}/>
         <center className="credentialContainer">
             <h1> Login </h1>
     <Form>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Container } from 'reactstrap';
 import { BrowserRouter, Route } from 'react-router-dom';
 import Landing from './components/landing.js';
 import Login from './components/login.js';
@@ -9,12 +10,16 @@ import Train from './components/train.js';
 import Search from './components/search.js';
 import SearchResults from './components/searchresults.js';
 import cookie from "react-cookies";
+import Header from './components/header.js';
 
 class App extends Component {
 
   render() {
     return (
+      
       <BrowserRouter>
+      <Container>
+      <Header />
         <div>
           <div>
           <Route exact path="/" component={Landing}/>
@@ -26,7 +31,9 @@ class App extends Component {
           <Route path="/searchresults" component={SearchResults} />
           </div>
         </div>
+        </Container>
     </BrowserRouter>
+    
     );
   }
 }
