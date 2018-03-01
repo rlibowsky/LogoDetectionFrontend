@@ -2,6 +2,7 @@ import React from 'react';
 import './search.css';
 import Footer from './footer.js';
 import Header from './header.js';
+import cookie from "react-cookies";
 
 import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
@@ -9,18 +10,12 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     constructor(props) {
       super(props);
       this.state = {
-        loading: false
-      }
-      if (!props.location.params) {
-        this.props.history.push("/login");
-        return;
-      }
-      this.email = props.location.params["email"];
-      this.state = {
         logoName: '',
         data: '',
         imageJSON: [],
-        ready: false
+        ready: false,
+        token: cookie.load('token'),
+        loading: false
       }
       
       this.nextPage = this.nextPage.bind(this);

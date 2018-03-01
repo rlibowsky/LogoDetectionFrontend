@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
 import './signup.css';
 import Header from './header.js';
+import cookie from "react-cookies";
 
 export default class SignUp extends React.Component {
   constructor(props) {
@@ -13,7 +14,8 @@ export default class SignUp extends React.Component {
       name: '',
       organization: '',
       error: '',
-      data: ''
+      data: '',
+      token: cookie.load('token')
     }
     this.clearForm = this.clearForm.bind(this);
   }
@@ -82,13 +84,14 @@ export default class SignUp extends React.Component {
     }).then(response => {
       console.log(response.status)
       if (response.status === 201) {
+        response.json().then(json => {
+          console.log(json.token);
+          cookie.save('token', json.token, { path: '/' });
         this.state.error = '';
         this.props.history.push({
           pathname: '/portal',
-          params: {
-            email: this.state.email
-          }
         });
+      });
       }
       else if (response.status === 409) {
         this.clearForm('User already registered');

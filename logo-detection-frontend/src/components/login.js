@@ -12,6 +12,7 @@ export default class Login extends React.Component {
       password: '',
       data: '',
       wrongLogin: false,
+      token: cookie.load('token')
     }
     this.clearForm = this.clearForm.bind(this);
   }
@@ -58,13 +59,9 @@ export default class Login extends React.Component {
         response.json().then(json => {
           console.log(json.token);
           this.state.wrongLogin = false;
-          cookie.save('token', json.token, { path: '/' });
+          cookie.save('token', json.token, { path: '/' , 'maxAge': 100000});
         this.props.history.push({
-            pathname: '/portal',
-            params: {
-              email: this.state.email,
-              token:json.token
-          }
+            pathname: '/portal'
         });
         });
       }

@@ -3,6 +3,7 @@ import './portal.css';
 import Header from './header.js';
 
 import Footer from './footer.js';
+import cookie from "react-cookies";
 
 import { Container, Button } from 'reactstrap';
 
@@ -10,13 +11,14 @@ import { Container, Button } from 'reactstrap';
     constructor(props) {
       super(props);
       this.state = {
-        isOpen: false
+        isOpen: false,
+        token: cookie.load('token')
       };
-      if (!props.location.params) {
-        this.props.history.push("/login");
-        return;
-      }
-      this.email = props.location.params["email"];
+      // if (!props.location.params) {
+      //   this.props.history.push("/login");
+      //   return;
+      // }
+      // this.email = props.location.params["email"];
       this.onTrain = this.onTrain.bind(this);
       this.onSearch = this.onSearch.bind(this);
       this.learnMore = this.learnMore.bind(this);

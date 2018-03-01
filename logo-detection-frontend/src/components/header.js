@@ -7,23 +7,17 @@ import {
   Nav,
   NavItem,
   NavLink} from 'reactstrap';
+import cookie from "react-cookies";
 
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
-    var loggedIn = (props.location.params !== undefined);
-    var userText = "Login/Sign Up";
-    var userEmail = "";
-    if (props.location.params !== undefined) {
-      userText = "Logout";
-      userEmail = props.location.params["email"];
-    }
     this.state = {
-      loggedIn: userText,
-      email: userEmail,
-      isOpen: false
+      isOpen: false,
+      token: cookie.load('token')
     }
     this.toggle = this.toggle.bind(this);
+    this.logout = this.logout.bind(this);
     this.homeButtonClicked = this.homeButtonClicked.bind(this);
   }
   toggle() {
@@ -32,17 +26,23 @@ export default class Header extends React.Component {
     });
   }
 
+  logout() {
+    cookie.remove('token', { path: '/' });
+  }
+
   homeButtonClicked() {
     console.log("home button was clicked");
     this.props.history.push({
-      pathname: '/',
-      params: {
-        email: this.state.email
-      }
+      pathname: '/'
     });
   }
 
   render() {
+    const tokenExists = this.state.token !== undefined;
+    var loginText = "Login/Sign Up";
+    if (tokenExists) {
+      loginText = "Logout";
+    }
     return (
       <div>
         <Navbar color="faded" light expand="md">
@@ -51,7 +51,7 @@ export default class Header extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/login"> { this.state.loggedIn } </NavLink>
+                <NavLink  onClick={this.logout} href="/login"> { loginText } </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink>help@logodetect.com</NavLink>

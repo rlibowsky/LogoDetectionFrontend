@@ -5,16 +5,16 @@ import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
 import Header from './header.js';
+import cookie from "react-cookies";
 
   export default class Train extends React.Component { 
     constructor(props) {
       super(props);
-      if (!props.location.params) {
-        this.props.history.push("/login");
-        return;
-      }
-      this.email = props.location.params["email"];
-      this.state = { pictures: [] };
+      
+      this.state = { 
+        pictures: [],
+        token: cookie.load('token')
+       };
       this.onSubmit = this.onSubmit.bind(this);
     }
 

@@ -3,15 +3,11 @@ import React from 'react';
 import { Container } from 'reactstrap';
 import Footer from './footer.js';
 import Header from './header.js';
+import cookie from "react-cookies";
 
   export default class SearchResults extends React.Component { 
     constructor(props) {
       super(props);
-      if (!props.location.params) {
-        this.props.history.push("/login");
-        return;
-      }
-      this.email = props.location.params["email"];
       this.searchTerms = props.location.params["searchTerms"];
       this.searchResults = props.location.params["searchResults"].filePaths;
       console.log(props.location.params["searchResults"].filePaths);

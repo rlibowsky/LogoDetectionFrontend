@@ -8,6 +8,7 @@ import Portal from './components/portal.js';
 import Train from './components/train.js';
 import Search from './components/search.js';
 import SearchResults from './components/searchresults.js';
+import cookie from "react-cookies";
 
 class App extends Component {
 
