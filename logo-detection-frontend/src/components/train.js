@@ -4,6 +4,7 @@ import { Container, Button } from 'reactstrap';
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
+import './train.css';
 import cookie from "react-cookies";
 
   export default class Train extends React.Component { 
@@ -21,7 +22,7 @@ import cookie from "react-cookies";
       var dummyBrandNames = ["Nike", "Patagonia", "Lululemon", "Adidas", "Reebok", "Under Armour"];
 
       this.dummyBrandNamesList = dummyBrandNames.map(function(brandName){
-        return <li key={brandName.toString()} > {brandName} </li>;
+        return <div className="dataSetBox" key={brandName.toString()} > <img height="300px" width="300px" src="http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png"/> {brandName} </div>;
       })
       this.onSubmit = this.onSubmit.bind(this);
     }
@@ -49,12 +50,13 @@ import cookie from "react-cookies";
                 <Button className="searchBtn" disabled={this.state.pictures.length > 0} onClick={this.onSubmit}> Submit </Button>
               <div className="header-space"></div>
               <h5> YOUR DATA SETS </h5>
-              <ul>
+              <div className="box">
                   {this.dummyBrandNamesList}
-              </ul>
+              </div>
               <div>
             </div>
           </center>
+          <div className="header-space"></div>
           <Footer/>
       </Container>  
       );
