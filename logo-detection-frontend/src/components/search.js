@@ -2,6 +2,9 @@ import React from 'react';
 import './search.css';
 import Footer from './footer.js';
 import cookie from "react-cookies";
+import Loading from 'react-loading-bar';
+import 'react-loading-bar/dist/index.css';
+import ProgressButton from 'react-progress-button';
 
 import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
@@ -85,6 +88,10 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                 onChange={this.handleLogoNameChange}
                 />
               <Button onClick={this.handleSubmit}  className="searchBtn"> Search </Button>
+              <Loading
+                show={this.state.loading}
+                color="red"
+              />
               </FormGroup>
               
             </Form>
