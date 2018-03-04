@@ -10,7 +10,11 @@ import cookie from "react-cookies";
   export default class Train extends React.Component { 
     constructor(props) {
       super(props);
-      
+      const imageClick = () => {
+        this.props.history.push({
+          pathname: '/datasetlanding',
+        });
+      }
       this.state = { 
         pictures: [],
         token: cookie.load('token')
@@ -22,7 +26,9 @@ import cookie from "react-cookies";
       var dummyBrandNames = ["Nike", "Patagonia", "Lululemon", "Adidas", "Reebok", "Under Armour"];
 
       this.dummyBrandNamesList = dummyBrandNames.map(function(brandName){
-        return <div className="dataSetBox" key={brandName.toString()} > <img height="300px" width="300px" src="http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png"/> {brandName} </div>;
+        return <div className="dataSetBox" key={brandName.toString()} > 
+          <button> <img height="300px" width="300px" src="http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png" onClick={() => imageClick()}/> {brandName}</button> 
+          </div>;
       })
       this.onSubmit = this.onSubmit.bind(this);
     }
@@ -52,6 +58,7 @@ import cookie from "react-cookies";
               <h5> YOUR DATA SETS </h5>
               <div className="box">
                   {this.dummyBrandNamesList}
+                  
               </div>
               <div>
             </div>
