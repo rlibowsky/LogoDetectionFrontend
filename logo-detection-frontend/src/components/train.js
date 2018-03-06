@@ -29,12 +29,9 @@ import cookie from "react-cookies";
 
       this.dummyBrandNamesList = dummyBrandNames.map(function(brandName){
         return 
-        <div className="dataSetBox" key={brandName.toString()} >
-          <button> 
-            <img height="300px" width="300px" src="http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png" onClick={imageClick()}
-            />
-          </button> 
-          </div>;
+        <div className="dataSetBox" key={brandName.toString()} > 
+        <button> <img height="300px" width="300px" src="http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png" onClick={() => imageClick()}/> {brandName}</button> 
+        </div>;
       })
       this.onSubmit = this.onSubmit.bind(this);
     }
@@ -48,7 +45,7 @@ import cookie from "react-cookies";
       <Container>
           <center>
               <h5> CREATE A NEW DATA SET </h5>
-              <h5> Upload images containing your brand logo </h5>
+              <h5> Upload your brand logo to get started </h5>
               <ImagesUploader
                 url="http://localhost:9090/multiple"
                 optimisticPreviews
