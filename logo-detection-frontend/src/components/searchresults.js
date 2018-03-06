@@ -23,6 +23,7 @@ import './searchresults.css';
     }
 
   render() {
+    window.history.pushState(null, null, '/login');
     return (
     <Container>
         <center>

@@ -5,7 +5,9 @@
   "dependencies": {
     "axios": "^0.17.1",
     "bootstrap": "^4.0.0",
+    "cors-prefetch-middleware": "^1.0.0",
     "file-loader": "^1.1.6",
+    "images-upload-middleware": "^1.1.1",
     "jquery": "^3.3.1",
     "nuka-carousel": "^3.0.1",
     "react": "^16.2.0",

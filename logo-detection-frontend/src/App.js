@@ -7,7 +7,6 @@ import Login from './components/login.js';
 import SignUp from './components/signup.js';
 import Portal from './components/portal.js';
 import DataSetLanding from './components/datasetlanding.js';
-
 import Train from './components/train.js';
 import Search from './components/search.js';
 import SearchResults from './components/searchresults.js';
@@ -18,7 +17,6 @@ class App extends Component {
 
   render() {
     return (
-      
       <BrowserRouter>
       <Container>
       <Header />

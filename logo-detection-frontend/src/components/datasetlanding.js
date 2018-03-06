@@ -10,7 +10,9 @@ import { Container, Button } from 'reactstrap';
       super(props);
       this.state = {
         isOpen: false,
-        token: cookie.load('token')
+        token: cookie.load('token'),
+        imageJSON: [],
+        brandName: ''
       };
       if (this.state.token === undefined) {
         this.props.history.push('/login');
@@ -19,7 +21,8 @@ import { Container, Button } from 'reactstrap';
       this.onAddImages = this.onAddImages.bind(this);
       this.onScrape = this.onScrape.bind(this);
       this.learnMore = this.learnMore.bind(this);
-
+      this.state.brandName = props.location.params["brandName"];
+      this.nextPage = this.nextPage.bind(this);
     }
 
     learnMore(ev) {
@@ -35,7 +38,6 @@ import { Container, Button } from 'reactstrap';
       });
     }
     onScrape = (e) => {
-      console.log(this.state.logoName);
       e.preventDefault();
       this.setState({
         loading: true
@@ -47,16 +49,26 @@ import { Container, Button } from 'reactstrap';
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "hashtag": "nike",
+          "hashtag": (this.state.brandName).toLowerCase(),
           "image_count": "30"
         })
       }).then(response => response.json())
       .then(json => {
         this.state.imageJSON = json;
-        console.log(this.state.imageJSON );
         this.setState({
           loading: false
         })
+      })
+      .then(this.nextPage);
+    }
+    nextPage() {
+      this.props.history.push({
+        pathname: '/searchresults',
+        params: {
+          email: this.email,
+          searchTerms: this.state.brandName,
+          searchResults: this.state.imageJSON
+        }
       })
     }
 
@@ -64,7 +76,7 @@ import { Container, Button } from 'reactstrap';
     return (
     <Container>
         <center>
-            <h2> Your Dataset </h2>
+            <h2> {this.state.brandName} </h2>
             <div className="header-space"></div>
             <div className="row">
               <div className="column">
