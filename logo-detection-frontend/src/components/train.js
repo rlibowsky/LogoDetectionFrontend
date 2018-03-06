@@ -11,13 +11,15 @@ import cookie from "react-cookies";
     constructor(props) {
       super(props);
       const imageClick = () => {
+        console.log(dataSetBox.key);
         this.props.history.push({
           pathname: '/datasetlanding',
         });
       }
       this.state = { 
         pictures: [],
-        token: cookie.load('token')
+        token: cookie.load('token'),
+        brand_name: ''
        };
        if (this.state.token === undefined) {
         this.props.history.push('/login');
@@ -26,8 +28,13 @@ import cookie from "react-cookies";
       var dummyBrandNames = ["Nike", "Patagonia", "Lululemon", "Adidas", "Reebok", "Under Armour"];
 
       this.dummyBrandNamesList = dummyBrandNames.map(function(brandName){
-        return <div className="dataSetBox" key={brandName.toString()} > 
-          <button> <img height="300px" width="300px" src="http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png" onClick={() => imageClick()}/> {brandName}</button> 
+        return 
+        <div className="dataSetBox" key={brandName.toString()} >
+        brand_name = brandName;
+          <button> 
+            <img height="300px" width="300px" src="http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png" onClick={e => this.assignItem(item)}
+            />
+          </button> 
           </div>;
       })
       this.onSubmit = this.onSubmit.bind(this);
