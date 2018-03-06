@@ -34,13 +34,30 @@ import { Container, Button } from 'reactstrap';
         }
       });
     }
-    onScrape(ev) {
-      this.props.history.push({
-        pathname: '/search',
-        params: {
-          email: this.state.email
-        }
-      });
+    onScrape = (e) => {
+      console.log(this.state.logoName);
+      e.preventDefault();
+      this.setState({
+        loading: true
+      })
+      fetch('http://localhost:2000/scraper/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "hashtag": "nike",
+          "image_count": "30"
+        })
+      }).then(response => response.json())
+      .then(json => {
+        this.state.imageJSON = json;
+        console.log(this.state.imageJSON );
+        this.setState({
+          loading: false
+        })
+      })
     }
 
   render() {
@@ -68,7 +85,7 @@ import { Container, Button } from 'reactstrap';
                 <div className="row">
                   <div className="imgContainer">
                     <div>
-                      <img src={require('./images/services/instagram.jpg')} alt="Image" height="350" width="450"/>
+                      <img src={require('./images/services/instagram.png')} alt="Image" height="350" width="450"/>
                     </div>
                     <div className="imgButton">
                       <Button onClick ={this.onScrape}> Scrape Instagram </Button>

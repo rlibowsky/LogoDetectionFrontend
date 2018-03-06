@@ -28,8 +28,7 @@ import cookie from "react-cookies";
       var dummyBrandNames = ["Nike", "Patagonia", "Lululemon", "Adidas", "Reebok", "Under Armour"];
 
       this.dummyBrandNamesList = dummyBrandNames.map(function(brandName){
-        return 
-        <div className="dataSetBox" key={brandName.toString()} > 
+        return <div className="dataSetBox" key={brandName.toString()} > 
         <button> <img height="300px" width="300px" src="http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png" onClick={() => imageClick()}/> {brandName}</button> 
         </div>;
       })
