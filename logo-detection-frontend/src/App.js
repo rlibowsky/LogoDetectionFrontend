@@ -12,6 +12,8 @@ import Search from './components/search.js';
 import SearchResults from './components/searchresults.js';
 import cookie from "react-cookies";
 import Header from './components/header.js';
+import ScrapeInstagram from './components/scrapeInstagram.js';
+
 
 class App extends Component {
 
@@ -30,6 +32,7 @@ class App extends Component {
           <Route exact path="/train" component={Train} />
           <Route exact path="/search" component={Search} />
           <Route path="/searchresults" component={SearchResults} />
+          <Route path="/scrapeInstagram" component={ScrapeInstagram} />
 
           </div>
         </div>

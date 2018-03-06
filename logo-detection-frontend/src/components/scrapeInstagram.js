@@ -2,9 +2,9 @@ import React from 'react';
 import cookie from "react-cookies";
 import { Container } from 'reactstrap';
 import Footer from './footer.js';
-import './searchresults.css';
+import './scrapeInstagram.css';
 
-  export default class SearchResults extends React.Component { 
+  export default class ScrapeInstagram extends React.Component { 
     constructor(props) {
       super(props);
       this.state = {
@@ -26,7 +26,7 @@ import './searchresults.css';
     return (
     <Container>
         <center>
-            <h1> SEARCH </h1>
+            <h1> SCRAPE INSTAGRAM </h1>
             <h3> {this.searchTerms} </h3>
             <div className="box">
                 {this.searchResultsList}

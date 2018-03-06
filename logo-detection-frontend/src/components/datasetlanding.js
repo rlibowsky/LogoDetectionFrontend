@@ -63,7 +63,7 @@ import { Container, Button } from 'reactstrap';
     }
     nextPage() {
       this.props.history.push({
-        pathname: '/searchresults',
+        pathname: '/scrapeInstagram',
         params: {
           email: this.email,
           searchTerms: this.state.brandName,
