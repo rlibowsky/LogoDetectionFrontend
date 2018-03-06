@@ -11,7 +11,7 @@ import cookie from "react-cookies";
     constructor(props) {
       super(props);
       const imageClick = () => {
-        console.log(dataSetBox.key);
+        console.log(this.state.brand_name);
         this.props.history.push({
           pathname: '/datasetlanding',
         });
@@ -30,9 +30,8 @@ import cookie from "react-cookies";
       this.dummyBrandNamesList = dummyBrandNames.map(function(brandName){
         return 
         <div className="dataSetBox" key={brandName.toString()} >
-        brand_name = brandName;
           <button> 
-            <img height="300px" width="300px" src="http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png" onClick={e => this.assignItem(item)}
+            <img height="300px" width="300px" src="http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png" onClick={imageClick()}
             />
           </button> 
           </div>;
