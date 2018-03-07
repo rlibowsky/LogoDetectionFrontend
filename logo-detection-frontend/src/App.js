@@ -13,8 +13,8 @@ import SearchResults from './components/searchresults.js';
 import cookie from "react-cookies";
 import Header from './components/header.js';
 import ScrapeInstagram from './components/scrapeInstagram.js';
-
-
+import FinishPage from './components/finishPage.js';
+import Upload from './components/upload.js';
 class App extends Component {
 
   render() {
@@ -30,10 +30,11 @@ class App extends Component {
           <Route exact path="/signup" component={SignUp}/>
           <Route path="/portal" component={Portal} />
           <Route exact path="/train" component={Train} />
+          <Route exact path="/upload" component={Upload} />
           <Route exact path="/search" component={Search} />
           <Route path="/searchresults" component={SearchResults} />
           <Route path="/scrapeInstagram" component={ScrapeInstagram} />
-
+          <Route path="/finishPage" component={FinishPage} />
           </div>
         </div>
         </Container>

@@ -1,8 +1,10 @@
-.overlay{
-    position: 'absolute';
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    color: 'rgba(0,0,0,0.2)';
+#unchecked {
+    border-width: 10px;
+    border-style: solid;
+    border-color: red;
+}
+#checked {
+    border-width: 10px;
+    border-style: solid;
+    border-color: green;
 }

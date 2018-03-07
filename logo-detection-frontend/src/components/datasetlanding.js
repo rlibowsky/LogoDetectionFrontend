@@ -33,7 +33,7 @@ import { Container, Button } from 'reactstrap';
 
     onAddImages(ev) {
       this.props.history.push({
-        pathname: '/train',
+        pathname: '/upload',
         params: {
           email: this.state.email
         }
