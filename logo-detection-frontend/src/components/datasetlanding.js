@@ -2,6 +2,8 @@ import React from 'react';
 import './datasetlanding.css';
 import Footer from './footer.js';
 import cookie from "react-cookies";
+import Loading from 'react-loading-bar';
+import 'react-loading-bar/dist/index.css';
 
 import { Container, Button } from 'reactstrap';
 
@@ -12,7 +14,8 @@ import { Container, Button } from 'reactstrap';
         isOpen: false,
         token: cookie.load('token'),
         imageJSON: [],
-        brandName: ''
+        brandName: props.location.params["brandName"],
+        loading: false
       };
       if (this.state.token === undefined) {
         this.props.history.push('/login');
@@ -21,7 +24,6 @@ import { Container, Button } from 'reactstrap';
       this.onAddImages = this.onAddImages.bind(this);
       this.onScrape = this.onScrape.bind(this);
       this.learnMore = this.learnMore.bind(this);
-      this.state.brandName = props.location.params["brandName"];
       this.nextPage = this.nextPage.bind(this);
     }
 
@@ -56,7 +58,8 @@ import { Container, Button } from 'reactstrap';
       .then(json => {
         this.state.imageJSON = json;
         this.setState({
-          loading: false
+          loading: false,
+          brandName: this.state.brandName
         })
       })
       .then(this.nextPage);
@@ -101,6 +104,10 @@ import { Container, Button } from 'reactstrap';
                     </div>
                     <div className="imgButton">
                       <Button onClick ={this.onScrape}> Scrape Instagram </Button>
+                      <Loading
+                        show={this.state.loading}
+                        color="red"
+                      />
                     </div>
                   </div>
                 </div>

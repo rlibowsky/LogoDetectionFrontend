@@ -7,6 +7,9 @@ import './scrapeInstagram.css';
   export default class ScrapeInstagram extends React.Component { 
     constructor(props) {
       super(props);
+      const imageClick = (image_src) => {
+        console.log(image_src);
+      }
       this.state = {
         token: cookie.load('token')
       };
@@ -18,7 +21,7 @@ import './scrapeInstagram.css';
       this.searchResults = props.location.params["searchResults"].filePaths;
 
       this.searchResultsList = this.searchResults.map(function(photo){
-        return <div className="dataSetBox" key={photo.toString()} ><img src={photo} alt="Image" height="350" width="450" margin="10px" /></div>;
+        return <div className="dataSetBox" key={photo.toString()} ><img src={photo} alt="Image" height="350" width="450" margin="15px" onClick={() => imageClick(photo.toString())} /></div>;
       })
     }
 
