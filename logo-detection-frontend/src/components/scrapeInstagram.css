@@ -1,10 +1,7 @@
-#unchecked {
-    border-width: 10px;
-    border-style: solid;
-    border-color: red;
+.selected{
+    border: 2px solid green;
 }
-#checked {
-    border-width: 10px;
-    border-style: solid;
-    border-color: green;
+
+.not-selected{
+    border: 2px solid transparent;
 }
