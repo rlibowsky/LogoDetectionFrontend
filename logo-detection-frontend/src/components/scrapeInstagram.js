@@ -6,10 +6,10 @@ import './scrapeInstagram.css';
 
 const CSSVariables = {
   border : {
-      border : '2px solid green'
+      border : '10px solid green'
   },
   noBorder : {
-      border : '2px solid transparent'
+      border : '10px solid transparent'
   },
 };
 
@@ -74,7 +74,7 @@ const CSSVariables = {
             <h5> SELECT IMAGES THAT SHOW YOUR LOGO </h5>
             <div className="box">
             {this.searchResults.map((photo) => {
-              return <div className="dataSetBox" key={photo.toString()}><img id={this.state.ID} src={photo} onClick={() => { this.imageClick(photo.toString()) }} style={this.setBorder(photo.toString())} alt="Image" height="350" width="450" margin="100px" /></div>;
+              return <div className="dataSetBox" key={photo.toString()} margin= '30px' ><img id={this.state.ID} src={photo} onClick={() => { this.imageClick(photo.toString()) }} style={this.setBorder(photo.toString())} alt="Image" height="200" width="250" /></div>;
             })}
             </div>
         </center>
