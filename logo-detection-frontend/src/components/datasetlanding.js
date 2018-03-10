@@ -4,12 +4,19 @@ import Footer from './footer.js';
 import cookie from "react-cookies";
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
+import FaIconPack from 'react-icons/lib/fa';
 
 import { Container, Button } from 'reactstrap';
 
   export default class DataSetLanding extends React.Component { 
     constructor(props) {
       super(props);
+      const imageClick = (brand_name) => {
+        if (brand_name.equals("")) {
+          return;
+        }
+        return;
+      }
       this.state = {
         isOpen: false,
         token: cookie.load('token'),
@@ -21,6 +28,44 @@ import { Container, Button } from 'reactstrap';
         this.props.history.push('/login');
         return;
       }
+
+      this.state = { 
+        pictures: [],
+        token: cookie.load('token'),
+        brand_name: ''
+       };
+       if (this.state.token === undefined) {
+        this.props.history.push('/login');
+        return;
+      }
+      
+            // Image factory
+      var createImage = function(src, title) {
+        var img   = new Image();
+        img.src   = src;
+        img.alt   = title;
+        img.title = title;
+        return img; 
+      };
+      // array of images
+      var images = [];
+      // push two images to the array
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
+      images.push(createImage("react-icons/lib/fa/plus-circle", "plus"));
+           
+      this.dataSetImages = images.map(function(image, i){
+        return <div className="dataSetBox" key = {image.src.toString()}> 
+        <Button> <img height="300px" width="300px" faIcon={image.title.toString()} src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/> </Button>
+        </div>;
+      });
+
+
+
       this.onAddImages = this.onAddImages.bind(this);
       this.onScrape = this.onScrape.bind(this);
       this.learnMore = this.learnMore.bind(this);
@@ -77,7 +122,22 @@ import { Container, Button } from 'reactstrap';
 
   render() {
     return (
-    <Container>
+      <Container>
+        <center>
+            <h2> {this.state.brandName} </h2>
+            <div className="header-space"></div>
+            <div className="box">
+                  {this.dataSetImages}
+            </div>
+
+
+          <h5> Interested in how our services can help you? Give us a call! </h5>
+          <Button className="learnMoreButton" onClick={this.learnMore}> Learn More </Button>
+        </center>
+        <Footer/>
+    </Container>  
+);
+    {/* <Container>
         <center>
             <h2> {this.state.brandName} </h2>
             <div className="header-space"></div>
@@ -118,7 +178,7 @@ import { Container, Button } from 'reactstrap';
           <Button className="learnMoreButton" onClick={this.learnMore}> Learn More </Button>
         </center>
         <Footer/>
-    </Container>  
-    );
+    </Container>   */}
+    
   }
 }
