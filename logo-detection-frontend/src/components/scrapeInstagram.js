@@ -27,8 +27,8 @@ const CSSVariables = {
         return;
       }
       this.selectedImages = [];
-      this.searchTerms = props.location.params["searchTerms"];
-      this.searchResults = props.location.params["searchResults"].filePaths;
+      this.searchTerms = cookie.load("searchTerms");
+      this.searchResults = cookie.load("searchResults").filePaths;
       this.imageClick = this.imageClick.bind(this);
       this.finish = this.finish.bind(this);
       this.setBorder = this.setBorder.bind(this);

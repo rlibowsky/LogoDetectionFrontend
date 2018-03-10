@@ -14,8 +14,8 @@ import './searchresults.css';
         this.props.history.push('/login');
         return;
       }
-      this.searchTerms = props.location.params["searchTerms"];
-      this.searchResults = props.location.params["searchResults"].filePaths;
+      this.searchTerms = cookie.load("searchTerms");
+      this.searchResults = cookie.load("searchResults").filePaths;
 
       this.searchResultsList = this.searchResults.map(function(photo){
         return <div className="dataSetBox" key={photo.toString()} ><img src={photo} alt="Image" height="350" width="450" margin="10px" /></div>;

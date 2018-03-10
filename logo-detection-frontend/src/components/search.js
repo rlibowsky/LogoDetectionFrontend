@@ -62,6 +62,8 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       const data = {
         val: document.getElementById("searchTerms").value
       }
+      cookie.save('searchTerms', data.val, { path: '/' , 'maxAge': 100000});
+      cookie.save('searchResults', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
       this.props.history.push({
         pathname: '/searchresults',
         params: {

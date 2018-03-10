@@ -14,7 +14,7 @@ import { Container, Button } from 'reactstrap';
         isOpen: false,
         token: cookie.load('token'),
         imageJSON: [],
-        brandName: props.location.params["brandName"],
+        brandName: cookie.load('brandName'),
         loading: false
       };
       if (this.state.token === undefined) {
