@@ -11,11 +11,12 @@ import { Container, Button } from 'reactstrap';
   export default class DataSetLanding extends React.Component { 
     constructor(props) {
       super(props);
-      const imageClick = (brand_name) => {
-        if (brand_name.equals("")) {
+      const imageClick = (is_plus) => {
+        console.log(is_plus);
+        if (is_plus !== "plus") {
           return;
         }
-        return;
+        
       }
       this.state = {
         isOpen: false,
@@ -56,11 +57,12 @@ import { Container, Button } from 'reactstrap';
       images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
       images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
       images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
-      images.push(createImage("react-icons/lib/fa/plus-circle", "plus"));
+      images.push(createImage(require("./images/services/plus.png"), "plus"));
            
       this.dataSetImages = images.map(function(image, i){
+        var str = image.src.toString();
         return <div className="dataSetBox" key = {image.src.toString()}> 
-        <Button> <img height="300px" width="300px" faIcon={image.title.toString()} src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/> </Button>
+        <Button> <img height="300px" width="300px" src={image.src} onClick={() => imageClick(image.title.toString())}/> </Button>
         </div>;
       });
 
