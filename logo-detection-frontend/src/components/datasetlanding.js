@@ -80,12 +80,7 @@ import { Container, Button } from 'reactstrap';
       }
 
     onAddImages(ev) {
-      this.props.history.push({
-        pathname: '/upload',
-        params: {
-          email: this.state.email
-        }
-      });
+      this.props.history.push('/upload');
     }
     onScrape = (e) => {
       e.preventDefault();
@@ -115,14 +110,7 @@ import { Container, Button } from 'reactstrap';
     nextPage() {
       cookie.save('searchTerms', this.state.brandName, { path: '/' , 'maxAge': 100000});
       cookie.save('searchResults', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
-      this.props.history.push({
-        pathname: '/scrapeInstagram',
-        params: {
-          email: this.email,
-          searchTerms: this.state.brandName,
-          searchResults: this.state.imageJSON
-        }
-      })
+      this.props.history.push('/scrapeInstagram');
     }
 
     showTip(ev) {

@@ -13,12 +13,7 @@ import cookie from "react-cookies";
       const imageClick = (brand_name) => {
         this.state.brand_name = brand_name;
         cookie.save('brandName', this.state.brand_name, { path: '/' , 'maxAge': 100000});
-        this.props.history.push({
-          pathname: '/datasetlanding',
-          params: {
-            brandName: this.state.brand_name
-          }
-        });
+        this.props.history.push('/datasetlanding');
       }
       this.state = { 
         pictures: [],
