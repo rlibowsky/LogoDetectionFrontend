@@ -5,6 +5,7 @@ import cookie from "react-cookies";
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import FaIconPack from 'react-icons/lib/fa';
+import ToolTip from 'react-portal-tooltip';
 
 import { Container, Button } from 'reactstrap';
 
@@ -13,28 +14,25 @@ import { Container, Button } from 'reactstrap';
       super(props);
       const imageClick = (is_plus) => {
         console.log(is_plus);
-        if (is_plus !== "plus") {
-          return;
+        if (is_plus === "plus") {
+          this.showTip();
         }
         
       }
       this.state = {
         isOpen: false,
+        pictures: [],
         token: cookie.load('token'),
         imageJSON: [],
         brandName: cookie.load('brandName'),
-        loading: false
+        loading: false,
+        showToolTipActive: false
       };
       if (this.state.token === undefined) {
         this.props.history.push('/login');
         return;
       }
 
-      this.state = { 
-        pictures: [],
-        token: cookie.load('token'),
-        brand_name: ''
-       };
        if (this.state.token === undefined) {
         this.props.history.push('/login');
         return;
@@ -51,19 +49,21 @@ import { Container, Button } from 'reactstrap';
       // array of images
       var images = [];
       // push two images to the array
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", ""));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "1"));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "2"));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "3"));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "4"));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "5"));
+      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "6"));
       images.push(createImage(require("./images/services/plus.png"), "plus"));
            
       this.dataSetImages = images.map(function(image, i){
         var str = image.src.toString();
-        return <div className="dataSetBox" key = {image.src.toString()}> 
+        var parentKey = "#" + image.title.toString();
+        return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 
         <Button> <img height="300px" width="300px" src={image.src} onClick={() => imageClick(image.title.toString())}/> </Button>
         </div>;
+        
       });
 
 
@@ -72,6 +72,7 @@ import { Container, Button } from 'reactstrap';
       this.onScrape = this.onScrape.bind(this);
       this.learnMore = this.learnMore.bind(this);
       this.nextPage = this.nextPage.bind(this);
+      this.showTip = this.showTip.bind(this);
     }
 
     learnMore(ev) {
@@ -112,6 +113,8 @@ import { Container, Button } from 'reactstrap';
       .then(this.nextPage);
     }
     nextPage() {
+      cookie.save('searchTerms', this.state.brandName, { path: '/' , 'maxAge': 100000});
+      cookie.save('searchResults', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
       this.props.history.push({
         pathname: '/scrapeInstagram',
         params: {
@@ -122,15 +125,32 @@ import { Container, Button } from 'reactstrap';
       })
     }
 
+    showTip(ev) {
+      console.log("in showTip");
+      this.setState({
+        showToolTipActive: !this.state.showToolTipActive
+      });
+    }
+
   render() {
     return (
       <Container>
         <center>
             <h2> {this.state.brandName} </h2>
             <div className="header-space"></div>
-            <div className="box">
+            <div className="box" id="dsImages">
                   {this.dataSetImages}
             </div>
+            <ToolTip active={this.state.showToolTipActive} parent="#plus" position="right" arrow="center" >
+              <div className="imgButton">
+                <Button onClick={this.onAddImages}> Upload Images </Button>
+              </div>
+              <div className="imgButton">
+                <Button onClick ={this.onScrape}> Scrape Instagram </Button>
+                <Loading show={this.state.loading} color="red" />
+              </div>
+            </ToolTip>
+            
 
 
           <h5> Interested in how our services can help you? Give us a call! </h5>
