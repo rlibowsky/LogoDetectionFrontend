@@ -8,23 +8,29 @@ import ToolTip from 'react-portal-tooltip';
 
 import { Container, Button } from 'reactstrap';
 
+const CSSVariables = {
+    border : {
+        border : '10px solid green'
+    },
+    noBorder : {
+        border : '10px solid transparent'
+    },
+  };
+
   export default class DataSetLanding extends React.Component { 
     constructor(props) {
       super(props);
-      const imageClick = (is_plus) => {
-        console.log(is_plus);
-        if (is_plus === "plus") {
-          this.showTip();
-        }
-        
-      }
       this.state = {
         isOpen: false,
         pictures: [],
         imageJSON: [],
         loading: false,
-        showToolTipActive: false
+        showToolTipActive: false,
+        selectedImages : [],
       };
+
+      this.imageClick = this.imageClick.bind(this);
+      this.setBorder = this.setBorder.bind(this);
       
             // Image factory
       var createImage = function(src, title) {
@@ -35,32 +41,48 @@ import { Container, Button } from 'reactstrap';
         return img; 
       };
       // array of images
-      var images = [];
+      this.images = [];
       // push two images to the array
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "1"));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "2"));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "3"));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "4"));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "5"));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "6"));
-           
-      this.dataSetImages = images.map(function(image, i){
-        var str = image.src.toString();
-        var parentKey = "#" + image.title.toString();
-        return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 
-        <img height="100px" width="100px" src={image.src}/>
-        </div>;
-        
-      });
+      this.images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "1"));
+      this.images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "2"));
+      this.images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "3"));
+      this.images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "4"));
+      this.images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "5"));
+      this.images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "6"));
 
     }
+
+    imageClick(image_src) {
+        if (this.state.selectedImages.includes(image_src)){
+          const index = this.selectedImages.indexOf(image_src);
+          this.state.selectedImages.splice(index, 1);
+          console.log("removing");
+  
+        }
+        else {
+          this.state.selectedImages.push(image_src);
+          console.log("pushing");
+        }
+        this.forceUpdate()
+      }
+  
+      setBorder(image_src) {
+        if (this.state.selectedImages.includes(image_src)){
+          return CSSVariables.border;
+        }
+        else {
+          return CSSVariables.noBorder;
+        }
+      }
 
   render() {
     return (
       <Container>
         <center>
-            <div className="box" id="dsImages">
-                  {this.dataSetImages}
+            <div className="box">
+            {this.images.map((photo) => {
+              return <div className="dataSetBox" key={photo.src.toString()} margin= '30px' ><img id={this.state.ID} src={photo.src.toString()} onClick={() => { this.imageClick(photo.src.toString()) }} style={this.setBorder(photo.src.toString())} alt="Image" height="200" width="250" /></div>;
+            })}
             </div>
             
         </center>
