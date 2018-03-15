@@ -15,6 +15,7 @@ import Header from './components/header.js';
 import ScrapeInstagram from './components/scrapeInstagram.js';
 import FinishPage from './components/finishPage.js';
 import Upload from './components/upload.js';
+import TrainClassifiers from './components/trainClassifiers.js';
 class App extends Component {
 
   render() {
@@ -35,6 +36,7 @@ class App extends Component {
           <Route path="/searchresults" component={SearchResults} />
           <Route path="/scrapeInstagram" component={ScrapeInstagram} />
           <Route path="/finishPage" component={FinishPage} />
+          <Route path="/trainclassifiers" component={TrainClassifiers} />
           </div>
         </div>
         </Container>

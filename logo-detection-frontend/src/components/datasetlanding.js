@@ -33,11 +33,6 @@ import { Container, Button } from 'reactstrap';
         this.props.history.push('/login');
         return;
       }
-
-       if (this.state.token === undefined) {
-        this.props.history.push('/login');
-        return;
-      }
       
             // Image factory
       var createImage = function(src, title) {
@@ -74,6 +69,11 @@ import { Container, Button } from 'reactstrap';
       this.learnMore = this.learnMore.bind(this);
       this.nextPage = this.nextPage.bind(this);
       this.showTip = this.showTip.bind(this);
+      this.trainClassifiers = this.trainClassifiers.bind(this);
+    }
+
+    trainClassifiers() {
+      this.props.history.push('/trainclassifiers');
     }
 
     learnMore(ev) {
@@ -141,55 +141,13 @@ import { Container, Button } from 'reactstrap';
             </ToolTip>
             
 
-
+          <Button onClick={this.trainClassifiers}> Train Classifiers </Button>
           <h5> Interested in how our services can help you? Give us a call! </h5>
           <Button className="learnMoreButton" onClick={this.learnMore}> Learn More </Button>
         </center>
         <Footer/>
     </Container>  
-);
-    {/* <Container>
-        <center>
-            <h2> {this.state.brandName} </h2>
-            <div className="header-space"></div>
-            <div className="row">
-              <div className="column">
-                <div className="row">
-                  <div className="imgContainer">
-                    <div>
-                      <img src={require('./images/services/addImage.jpg')} alt="Image" height="350" width="450"/>
-                    </div>
-                    <div className="imgButton">
-                      <Button onClick={this.onAddImages}> Add Image to Training Set</Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bt-space"></div>
-              <div className="column">
-                <div className="row">
-                  <div className="imgContainer">
-                    <div>
-                      <img src={require('./images/services/instagram.png')} alt="Image" height="350" width="450"/>
-                    </div>
-                    <div className="imgButton">
-                      <Button onClick ={this.onScrape}> Scrape Instagram </Button>
-                      <Loading
-                        show={this.state.loading}
-                        color="red"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-          </div>
-          <h5> Interested in how our services can help you? Give us a call! </h5>
-          <Button className="learnMoreButton" onClick={this.learnMore}> Learn More </Button>
-        </center>
-        <Footer/>
-    </Container>   */}
+  );
     
   }
 }
