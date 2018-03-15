@@ -6,6 +6,7 @@ import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import FaIconPack from 'react-icons/lib/fa';
 import ToolTip from 'react-portal-tooltip';
+import './finishPage.css';
 
 import { Container, Button } from 'reactstrap';
 
@@ -61,7 +62,7 @@ import { Container, Button } from 'reactstrap';
         var str = image.src.toString();
         var parentKey = "#" + image.title.toString();
         return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 
-        <Button> <img height="300px" width="300px" src={image.src} onClick={() => imageClick(image.title.toString())}/> </Button>
+        <img height="300px" width="300px" src={image.src} onClick={() => imageClick(image.title.toString())}/>
         </div>;
         
       });

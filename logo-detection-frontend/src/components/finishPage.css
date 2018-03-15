@@ -1,0 +1,7 @@
+.backButton {
+    color: white;
+    background-color: black;
+    border-radius: 20px;
+    width: 50%;
+    display: inline-block;
+}
