@@ -6,6 +6,7 @@ import 'react-loading-bar/dist/index.css';
 import FaIconPack from 'react-icons/lib/fa';
 import ToolTip from 'react-portal-tooltip';
 import { Container, Button } from 'reactstrap';
+import ClassifierImages from './classifierimages.js';
 
 export default class TrainClassifiers extends React.Component { 
     constructor(props) {
@@ -24,8 +25,9 @@ export default class TrainClassifiers extends React.Component {
       var dataSetClassifiersList =  ["Running", "Walking", "Yoga", "Swimming"]
            
       this.dataSetClassifiers = dataSetClassifiersList.map(function(classifier, i){
-        return <li key = {classifier.toString()} id ={classifier.toString()}> {classifier.toString()} </li>;
-        
+        return <li align="left" key = {classifier.toString()} id ={classifier.toString()}> {classifier.toString()} 
+            <ClassifierImages/>
+        </li>
       });
 
 
