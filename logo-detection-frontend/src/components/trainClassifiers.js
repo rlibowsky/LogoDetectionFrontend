@@ -5,9 +5,9 @@ import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import FaIconPack from 'react-icons/lib/fa';
 import ToolTip from 'react-portal-tooltip';
-import { Container, Button } from 'reactstrap';
 import ClassifierImages from './classifierimages.js';
 import './trainClassifiers.css';
+import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
 
 export default class TrainClassifiers extends React.Component { 
     constructor(props) {
@@ -31,6 +31,21 @@ export default class TrainClassifiers extends React.Component {
         </li>
       });
 
+      this.dataSetClassifierNames = dataSetClassifiersList.map(function(classifier, i){
+        return <li align="left" key = {classifier.toString()} id ={classifier.toString()}> {classifier.toString()} 
+        </li>
+      }); 
+
+      this.handleAddDataSet = this.handleAddDataSet.bind(this);
+      this.handleAddClassifier = this.handleAddClassifier.bind(this);
+
+    }
+
+    handleAddDataSet() {
+
+    }
+
+    handleAddClassifier() {
 
     }
 
@@ -55,7 +70,29 @@ export default class TrainClassifiers extends React.Component {
 
               <div className="column">
                 <div className="row">
-                    Classifiers
+                  
+                <Form className="addForm">
+                <Button className="brandNameButton" onClick={this.handleAddDataSet}> 
+                  <div align="left"> hashtag  + </div>
+                </Button>
+                <h1> Nike </h1>
+                <ul> {this.dataSetClassifierNames} </ul>
+                  {/* <FormGroup>
+                    <Input 
+                      type="email" 
+                      name="email"
+                      id="email"
+                      placeholder="Email"
+                      value={this.state.email}
+                      onChange={this.handleEmailChange}
+                    />
+                  </FormGroup> */}
+                <Button className="brandNameButton" onClick={this.handleAddClassifier}> 
+                  <div align="left"> +  add classifier </div>
+                </Button>
+                  
+                </Form>
+                  
                 </div>
                 <div className="row">
                     Add Classifier
