@@ -39,20 +39,16 @@ export default class TrainClassifiers extends React.Component {
     return (
       <Container>
         <center>
-        {/* <div className="column">
-            <h1> {this.state.brandName} </h1>
-            <Button> Add More Images </Button>
-            <ul> {this.dataSetClassifiers} </ul>
-        </div>
-        <div className="column">
-            <h1> {this.state.brandName} </h1>
-        </div> */}
         <div className="row">
 
               <div className="column">
                 <div className="row">
                 <h1> {this.state.brandName} </h1>
+                </div>
+                <div className="row">
                 <Button className="addMoreImages"> Add More Images </Button>
+                </div>
+                <div className="row">
                 <ul> {this.dataSetClassifiers} </ul>
                 </div>
               </div>
