@@ -25,9 +25,9 @@ const CSSVariables = {
         pictures: [],
         imageJSON: [],
         loading: false,
-        showToolTipActive: false,
-        selectedImages : [],
+        showToolTipActive: false
       };
+      this.selectedImages = [];
 
       this.imageClick = this.imageClick.bind(this);
       this.setBorder = this.setBorder.bind(this);
@@ -53,21 +53,21 @@ const CSSVariables = {
     }
 
     imageClick(image_src) {
-        if (this.state.selectedImages.includes(image_src)){
+        if (this.selectedImages.includes(image_src)){
           const index = this.selectedImages.indexOf(image_src);
-          this.state.selectedImages.splice(index, 1);
+          this.selectedImages.splice(index, 1);
           console.log("removing");
   
         }
         else {
-          this.state.selectedImages.push(image_src);
+          this.selectedImages.push(image_src);
           console.log("pushing");
         }
-        this.forceUpdate()
+        this.forceUpdate();
       }
   
       setBorder(image_src) {
-        if (this.state.selectedImages.includes(image_src)){
+        if (this.selectedImages.includes(image_src)){
           return CSSVariables.border;
         }
         else {
@@ -81,7 +81,7 @@ const CSSVariables = {
         <center>
             <div className="box">
             {this.images.map((photo) => {
-              return <div className="dataSetBox" key={photo.src.toString()} margin= '30px' ><img id={this.state.ID} src={photo.src.toString()} onClick={() => { this.imageClick(photo.src.toString()) }} style={this.setBorder(photo.src.toString())} alt="Image" height="200" width="250" /></div>;
+              return <div className="dataSetBox" key={photo.src.toString()} margin= '30px' ><img id={this.state.ID} src={photo.src.toString()} onClick={() => { this.imageClick(photo.src.toString()) }} style={this.setBorder(photo.src.toString())} alt="Image" height="100" width="100" /></div>;
             })}
             </div>
             

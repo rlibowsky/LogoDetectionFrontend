@@ -7,6 +7,7 @@ import FaIconPack from 'react-icons/lib/fa';
 import ToolTip from 'react-portal-tooltip';
 import { Container, Button } from 'reactstrap';
 import ClassifierImages from './classifierimages.js';
+import './trainClassifiers.css';
 
 export default class TrainClassifiers extends React.Component { 
     constructor(props) {
@@ -38,12 +39,39 @@ export default class TrainClassifiers extends React.Component {
     return (
       <Container>
         <center>
+        {/* <div className="column">
             <h1> {this.state.brandName} </h1>
             <Button> Add More Images </Button>
             <ul> {this.dataSetClassifiers} </ul>
+        </div>
+        <div className="column">
+            <h1> {this.state.brandName} </h1>
+        </div> */}
+        <div className="row">
+
+              <div className="column">
+                <div className="row">
+                <h1> {this.state.brandName} </h1>
+                <Button className="addMoreImages"> Add More Images </Button>
+                <ul> {this.dataSetClassifiers} </ul>
+                </div>
+              </div>
+
+              <div className="column">
+                <div className="row">
+                    Classifiers
+                </div>
+                <div className="row">
+                    Add Classifier
+                </div>
+              </div>
+              
+
+          </div>
+        
         </center>
         <Footer/>
-    </Container>  
+    </Container>
   );
     
   }
