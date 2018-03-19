@@ -11,7 +11,9 @@ import { Container, Button } from 'reactstrap';
       super(props);
       this.state = {
         isOpen: false,
-        token: cookie.load('token')
+        token: cookie.load('token'),
+        datasets: [],
+        count: 0
       };
       if (this.state.token === undefined) {
         this.props.history.push('/login');
@@ -23,12 +25,28 @@ import { Container, Button } from 'reactstrap';
     }
 
     onTrain(ev) {
-      this.props.history.push({
+      console.log("in train yo");
+      // call here to get data sets
+      fetch('http://localhost:2000/datasets/', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Content-Type': 'application/json',
+        }
+      }).then(response => response.json())
+      .then(json => {
+        this.state.datasets = json;
+        console.log(this.state.datasets);
+        cookie.save('datasets', this.state.datasets, { path: '/' , 'maxAge': 100000});
+
+      })
+      .then(
+        this.props.history.push({
         pathname: '/train',
         params: {
           email: this.state.email
         }
-      });
+      }));
     }
     onSearch(ev) {
       this.props.history.push({

@@ -27,7 +27,8 @@ import { Container, Button } from 'reactstrap';
         imageJSON: [],
         brandName: cookie.load('brandName'),
         loading: false,
-        showToolTipActive: false
+        showToolTipActive: false,
+        datasets: cookie.load('datasets')
       };
       if (this.state.token === undefined) {
         this.props.history.push('/login');
@@ -73,7 +74,28 @@ import { Container, Button } from 'reactstrap';
     }
 
     trainClassifiers() {
-      this.props.history.push('/trainclassifiers');
+      this.setState({
+        loading: true
+      })
+      fetch('http://localhost:2000/scraper/', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "hashtag": (this.state.brandName).toLowerCase(),
+          "image_count": "30"
+        })
+      }).then(response => response.json())
+      .then(json => {
+        this.state.imageJSON = json;
+        this.setState({
+          loading: false,
+          brandName: this.state.brandName
+        })
+      })
+      .then(this.props.history.push('/trainclassifiers'));
     }
 
     learnMore(ev) {
@@ -88,7 +110,7 @@ import { Container, Button } from 'reactstrap';
       this.setState({
         loading: true
       })
-      fetch('http://localhost:2000/scraper/', {
+      fetch('http://localhost:2000/scrape/', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',

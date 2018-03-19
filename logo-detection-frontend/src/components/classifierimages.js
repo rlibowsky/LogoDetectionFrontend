@@ -25,7 +25,8 @@ const CSSVariables = {
         pictures: [],
         imageJSON: [],
         loading: false,
-        showToolTipActive: false
+        showToolTipActive: false,
+        classifierName: this.props.classifierName
       };
       this.selectedImages = [];
 

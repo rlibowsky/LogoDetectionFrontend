@@ -27,7 +27,7 @@ export default class TrainClassifiers extends React.Component {
            
       this.dataSetClassifiers = dataSetClassifiersList.map(function(classifier, i){
         return <li align="left" key = {classifier.toString()} id ={classifier.toString()}> {classifier.toString()} 
-            <ClassifierImages/>
+            <ClassifierImages classifierName="{classifier.toString()}"/>
         </li>
       });
 
@@ -75,18 +75,8 @@ export default class TrainClassifiers extends React.Component {
                 <Button className="brandNameButton" onClick={this.handleAddDataSet}> 
                   <div align="left"> hashtag  + </div>
                 </Button>
-                <h1> Nike </h1>
+                <h1> {this.state.brandName} </h1>
                 <ul> {this.dataSetClassifierNames} </ul>
-                  {/* <FormGroup>
-                    <Input 
-                      type="email" 
-                      name="email"
-                      id="email"
-                      placeholder="Email"
-                      value={this.state.email}
-                      onChange={this.handleEmailChange}
-                    />
-                  </FormGroup> */}
                 <Button className="brandNameButton" onClick={this.handleAddClassifier}> 
                   <div align="left"> +  add classifier </div>
                 </Button>
