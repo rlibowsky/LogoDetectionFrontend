@@ -34,6 +34,9 @@ import { Container, Button } from 'reactstrap';
         this.props.history.push('/login');
         return;
       }
+      this.imageJSONS = this.props.img;
+      console.log("in train ");
+      console.log(cookie.load('imageJSONS'));
       
             // Image factory
       var createImage = function(src, title) {
@@ -45,6 +48,7 @@ import { Container, Button } from 'reactstrap';
       };
       // array of images
       var images = [];
+
       // push two images to the array
       images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "1"));
       images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "2"));
@@ -54,7 +58,7 @@ import { Container, Button } from 'reactstrap';
       images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "6"));
       images.push(createImage(require("./images/services/plus.png"), "plus"));
            
-      this.dataSetImages = images.map(function(image, i){
+      this.dataSetImages = this.imageJSONS.map(function(image){
         var str = image.src.toString();
         var parentKey = "#" + image.title.toString();
         return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 

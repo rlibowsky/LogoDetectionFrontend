@@ -11,29 +11,9 @@ import cookie from "react-cookies";
     constructor(props) {
       super(props);
       const imageClick = (brand_name, id) => {
-        this.state.brand_name = brand_name;
-        cookie.save('brandName', this.state.brand_name, { path: '/' , 'maxAge': 100000});
-        fetch('http://localhost:2000/datasets/'+ id + '/scrape', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + this.state.token,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "hashtag": ("Patagonia").toLowerCase(),
-          "image_count": "30"
-        })
-      }).then(response => response.json())
-      .then(json => {
-        console.log(json);
-        // this.state.imageJSON = json;
-        // console.log(this.state.imageJSON );
-        // this.setState({
-        //   loading: false
-        // })
-      })
-      .then(this.props.history.push('/datasetlanding'));
+        console.log("clicked image");
+        this.handleChange(brand_name, id);
+        
       }
       this.state = { 
         pictures: [],
@@ -80,10 +60,50 @@ import cookie from "react-cookies";
         </div>;
       })
       this.onSubmit = this.onSubmit.bind(this);
+      this.handleChange = this.handleChange.bind(this);
     }
 
     onSubmit(ev) {
       this.state.pictures = [];
+    }
+
+    handleChange (brand_name, id) {
+      this.state.brand_name = brand_name;
+        cookie.save('brandName', this.state.brand_name, { path: '/' , 'maxAge': 100000});
+        fetch('http://localhost:2000/datasets/'+ id + '/scrape', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "hashtag": ("Patagonia").toLowerCase(),
+          "image_count": "30"
+        })
+      }).then(response => response.json())
+      .then(json => {
+        console.log("in here yooo");
+        console.log(json.filePaths);
+        this.state.imageJSONS = json;
+        cookie.remove('imageJSONS');
+        cookie.save('imageJSONS', json.filePaths, { path: '/' , 'maxAge': 100000});
+        console.log(cookie.load('imageJSONS'));
+        // this.state.imageJSON = json;
+        // console.log(this.state.imageJSON );
+        // this.setState({
+        //   loading: false
+        // })
+        this.props.history.push({
+          pathname: '/datasetlanding',
+          params: {
+            img: this.imageJSONS
+          }
+        })
+        
+      }).then(
+        console.log("hi")
+      );
     }
 
     render() {
