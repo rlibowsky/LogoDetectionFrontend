@@ -16,7 +16,8 @@ export default class TrainClassifiers extends React.Component {
       this.state = {
         token: cookie.load('token'),
         brandName: cookie.load('brandName'),
-        loading: false
+        loading: false,
+        currentClassifiers: cookie.load('currentClassifiers')
       };
       if (this.state.token === undefined) {
         this.props.history.push('/login');
@@ -25,9 +26,9 @@ export default class TrainClassifiers extends React.Component {
 
       var dataSetClassifiersList =  ["Running", "Walking", "Yoga", "Swimming"]
            
-      this.dataSetClassifiers = dataSetClassifiersList.map(function(classifier, i){
-        return <li align="left" key = {classifier.toString()} id ={classifier.toString()}> {classifier.toString()} 
-            <ClassifierImages classifierName="{classifier.toString()}"/>
+      this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
+        return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
+            <ClassifierImages classifierName="{classifier.name.toString()}"/>
         </li>
       });
 

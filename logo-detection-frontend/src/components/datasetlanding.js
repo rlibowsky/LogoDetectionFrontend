@@ -80,6 +80,24 @@ import { Container, Button } from 'reactstrap';
 
     trainClassifiers() {
       console.log("training those classifiers");
+      // fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Authorization': 'Bearer ' + this.state.token,
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     "name": ("swimming").toLowerCase(),
+      //     "description": ("front stroke, back stroke").toLowerCase(),
+      //   })
+      // }).then(response => response.json())
+      // .then(json => {
+      //   this.state.imageJSON = json;
+      //   console.log(this.state.imageJSON);
+      //   this.setState({
+      //     loading: false
+      //   })
+      // });
       fetch('http://localhost:2000/datasets/' + this.state.currentDataSet + '/classifiers', {
         method: 'GET',
         headers: {
@@ -88,11 +106,13 @@ import { Container, Button } from 'reactstrap';
         }
       }).then(response => response.json())
       .then(json => {
-        console.log("made it to json");
+        console.log("classifier response");
         console.log(json);
+        cookie.remove('currentClassifiers');
+        cookie.save('currentClassifiers', json.classifier, { path: '/' , 'maxAge': 100000});
+        this.props.history.push('/trainclassifiers');
 
-      }).then(this.props.history.push('/trainclassifiers')
-      );
+      });
     }
 
     learnMore(ev) {
