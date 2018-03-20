@@ -85,9 +85,9 @@ import cookie from "react-cookies";
       .then(json => {
         console.log("in here yooo");
         console.log(json.filePaths);
-        this.state.imageJSONS = json;
+        this.state.imageJSONS = json.filePaths.slice(0,20);
         cookie.remove('imageJSONS');
-        cookie.save('imageJSONS', json.filePaths, { path: '/' , 'maxAge': 100000});
+        cookie.save('imageJSONS', this.state.imageJSONS, { path: '/' , 'maxAge': 100000});
         cookie.remove('currentDataSet');
         cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
         console.log(cookie.load('imageJSONS'));
