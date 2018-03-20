@@ -78,7 +78,7 @@ import cookie from "react-cookies";
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "hashtag": ("Patagonia").toLowerCase(),
+          "hashtag": (brand_name).toLowerCase(),
           "image_count": "30"
         })
       }).then(response => response.json())

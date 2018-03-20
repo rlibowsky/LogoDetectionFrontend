@@ -34,7 +34,7 @@ import { Container, Button } from 'reactstrap';
         this.props.history.push('/login');
         return;
       }
-      this.imageJSONS = this.props.img;
+      this.imageJSONS = cookie.load('imageJSONS');
       console.log("in train ");
       console.log(cookie.load('imageJSONS'));
       
@@ -59,10 +59,10 @@ import { Container, Button } from 'reactstrap';
       images.push(createImage(require("./images/services/plus.png"), "plus"));
            
       this.dataSetImages = this.imageJSONS.map(function(image){
-        var str = image.src.toString();
-        var parentKey = "#" + image.title.toString();
-        return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 
-        <img height="300px" width="300px" src={image.src} onClick={() => imageClick(image.title.toString())}/>
+        console.log(image);
+        var str = image;
+        return <div className="dataSetBox" key = {image.toString()} id ={image.toString()} > 
+        <img height="300px" width="300px" src={image.toString()} onClick={() => imageClick(image.toString())}/>
         </div>;
         
       });
