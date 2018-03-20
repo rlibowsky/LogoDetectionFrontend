@@ -24,6 +24,7 @@ import { Container, Button } from 'reactstrap';
         isOpen: false,
         pictures: [],
         token: cookie.load('token'),
+        currentDataSet: cookie.load('currentDataSet'),
         imageJSON: [],
         brandName: cookie.load('brandName'),
         loading: false,
@@ -78,28 +79,20 @@ import { Container, Button } from 'reactstrap';
     }
 
     trainClassifiers() {
-      this.setState({
-        loading: true
-      })
-      fetch('http://localhost:2000/scraper/', {
-        method: 'POST',
+      console.log("training those classifiers");
+      fetch('http://localhost:2000/datasets/' + this.state.currentDataSet + '/classifiers', {
+        method: 'GET',
         headers: {
-          'Accept': 'application/json',
+          'Authorization': 'Bearer ' + this.state.token,
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "hashtag": (this.state.brandName).toLowerCase(),
-          "image_count": "30"
-        })
+        }
       }).then(response => response.json())
       .then(json => {
-        this.state.imageJSON = json;
-        this.setState({
-          loading: false,
-          brandName: this.state.brandName
-        })
-      })
-      .then(this.props.history.push('/trainclassifiers'));
+        console.log("made it to json");
+        console.log(json);
+
+      }).then(this.props.history.push('/trainclassifiers')
+      );
     }
 
     learnMore(ev) {
