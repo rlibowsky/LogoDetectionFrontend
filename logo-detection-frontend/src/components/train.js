@@ -1,6 +1,6 @@
 import React from 'react';
 import Footer from './footer.js';
-import { Container, Button } from 'reactstrap';
+import { Container,  Button, Form, FormGroup,  Input } from 'reactstrap';
 import ImagesUploader from 'react-images-uploader';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
@@ -13,20 +13,19 @@ import cookie from "react-cookies";
       const imageClick = (brand_name, id) => {
         console.log("clicked image");
         this.handleChange(brand_name, id);
-        
       }
       this.state = { 
         pictures: [],
         token: cookie.load('token'),
         datasets: cookie.load('datasets'),
+        datasetsElements: [],
         brand_name: '',
-        logoName: ''
+        images: []
        };
        if (this.state.token === undefined) {
         this.props.history.push('/login');
         return;
       }
-      
             // Image factory
       var createImage = function(src, title, id) {
         var img   = new Image();
@@ -37,25 +36,23 @@ import cookie from "react-cookies";
         return img; 
       };
       // array of images
-      var images = [];
       // push two images to the array
-      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "Nike"));
       // images.push(createImage("http://1000logos.net/wp-content/uploads/2017/11/logo-Patagonia.jpg", "Patagonia"));
       // images.push(createImage("https://www.shopirvinecompany.com/media/8524/store-logo-lululemon.jpg", "Lululemon"));
       // images.push(createImage("https://seeklogo.com/images/A/adidas-logo-49D5BEBA90-seeklogo.com.png", "Adidas"));
       // images.push(createImage("http://1000logos.net/wp-content/uploads/2017/06/Logo-Under-Armour.jpg", "Under Armour"));
       // images.push(createImage("https://assets.lookbookspro.com/amanacliq/gm_5a29ffe2-7840-445e-bbaf-158fac11000a.jpg", "Converse"));
-      
-      console.log(this.state.datasets.datasets.length);
-      for (var i = 0; i < this.state.datasets.datasets.length; i++) {
-        console.log("here");
-        console.log(this.state.datasets.datasets[i]);
-        console.log("dataset " + this.state.datasets.datasets[i].name);
-        images.push(createImage(this.state.datasets.datasets[i].cover,this.state.datasets.datasets[i].name, this.state.datasets.datasets[i]._id));
+
+      console.log(this.state.datasets);
+
+      var elements = (this.state.datasets).split(',');
+      this.state.datasetsElements = elements;
+      console.log(this.state.token)
+      for (var i = 0; i < elements.length; i=i+3) {
+        console.log("dataset " + elements[i]);
+        this.state.images.push(createImage(elements[i],elements[i+1], elements[i+2]));
       }
-      
-      
-      this.BrandNamesList = images.map(function(image, i){
+      this.BrandNamesList = this.state.images.map(function(image, i){
         return <div className="dataSetBox" key = {image.src.toString()}> 
         <button> <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString(), image.id.toString())}/> {image.title.toString()}</button> 
         </div>;
@@ -63,13 +60,64 @@ import cookie from "react-cookies";
       this.onSubmit = this.onSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
     }
+    handleBrandNameChange = (e) => {
+      this.setState({
+        brand_name: e.target.value
+      })
+    }
+
+    refresh() {
+      fetch('http://localhost:2000/datasets/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Content-Type': 'application/json',
+        }
+      }).then(response => 
+        response.json())
+      .then(json => {
+        var data = json.datasets;
+        var array = [];
+        for(var i in data)
+        {
+          var src = data[i].src;
+          var name = data[i].name;
+          var id = data[i]._id;
+          var data_set = [src, name, id];
+          array.push(data_set);
+        }
+        var str = array.toString();
+        cookie.save('datasets', str, { path: '/' , 'maxAge': 100000});
+        window.location.reload();
+      });
+    }
 
     onSubmit(ev) {
-      this.state.pictures = [];
+        cookie.save('brandName', this.state.brand_name, { path: '/' , 'maxAge': 100000});
+        console.log("BRAND NAME: " + this.state.brand_name)
+        fetch('http://localhost:2000/datasets', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "name": (this.state.brand_name).toLowerCase(),
+          "datasetType": "0"
+        })
+      }).then(response => {
+        if (response.status === 200) {
+          //good
+        }
+        else {
+          //bad
+        }
+        this.refresh();
+      });
+
     }
 
     handleChange (brand_name, id) {
-      this.state.brand_name = brand_name;
         cookie.save('brandName', this.state.brand_name, { path: '/' , 'maxAge': 100000});
         fetch('http://localhost:2000/datasets/'+ id + '/scrape', {
         method: 'POST',
@@ -112,17 +160,26 @@ import cookie from "react-cookies";
       <Container>
           <center>
               <h5> CREATE A NEW DATA SET </h5>
-              <ImagesUploader
-                url="http://localhost:9090/multiple"
-                optimisticPreviews
-                onLoadEnd={(err) => {
-                    if (err) {
-                        console.error(err);
-                    }
-                }}
-                label=""
-                />
-                <Button className="searchBtn" disabled={this.state.pictures.length > 0} onClick={this.onSubmit}> Submit </Button>
+              <Form>
+                <FormGroup>
+                  <Input 
+                    type="datasetName" 
+                    name="datasetName" 
+                    id="datasetName"
+                    placeholder="Dataset Name"  
+                    value={this.state.brand_name}
+                    onChange={this.handleBrandNameChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Input 
+                    type='file' 
+                    label='Upload' 
+                    accept='.jpeg, .png' 
+                  />
+                </FormGroup>
+                  <Button onClick={this.onSubmit}>Add Data Set</Button>
+              </Form>
               <div className="header-space"></div>
               <h5> YOUR DATA SETS </h5>
               <div className="box">

@@ -12,7 +12,7 @@ import { Container, Button } from 'reactstrap';
       this.state = {
         isOpen: false,
         token: cookie.load('token'),
-        datasets: [],
+        datasets: cookie.load('datasets'),
         count: 0
       };
       if (this.state.token === undefined) {
@@ -26,27 +26,36 @@ import { Container, Button } from 'reactstrap';
 
     onTrain(ev) {
       console.log("in train yo");
+      console.log(this.state.token);
       // call here to get data sets
       fetch('http://localhost:2000/datasets/', {
-        method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + this.state.token,
           'Content-Type': 'application/json',
         }
-      }).then(response => response.json())
+      }).then(response => 
+        response.json())
       .then(json => {
-        this.state.datasets = json;
-        console.log(this.state.datasets);
-        cookie.save('datasets', this.state.datasets, { path: '/' , 'maxAge': 100000});
-
-      })
-      .then(
-        this.props.history.push({
-        pathname: '/train',
-        params: {
-          email: this.state.email
+        //this.state.datasets[i].cover,this.state.datasets[i].name, this.state.datasets[i]._id))
+        var data = json.datasets;
+        var array = [];
+        for(var i in data)
+        {
+          var src = data[i].src;
+          var name = data[i].name;
+          var id = data[i]._id;
+          var data_set = [src, name, id];
+          array.push(data_set);
         }
-      }));
+        var str = array.toString();
+        cookie.save('datasets', str, { path: '/' , 'maxAge': 100000});
+        this.props.history.push({
+          pathname: '/train',
+          params: {
+            email: this.state.email
+          }
+        })
+      });
     }
     onSearch(ev) {
       this.props.history.push({
