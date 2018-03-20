@@ -49,8 +49,9 @@ import cookie from "react-cookies";
       console.log(this.state.datasets.datasets.length);
       for (var i = 0; i < this.state.datasets.datasets.length; i++) {
         console.log("here");
+        console.log(this.state.datasets.datasets[i]);
         console.log("dataset " + this.state.datasets.datasets[i].name);
-        images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png",this.state.datasets.datasets[i].name, this.state.datasets.datasets[i]._id));
+        images.push(createImage(this.state.datasets.datasets[i].cover,this.state.datasets.datasets[i].name, this.state.datasets.datasets[i]._id));
       }
       
       
