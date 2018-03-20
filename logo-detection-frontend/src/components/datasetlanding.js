@@ -50,20 +50,33 @@ import { Container, Button } from 'reactstrap';
       // array of images
       var images = [];
 
-      // push two images to the array
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "1"));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "2"));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "3"));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "4"));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "5"));
-      images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "6"));
+      for (var i = 0; i < this.imageJSONS.length; i++) {
+        images.push(createImage(this.imageJSONS[i]), this.imageJSONS[i]);
+      }
       images.push(createImage(require("./images/services/plus.png"), "plus"));
+
+
+      // push two images to the array
+      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "1"));
+      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "2"));
+      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "3"));
+      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "4"));
+      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "5"));
+      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "6"));
+      // images.push(createImage(require("./images/services/plus.png"), "plus"));
+
+      console.log("images is " + images);
            
-      this.dataSetImages = this.imageJSONS.map(function(image){
-        console.log(image);
+      this.dataSetImages = images.map(function(image){
+        if (image.src === undefined) {
+          return;
+        }
+        console.log('image is' + image);
+        console.log('src is ' + image.src.toString());
+        
         var str = image;
-        return <div className="dataSetBox" key = {image.toString()} id ={image.toString()} > 
-        <img height="300px" width="300px" src={image.toString()} onClick={() => imageClick(image.toString())}/>
+        return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 
+        <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
         </div>;
         
       });
@@ -127,9 +140,29 @@ import { Container, Button } from 'reactstrap';
       this.setState({
         loading: true
       })
-      fetch('http://localhost:2000/scrape/', {
+      // fetch('http://localhost:2000/scrape/', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     "hashtag": (this.state.brandName).toLowerCase(),
+      //     "image_count": "30"
+      //   })
+      // }).then(response => response.json())
+      // .then(json => {
+      //   this.state.imageJSON = json;
+      //   this.setState({
+      //     loading: false,
+      //     brandName: this.state.brandName
+      //   })
+      // })
+      // .then(this.nextPage);
+      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/scrape', {
         method: 'POST',
         headers: {
+          'Authorization': 'Bearer ' + this.state.token,
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
@@ -139,13 +172,19 @@ import { Container, Button } from 'reactstrap';
         })
       }).then(response => response.json())
       .then(json => {
-        this.state.imageJSON = json;
-        this.setState({
-          loading: false,
-          brandName: this.state.brandName
-        })
-      })
-      .then(this.nextPage);
+        console.log("in here yooo");
+        console.log(json.filePaths);
+        this.state.imageJSON = json.filePaths.slice(0,20);
+        cookie.remove('imageJSONS');
+        cookie.save('imageJSONS', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
+        console.log(cookie.load('imageJSONS'));
+        // this.state.imageJSON = json;
+        // console.log(this.state.imageJSON );
+        // this.setState({
+        //   loading: false
+        // })
+        
+      }).then(this.nextPage);
     }
     nextPage() {
       cookie.save('searchTerms', this.state.brandName, { path: '/' , 'maxAge': 100000});
@@ -161,7 +200,9 @@ import { Container, Button } from 'reactstrap';
     }
 
   render() {
+    console.log('tool tip state is ' + this.state.showToolTipActive);
     return (
+      
       <Container>
         <center>
             <h2> {this.state.brandName} </h2>

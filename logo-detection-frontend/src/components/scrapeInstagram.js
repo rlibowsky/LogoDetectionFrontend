@@ -28,7 +28,7 @@ const CSSVariables = {
       }
       this.selectedImages = [];
       this.searchTerms = cookie.load("searchTerms");
-      this.searchResults = cookie.load("searchResults").filePaths;
+      this.searchResults = cookie.load("searchResults");
       this.imageClick = this.imageClick.bind(this);
       this.finish = this.finish.bind(this);
       this.setBorder = this.setBorder.bind(this);

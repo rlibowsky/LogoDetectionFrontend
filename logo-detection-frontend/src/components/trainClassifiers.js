@@ -24,11 +24,17 @@ export default class TrainClassifiers extends React.Component {
         return;
       }
 
-      var dataSetClassifiersList =  ["Running", "Walking", "Yoga", "Swimming"]
+      var dataSetClassifiersList =  ["Running", "Walking", "Yoga", "Swimming"];
            
-      this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
-        return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
-            <ClassifierImages classifierName="{classifier.name.toString()}"/>
+      // this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
+      //   return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
+      //       <ClassifierImages classifierName="{classifier.name.toString()}"/>
+      //   </li>
+      // });
+
+      this.dataSetClassifiers = dataSetClassifiersList.map(function(classifier, i){
+        return <li align="left" key = {classifier.toString()} id ={classifier.toString()}> {classifier.toString()} 
+            <ClassifierImages classifierName="{classifier.toString()}"/>
         </li>
       });
 
