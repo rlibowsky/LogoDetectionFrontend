@@ -128,31 +128,35 @@ import cookie from "react-cookies";
         },
         body: JSON.stringify({
           "hashtag": (brand_name).toLowerCase(),
-          "image_count": "30"
+          "image_count": "10"
         })
       }).then(response => response.json())
       .then(json => {
-        console.log("in here yooo");
-        console.log(json.filePaths);
-        this.state.imageJSONS = json.filePaths.slice(0,20);
-        cookie.remove('imageJSONS');
-        cookie.save('imageJSONS', this.state.imageJSONS, { path: '/' , 'maxAge': 100000});
-        cookie.remove('currentDataSet');
-        cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
-        console.log(cookie.load('imageJSONS'));
-        // this.state.imageJSON = json;
-        // console.log(this.state.imageJSON );
-        // this.setState({
-        //   loading: false
-        // })
+        fetch('http://localhost:2000/datasets/'+ id +'/', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          }
+        }).then(response => response.json())
+        .then(json => {
+          console.log(json.images);
+          this.state.imageJSONS = json.images.slice(0,20);
+          cookie.remove('imageJSONS');
+          cookie.save('imageJSONS', this.state.imageJSONS, { path: '/' , 'maxAge': 100000});
+          cookie.remove('currentDataSet');
+          cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
+          console.log(cookie.load('imageJSONS'));
+        });
         this.props.history.push({
           pathname: '/datasetlanding',
           params: {
             img: this.imageJSONS
           }
         })
-        
       });
+      
     }
 
     render() {

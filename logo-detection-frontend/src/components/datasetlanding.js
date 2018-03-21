@@ -25,7 +25,7 @@ import { Container, Button } from 'reactstrap';
         pictures: [],
         token: cookie.load('token'),
         currentDataSet: cookie.load('currentDataSet'),
-        imageJSON: [],
+        imageJSON: cookie.load('imageJSONS'),
         brandName: cookie.load('brandName'),
         loading: false,
         showToolTipActive: false,
@@ -35,7 +35,6 @@ import { Container, Button } from 'reactstrap';
         this.props.history.push('/login');
         return;
       }
-      this.imageJSONS = cookie.load('imageJSONS');
       console.log("in train ");
       console.log(cookie.load('imageJSONS'));
       
@@ -50,8 +49,9 @@ import { Container, Button } from 'reactstrap';
       // array of images
       var images = [];
 
-      for (var i = 0; i < this.imageJSONS.length; i++) {
-        images.push(createImage(this.imageJSONS[i]), this.imageJSONS[i]);
+      for (var i = 0; i < this.state.imageJSON.length; i++) {
+        var str = ('http://localhost:2000/' + this.state.imageJSON[i]);
+        images.push(createImage(str), str);
       }
       images.push(createImage(require("./images/services/plus.png"), "plus"));
 
@@ -136,6 +136,7 @@ import { Container, Button } from 'reactstrap';
       this.props.history.push('/upload');
     }
     onScrape = (e) => {
+      var hashtag = prompt("Enter the #hashtag you want to scrape", "hashtag");
       e.preventDefault();
       this.setState({
         loading: true
@@ -159,32 +160,41 @@ import { Container, Button } from 'reactstrap';
       //   })
       // })
       // .then(this.nextPage);
+
       fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/scrape', {
-        method: 'POST',
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + this.state.token,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "hashtag": hashtag.toLowerCase(),
+        "image_count": "10"
+      })
+    }).then(response => response.json())
+    .then(json => {
+      console.log("NIKE PHOTOS");
+      console.log(json);
+      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet +'/', {
+        method: 'GET',
         headers: {
           'Authorization': 'Bearer ' + this.state.token,
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "hashtag": (this.state.brandName).toLowerCase(),
-          "image_count": "30"
-        })
+        }
       }).then(response => response.json())
       .then(json => {
-        console.log("in here yooo");
-        console.log(json.filePaths);
-        this.state.imageJSON = json.filePaths.slice(0,20);
+        this.state.imageJSON = json.images.slice(0,20);
+        console.log(json.images);
         cookie.remove('imageJSONS');
         cookie.save('imageJSONS', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
         console.log(cookie.load('imageJSONS'));
-        // this.state.imageJSON = json;
-        // console.log(this.state.imageJSON );
-        // this.setState({
-        //   loading: false
-        // })
-        
-      }).then(this.nextPage);
+        window.location.reload();
+
+      });
+    });
+      //.then(this.nextPage);
     }
     nextPage() {
       cookie.save('searchTerms', this.state.brandName, { path: '/' , 'maxAge': 100000});
