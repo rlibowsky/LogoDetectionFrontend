@@ -31,7 +31,7 @@ export default class TrainClassifiers extends React.Component {
       console.log("current classifiers are");
       console.log(this.state.currentClassifiers);
 
-      var dataSetClassifiersList =  ["Running", "Walking", "Yoga", "Swimming"];
+      // var dataSetClassifiersList =  ["Running", "Walking", "Yoga", "Swimming"];
            
       // this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
       //   return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
@@ -39,20 +39,29 @@ export default class TrainClassifiers extends React.Component {
       //   </li>
       // });
 
-      this.dataSetClassifiers = dataSetClassifiersList.map(function(classifier, i){
-        return <li align="left" key = {classifier.toString()} id ={classifier.toString()}> {classifier.toString()} 
-            <ClassifierImages classifierName="{classifier.toString()}"/>
-        </li>
-      });
-
-      this.dataSetClassifierNames = dataSetClassifiersList.map(function(classifier, i){
-        return <li align="left" key = {classifier.toString()} id ={classifier.toString()}> {classifier.toString()} 
-        </li>
-      }); 
+       
 
       this.handleAddDataSet = this.handleAddDataSet.bind(this);
       this.handleAddClassifier = this.handleAddClassifier.bind(this);
+      this.loadClassifiers = this.loadClassifiers.bind(this);
+      this.createLists = this.createLists.bind(this);
+      this.createLists();
 
+    }
+
+    createLists() {
+      console.log("in create lists ");
+      console.log(this.state.currentClassifiers);
+      this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
+        return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
+            <ClassifierImages classifierName="{classifier.name.toString()}"/>
+        </li>
+      });
+
+      this.dataSetClassifierNames = this.state.currentClassifiers.map(function(classifier, i){
+        return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
+        </li>
+      });
     }
 
     handleNewClassifierChange = (e) => {
@@ -86,11 +95,41 @@ export default class TrainClassifiers extends React.Component {
       .then(json => {
         console.log("made it here");
         console.log(json);
+        
+        this.loadClassifiers();
+      });
+    }
+
+    loadClassifiers() {
+      console.log("loading classifiers");
+      fetch('http://localhost:2000/datasets/' + this.state.currentDataSet + '/classifiers', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Content-Type': 'application/json',
+        }
+      }).then(response => response.json())
+      .then(json => {
+        console.log("classifier response");
+        console.log(json);
+        cookie.remove('currentClassifiers');
+        cookie.save('currentClassifiers', json.classifier, { path: '/' , 'maxAge': 100000});
+        this.setState({
+          newClassifier: '',
+          newClassifierDescription: '',
+          currentClassifiers: cookie.load('currentClassifiers')
+        });
+        // this.props.history.push('/trainclassifiers');
+        this.createLists();
+        this.render();
+        this.forceUpdate();
       });
     }
 
 
   render() {
+    console.log("rendering");
+    console.log(this.dataSetClassifierNames.length);
     return (
       <Container>
         <center>
