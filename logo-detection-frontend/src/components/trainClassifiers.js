@@ -8,6 +8,7 @@ import ToolTip from 'react-portal-tooltip';
 import ClassifierImages from './classifierimages.js';
 import './trainClassifiers.css';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
+import Box from 'react-layout-components';
 
 export default class TrainClassifiers extends React.Component { 
     constructor(props) {
@@ -16,13 +17,19 @@ export default class TrainClassifiers extends React.Component {
       this.state = {
         token: cookie.load('token'),
         brandName: cookie.load('brandName'),
+        currentDataSet: cookie.load('currentDataSet'),
         loading: false,
-        currentClassifiers: cookie.load('currentClassifiers')
+        currentClassifiers: cookie.load('currentClassifiers'),
+        newClassifier: '',
+        newClassifierDescription: ''
       };
       if (this.state.token === undefined) {
         this.props.history.push('/login');
         return;
       }
+
+      console.log("current classifiers are");
+      console.log(this.state.currentClassifiers);
 
       var dataSetClassifiersList =  ["Running", "Walking", "Yoga", "Swimming"];
            
@@ -48,12 +55,38 @@ export default class TrainClassifiers extends React.Component {
 
     }
 
+    handleNewClassifierChange = (e) => {
+      this.setState({
+        newClassifier: e.target.value
+      })
+    }
+
+    handleNewClassifierDescriptionChange = (e) => {
+      this.setState({
+        newClassifierDescription: e.target.value
+      })
+    }
+
     handleAddDataSet() {
 
     }
 
     handleAddClassifier() {
-
+      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "name": (this.state.newClassifier).toLowerCase(),
+          "description": (this.state.newClassifierDescription).toLowerCase(),
+        })
+      }).then(response => response.json())
+      .then(json => {
+        console.log("made it here");
+        console.log(json);
+      });
     }
 
 
@@ -77,22 +110,44 @@ export default class TrainClassifiers extends React.Component {
 
               <div className="column">
                 <div className="row">
-                  
                 <Form className="addForm">
-                <Button className="brandNameButton" onClick={this.handleAddDataSet}> 
-                  <div align="left"> hashtag  + </div>
-                </Button>
-                <h1> {this.state.brandName} </h1>
+                  <table>
+                    <thead><Button className="brandNameButton" onClick={this.handleAddDataSet}>
+                      <div align="left"> hashtag  + </div>
+                    </Button> </thead>
+                    <tbody>
+                    <h1> {this.state.brandName} </h1>
+                    <h1> Other </h1>
+                    </tbody>
+                </table>
                 <ul> {this.dataSetClassifierNames} </ul>
+                <FormGroup>
+                  <Input 
+                    type="string" 
+                    name="newClassifier" 
+                    id="newClassifier" 
+                    placeholder="New Classifier"
+                    value={this.state.newClassifier}
+                    onChange={this.handleNewClassifierChange}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Input 
+                    type="string" 
+                    name="newClassifierDescription" 
+                    id="newClassifierDescription"
+                    placeholder="Describe your new classifier"
+                    value={this.state.newClassifierDescription}
+                    onChange={this.handleNewClassifierDescriptionChange}
+                  />
+                </FormGroup>
                 <Button className="brandNameButton" onClick={this.handleAddClassifier}> 
                   <div align="left"> +  add classifier </div>
                 </Button>
                   
                 </Form>
+               
                   
-                </div>
-                <div className="row">
-                    Add Classifier
                 </div>
               </div>
               
