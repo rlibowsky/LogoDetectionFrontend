@@ -7,5 +7,10 @@
 }
 
 .brandNameButton {
-    width: 150px;
+    width: 100%;
+}
+
+.deleteClassifierBtn {
+    width: 30px;
+    display: inline-block;
 }

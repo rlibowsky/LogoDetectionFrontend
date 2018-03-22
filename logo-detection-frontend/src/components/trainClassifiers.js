@@ -43,6 +43,7 @@ export default class TrainClassifiers extends React.Component {
 
       this.handleAddDataSet = this.handleAddDataSet.bind(this);
       this.handleAddClassifier = this.handleAddClassifier.bind(this);
+      // this.handleDeleteClassifier = this.handleDeleteClassifier.bind(this);
       this.loadClassifiers = this.loadClassifiers.bind(this);
       this.createLists = this.createLists.bind(this);
       this.createLists();
@@ -50,8 +51,26 @@ export default class TrainClassifiers extends React.Component {
     }
 
     createLists() {
-      console.log("in create lists ");
-      console.log(this.state.currentClassifiers);
+
+      const handleDeleteClassifier = (classifier) => {
+        // fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
+        //   method: 'DELETE',
+        //   headers: {
+        //     'Authorization': 'Bearer ' + this.state.token,
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({
+        //     "id": (classifier)
+        //   })
+        // }).then(response => response.json())
+        // .then(json => {
+        //   console.log("made it here");
+        //   console.log(json);
+          
+        //   this.loadClassifiers();
+        // });
+      }
+
       this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
         return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
             <ClassifierImages classifierName="{classifier.name.toString()}"/>
@@ -59,8 +78,13 @@ export default class TrainClassifiers extends React.Component {
       });
 
       this.dataSetClassifierNames = this.state.currentClassifiers.map(function(classifier, i){
-        return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
+        return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> 
+        <h10 align="left"> {classifier.name.toString()} </h10>
+        <Button className="deleteClassifierBtn" onClick={() => handleDeleteClassifier(classifier.id.toString())}> 
+          <div align="center"> X </div> 
+          </Button>
         </li>
+        
       });
     }
 
@@ -150,6 +174,7 @@ export default class TrainClassifiers extends React.Component {
               <div className="column">
                 <div className="row">
                 <Form className="addForm">
+                <FormGroup>
                   <table>
                     <thead><Button className="brandNameButton" onClick={this.handleAddDataSet}>
                       <div align="left"> hashtag  + </div>
@@ -159,7 +184,8 @@ export default class TrainClassifiers extends React.Component {
                     <h1> Other </h1>
                     </tbody>
                 </table>
-                <ul> {this.dataSetClassifierNames} </ul>
+                  <Form><ul> {this.dataSetClassifierNames} </ul></Form>
+                </FormGroup>
                 <FormGroup>
                   <Input 
                     type="string" 
