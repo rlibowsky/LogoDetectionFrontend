@@ -185,7 +185,7 @@ import { Container, Button } from 'reactstrap';
         }
       }).then(response => response.json())
       .then(json => {
-        this.state.imageJSON = json.images.slice(0,20);
+        this.state.imageJSON = json.images;
         console.log(json.images);
         cookie.remove('imageJSONS');
         cookie.save('imageJSONS', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
