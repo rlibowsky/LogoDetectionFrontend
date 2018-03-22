@@ -28,9 +28,6 @@ export default class TrainClassifiers extends React.Component {
         return;
       }
 
-      console.log("current classifiers are");
-      console.log(this.state.currentClassifiers);
-
       // var dataSetClassifiersList =  ["Running", "Walking", "Yoga", "Swimming"];
            
       // this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
@@ -117,15 +114,11 @@ export default class TrainClassifiers extends React.Component {
         })
       }).then(response => response.json())
       .then(json => {
-        console.log("made it here");
-        console.log(json);
-        
         this.loadClassifiers();
       });
     }
 
     loadClassifiers() {
-      console.log("loading classifiers");
       fetch('http://localhost:2000/datasets/' + this.state.currentDataSet + '/classifiers', {
         method: 'GET',
         headers: {
@@ -143,7 +136,6 @@ export default class TrainClassifiers extends React.Component {
           newClassifierDescription: '',
           currentClassifiers: cookie.load('currentClassifiers')
         });
-        // this.props.history.push('/trainclassifiers');
         this.createLists();
         this.render();
         this.forceUpdate();
@@ -152,8 +144,6 @@ export default class TrainClassifiers extends React.Component {
 
 
   render() {
-    console.log("rendering");
-    console.log(this.dataSetClassifierNames.length);
     return (
       <Container>
         <center>

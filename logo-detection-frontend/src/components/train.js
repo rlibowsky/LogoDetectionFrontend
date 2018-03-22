@@ -147,13 +147,10 @@ import cookie from "react-cookies";
           }
         }).then(response => response.json())
         .then(json => {
-          console.log("the JSON!  ");
-          console.log(json.images);
           cookie.remove('imageJSONS');
           cookie.save('imageJSONS', json.images.slice(0,20), { path: '/' , 'maxAge': 100000});
           cookie.remove('currentDataSet');
           cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
-          console.log(cookie.load('imageJSONS'));
 
           this.props.history.push({
             pathname: '/datasetlanding',

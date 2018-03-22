@@ -105,7 +105,6 @@ import { Container, Button } from 'reactstrap';
         cookie.remove('currentClassifiers');
         cookie.save('currentClassifiers', json.classifier, { path: '/' , 'maxAge': 100000});
         this.props.history.push('/trainclassifiers');
-
       });
     }
 
@@ -187,9 +186,7 @@ import { Container, Button } from 'reactstrap';
     }
 
   render() {
-    console.log('tool tip state is ' + this.state.showToolTipActive);
     return (
-      
       <Container>
         <center>
             <h2> {this.state.brandName} </h2>
