@@ -50,22 +50,18 @@ export default class TrainClassifiers extends React.Component {
     createLists() {
 
       const handleDeleteClassifier = (classifier) => {
-        // fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
-        //   method: 'DELETE',
-        //   headers: {
-        //     'Authorization': 'Bearer ' + this.state.token,
-        //     'Content-Type': 'application/json',
-        //   },
-        //   body: JSON.stringify({
-        //     "id": (classifier)
-        //   })
-        // }).then(response => response.json())
-        // .then(json => {
-        //   console.log("made it here");
-        //   console.log(json);
+        fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + classifier, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-Type': 'application/json',
+          }
+        }).then(response => {
+          console.log("made it here");
+          console.log(response);
           
-        //   this.loadClassifiers();
-        // });
+          this.loadClassifiers();
+        });
       }
 
       this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
