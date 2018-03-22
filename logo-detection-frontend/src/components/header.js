@@ -32,9 +32,15 @@ export default class Header extends React.Component {
   render() {
     const tokenExists = cookie.load('token') !== undefined;
     var loginText = "Login/Sign Up";
+    var portalText = "help@logodetect.com";
+    var portalRef = "/";
     if (tokenExists) {
       loginText = "Logout";
+      portalText = "View Portal";
+      portalRef = "/portal";
     }
+    
+
     return (
       <div>
         <Navbar color="faded" light expand="md">
@@ -46,7 +52,7 @@ export default class Header extends React.Component {
                 <NavLink  onClick={this.logout} href="/login"> { loginText } </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink>help@logodetect.com</NavLink>
+                <NavLink href={portalRef}> {portalText} </NavLink>
               </NavItem>
               <NavItem>
                 <NavLink>4254427300</NavLink>

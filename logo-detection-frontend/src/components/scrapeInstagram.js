@@ -38,12 +38,10 @@ const CSSVariables = {
       if (this.selectedImages.includes(image_src)){
         const index = this.selectedImages.indexOf(image_src);
         this.selectedImages.splice(index, 1);
-        console.log("removing");
 
       }
       else {
         this.selectedImages.push(image_src);
-        console.log("pushing");
       }
       this.forceUpdate()
     }

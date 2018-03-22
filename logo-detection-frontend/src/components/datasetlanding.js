@@ -35,8 +35,6 @@ import { Container, Button } from 'reactstrap';
         this.props.history.push('/login');
         return;
       }
-      console.log("in train ");
-      console.log(cookie.load('imageJSONS'));
       
             // Image factory
       var createImage = function(src, title) {
@@ -54,26 +52,11 @@ import { Container, Button } from 'reactstrap';
         images.push(createImage(str), str);
       }
       images.push(createImage(require("./images/services/plus.png"), "plus"));
-
-
-      // push two images to the array
-      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "1"));
-      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "2"));
-      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "3"));
-      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "4"));
-      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "5"));
-      // images.push(createImage("http://content.nike.com/content/dam/one-nike/globalAssets/social_media_images/nike_swoosh_logo_black.png", "6"));
-      // images.push(createImage(require("./images/services/plus.png"), "plus"));
-
-      console.log("images is " + images);
            
       this.dataSetImages = images.map(function(image){
         if (image.src === undefined) {
           return;
         }
-        console.log('image is' + image);
-        console.log('src is ' + image.src.toString());
-        
         var str = image;
         return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 
         <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
@@ -119,8 +102,6 @@ import { Container, Button } from 'reactstrap';
         }
       }).then(response => response.json())
       .then(json => {
-        console.log("classifier response");
-        console.log(json);
         cookie.remove('currentClassifiers');
         cookie.save('currentClassifiers', json.classifier, { path: '/' , 'maxAge': 100000});
         this.props.history.push('/trainclassifiers');
@@ -174,8 +155,6 @@ import { Container, Button } from 'reactstrap';
       })
     }).then(response => response.json())
     .then(json => {
-      console.log("NIKE PHOTOS");
-      console.log(json);
       fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet +'/', {
         method: 'GET',
         headers: {
@@ -190,7 +169,6 @@ import { Container, Button } from 'reactstrap';
         })
         cookie.remove('imageJSONS');
         cookie.save('imageJSONS', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
-        console.log(cookie.load('imageJSONS'));
         window.location.reload();
       });
     });
@@ -203,7 +181,6 @@ import { Container, Button } from 'reactstrap';
     }
 
     showTip(ev) {
-      console.log("in showTip");
       this.setState({
         showToolTipActive: !this.state.showToolTipActive
       });
@@ -232,9 +209,11 @@ import { Container, Button } from 'reactstrap';
             
 
           <Button onClick={this.trainClassifiers}> Train Classifiers </Button>
+          <div className="bt-space"></div>
           <h5> Interested in how our services can help you? Give us a call! </h5>
           <Button className="learnMoreButton" onClick={this.learnMore}> Learn More </Button>
         </center>
+        
         <Footer/>
     </Container>  
   );

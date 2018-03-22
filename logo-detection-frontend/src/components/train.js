@@ -2,6 +2,8 @@ import React from 'react';
 import Footer from './footer.js';
 import { Container,  Button, Form, FormGroup,  Input } from 'reactstrap';
 import ImagesUploader from 'react-images-uploader';
+import Loading from 'react-loading-bar';
+import 'react-loading-bar/dist/index.css';
 import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
 import './train.css';
@@ -20,7 +22,8 @@ import cookie from "react-cookies";
         datasets: cookie.load('datasets'),
         datasetsElements: [],
         brand_name: '',
-        images: []
+        images: [],
+        loading: false
        };
        if (this.state.token === undefined) {
         this.props.history.push('/login');
@@ -118,6 +121,9 @@ import cookie from "react-cookies";
     }
 
     handleChange (brand_name, id) {
+      this.setState({
+        loading: true
+      })
         cookie.save('brandName', brand_name, { path: '/' , 'maxAge': 100000});
         fetch('http://localhost:2000/datasets/'+ id + '/scrape', {
         method: 'POST',
@@ -163,6 +169,10 @@ import cookie from "react-cookies";
     render() {
       return (
       <Container>
+      <Loading
+                show={this.state.loading}
+                color="red"
+              />
           <center>
               <h5> CREATE A NEW DATA SET </h5>
               <Form>

@@ -220,6 +220,7 @@ export default class TrainClassifiers extends React.Component {
           </div>
         
         </center>
+        <div className="bt-space"></div>
         <Footer/>
     </Container>
   );
