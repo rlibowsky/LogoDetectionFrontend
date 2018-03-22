@@ -142,9 +142,8 @@ import cookie from "react-cookies";
         }).then(response => response.json())
         .then(json => {
           console.log(json.images);
-          this.state.imageJSONS = json.images;
           cookie.remove('imageJSONS');
-          cookie.save('imageJSONS', this.state.imageJSONS, { path: '/' , 'maxAge': 100000});
+          cookie.save('imageJSONS', json.images, { path: '/' , 'maxAge': 100000});
           cookie.remove('currentDataSet');
           cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
           console.log(cookie.load('imageJSONS'));
