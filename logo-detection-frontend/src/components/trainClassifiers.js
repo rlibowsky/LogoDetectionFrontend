@@ -97,6 +97,11 @@ export default class TrainClassifiers extends React.Component {
 
     }
 
+    handleEditDataset = (e) => {
+      this.props.history.push('/datasetlanding');
+    }
+
+
     handleAddClassifier() {
       fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
         method: 'POST',
@@ -150,12 +155,17 @@ export default class TrainClassifiers extends React.Component {
                 <h1> {this.state.brandName} </h1>
                 </div>
                 <div className="row">
-                <Button className="addMoreImages"> Add More Images </Button>
+                <Button className="editDataset" onClick={this.handleEditDataset}> Edit Dataset </Button>
                 </div>
                 <div className="row">
                 <ul> {this.dataSetClassifiers} </ul>
                 </div>
               </div>
+              <div className="header-space"></div>
+              <div className="header-space"></div>
+              <div className="header-space"></div>
+              <div className="header-space"></div>
+              <div className="header-space"></div>
 
               <div className="column">
                 <div className="row">
