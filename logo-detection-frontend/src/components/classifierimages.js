@@ -1,10 +1,4 @@
 import React from 'react';
-import './datasetlanding.css';
-import cookie from "react-cookies";
-import Loading from 'react-loading-bar';
-import 'react-loading-bar/dist/index.css';
-import FaIconPack from 'react-icons/lib/fa';
-import ToolTip from 'react-portal-tooltip';
 
 import { Container, Button } from 'reactstrap';
 
@@ -33,7 +27,7 @@ const CSSVariables = {
       this.imageClick = this.imageClick.bind(this);
       this.setBorder = this.setBorder.bind(this);
       
-            // Image factory
+      // Image factory
       var createImage = function(src, title) {
         var img   = new Image();
         img.src   = src;

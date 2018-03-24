@@ -104,7 +104,7 @@ import { Container, Button } from 'reactstrap';
       .then(json => {
         cookie.remove('currentClassifiers');
         cookie.save('currentClassifiers', json.classifier, { path: '/' , 'maxAge': 100000});
-        this.props.history.push('/trainclassifiers');
+        this.props.history.push('/trainclassifiers/' + this.state.brandName.toLowerCase());
       });
     }
 
@@ -121,25 +121,6 @@ import { Container, Button } from 'reactstrap';
       this.setState({
         loading: true
       })
-      // fetch('http://localhost:2000/scrape/', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     "hashtag": (this.state.brandName).toLowerCase(),
-      //     "image_count": "30"
-      //   })
-      // }).then(response => response.json())
-      // .then(json => {
-      //   this.state.imageJSON = json;
-      //   this.setState({
-      //     loading: false,
-      //     brandName: this.state.brandName
-      //   })
-      // })
-      // .then(this.nextPage);
 
       fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/scrape', {
       method: 'POST',
@@ -171,7 +152,7 @@ import { Container, Button } from 'reactstrap';
         window.location.reload();
       });
     });
-      //.then(this.nextPage);
+
     }
     nextPage() {
       cookie.save('searchTerms', this.state.brandName, { path: '/' , 'maxAge': 100000});

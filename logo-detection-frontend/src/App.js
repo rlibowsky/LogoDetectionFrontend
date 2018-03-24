@@ -27,12 +27,12 @@ class App extends Component {
           <div>
           <Route exact path="/" component={Landing}/>
           <Route exact path="/login" component={Login}/>
-          <Route exact path="/datasetlanding" component={DataSetLanding}/>
+          <Route path="/datasetlanding" component={DataSetLanding}/>
           <Route exact path="/signup" component={SignUp}/>
           <Route path="/portal" component={Portal} />
-          <Route exact path="/train" component={Train} />
-          <Route exact path="/upload" component={Upload} />
-          <Route exact path="/search" component={Search} />
+          <Route path="/train" component={Train} />
+          <Route path="/upload" component={Upload} />
+          <Route path="/search" component={Search} />
           <Route path="/searchresults" component={SearchResults} />
           <Route path="/scrapeInstagram" component={ScrapeInstagram} />
           <Route path="/finishPage" component={FinishPage} />

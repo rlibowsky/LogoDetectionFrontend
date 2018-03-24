@@ -3,8 +3,6 @@ import Footer from './footer.js';
 import cookie from "react-cookies";
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
-import FaIconPack from 'react-icons/lib/fa';
-import ToolTip from 'react-portal-tooltip';
 import ClassifierImages from './classifierimages.js';
 import './trainClassifiers.css';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
@@ -23,24 +21,14 @@ export default class TrainClassifiers extends React.Component {
         newClassifier: '',
         newClassifierDescription: ''
       };
+
       if (this.state.token === undefined) {
         this.props.history.push('/login');
         return;
       }
 
-      // var dataSetClassifiersList =  ["Running", "Walking", "Yoga", "Swimming"];
-           
-      // this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
-      //   return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
-      //       <ClassifierImages classifierName="{classifier.name.toString()}"/>
-      //   </li>
-      // });
-
-       
-
       this.handleAddDataSet = this.handleAddDataSet.bind(this);
       this.handleAddClassifier = this.handleAddClassifier.bind(this);
-      // this.handleDeleteClassifier = this.handleDeleteClassifier.bind(this);
       this.loadClassifiers = this.loadClassifiers.bind(this);
       this.createLists = this.createLists.bind(this);
       this.createLists();
@@ -57,9 +45,6 @@ export default class TrainClassifiers extends React.Component {
             'Content-Type': 'application/json',
           }
         }).then(response => {
-          console.log("made it here");
-          console.log(response);
-          
           this.loadClassifiers();
         });
       }
@@ -98,7 +83,7 @@ export default class TrainClassifiers extends React.Component {
     }
 
     handleEditDataset = (e) => {
-      this.props.history.push('/datasetlanding');
+      this.props.history.push('/datasetlanding/' + this.state.brandName.toLowerCase());
     }
 
 
@@ -128,8 +113,6 @@ export default class TrainClassifiers extends React.Component {
         }
       }).then(response => response.json())
       .then(json => {
-        console.log("classifier response");
-        console.log(json);
         cookie.remove('currentClassifiers');
         cookie.save('currentClassifiers', json.classifier, { path: '/' , 'maxAge': 100000});
         this.setState({
@@ -163,24 +146,17 @@ export default class TrainClassifiers extends React.Component {
               </div>
               <div className="header-space"></div>
               <div className="header-space"></div>
-              <div className="header-space"></div>
-              <div className="header-space"></div>
-              <div className="header-space"></div>
 
               <div className="column">
                 <div className="row">
                 <Form className="addForm">
                 <FormGroup>
-                  <table>
-                    <thead><Button className="brandNameButton" onClick={this.handleAddDataSet}>
+                    <Button className="brandNameButton" onClick={this.handleAddDataSet}>
                       <div align="left"> hashtag  + </div>
-                    </Button> </thead>
-                    <tbody>
-                    <h1> {this.state.brandName} </h1>
-                    <h1> Other </h1>
-                    </tbody>
-                </table>
-                  <Form><ul> {this.dataSetClassifierNames} </ul></Form>
+                    </Button>
+                    <h1 align="left"> {this.state.brandName} </h1>
+                    <h1 align="left"> Other </h1>
+                  <ul> {this.dataSetClassifierNames} </ul>
                 </FormGroup>
                 <FormGroup>
                   <Input 

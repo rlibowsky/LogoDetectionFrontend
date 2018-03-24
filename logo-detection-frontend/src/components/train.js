@@ -56,7 +56,7 @@ import cookie from "react-cookies";
         this.state.images.push(createImage(elements[i],elements[i+1], elements[i+2]));
       }
       this.BrandNamesList = this.state.images.map(function(image, i){
-        return <div className="dataSetBox" key = {image.src.toString()}> 
+        return <div className="dataSetBox" key = {image.title.toString()}> 
         <button> <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString(), image.id.toString())}/> {image.title.toString()}</button> 
         </div>;
       })
@@ -152,12 +152,7 @@ import cookie from "react-cookies";
           cookie.remove('currentDataSet');
           cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
 
-          this.props.history.push({
-            pathname: '/datasetlanding',
-            params: {
-              img: this.imageJSONS
-            }
-          })
+          this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
         });
       });
       
