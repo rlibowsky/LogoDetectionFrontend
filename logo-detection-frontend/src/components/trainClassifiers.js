@@ -17,6 +17,7 @@ export default class TrainClassifiers extends React.Component {
         brandName: cookie.load('brandName'),
         currentDataSet: cookie.load('currentDataSet'),
         loading: false,
+        imageJSON: cookie.load('imageJSONS'),
         currentClassifiers: cookie.load('currentClassifiers'),
         newClassifier: '',
         newClassifierDescription: ''
@@ -32,9 +33,43 @@ export default class TrainClassifiers extends React.Component {
       this.loadClassifiers = this.loadClassifiers.bind(this);
       this.createLists = this.createLists.bind(this);
       this.createLists();
+      
+      const imageClick = (is_plus) => {
+        console.log(is_plus);
+        if (is_plus === "plus") {
+          this.showTip();
+        }
+        
+      }
+      
+      var createImage = function(src, title) {
+        var img   = new Image();
+        img.src   = src;
+        img.alt   = title;
+        img.title = title;
+        return img; 
+      };
+      // array of images
+      var images = [];
+
+      for (var i = 0; i < this.state.imageJSON.length; i++) {
+        var str = ('http://localhost:2000/' + this.state.imageJSON[i]);
+        images.push(createImage(str), str);
+      }
+           
+      this.dataSetImages = images.map(function(image){
+        if (image.src === undefined) {
+          return;
+        }
+        var str = image;
+        return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 
+        <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
+        </div>;
+      });
 
     }
 
+    
     createLists() {
 
       const handleDeleteClassifier = (classifier) => {
@@ -144,8 +179,12 @@ export default class TrainClassifiers extends React.Component {
                 <ul> {this.dataSetClassifiers} </ul>
                 </div>
               </div>
+              
               <div className="header-space"></div>
               <div className="header-space"></div>
+              <div className="box" id="dsImages">
+                  {this.dataSetImages}
+              </div>  
 
               <div className="column">
                 <div className="row">
