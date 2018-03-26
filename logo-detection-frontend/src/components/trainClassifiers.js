@@ -7,7 +7,7 @@ import ClassifierImages from './classifierimages.js';
 import './trainClassifiers.css';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
 import Box from 'react-layout-components';
-
+import { Scrollbars } from 'react-custom-scrollbars';
 export default class TrainClassifiers extends React.Component { 
     constructor(props) {
       super(props);
@@ -63,7 +63,7 @@ export default class TrainClassifiers extends React.Component {
         }
         var str = image;
         return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 
-        <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
+        <img vspace="50" height="150px" width="150px" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
         </div>;
       });
 
@@ -182,10 +182,11 @@ export default class TrainClassifiers extends React.Component {
               
               <div className="header-space"></div>
               <div className="header-space"></div>
+              <Scrollbars style={{ width: 650, height: 500 }}>
               <div className="box" id="dsImages">
                   {this.dataSetImages}
               </div>  
-
+              </Scrollbars>
               <div className="column">
                 <div className="row">
                 <Form className="addForm">

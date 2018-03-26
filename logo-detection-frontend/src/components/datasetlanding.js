@@ -58,8 +58,8 @@ import { Container, Button } from 'reactstrap';
           return;
         }
         var str = image;
-        return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 
-        <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
+        return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()}> 
+        <img height="200" width="250" hspace="20" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
         </div>;
         
       });
