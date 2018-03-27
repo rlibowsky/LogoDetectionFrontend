@@ -30,7 +30,7 @@ class App extends Component {
           <Route path="/datasetlanding" component={DataSetLanding}/>
           <Route exact path="/signup" component={SignUp}/>
           <Route path="/portal" component={Portal} />
-          <Route path="/train" component={Train} />
+          <Route path="/train" component={Train}/>
           <Route path="/upload" component={Upload} />
           <Route path="/search" component={Search} />
           <Route path="/searchresults" component={SearchResults} />

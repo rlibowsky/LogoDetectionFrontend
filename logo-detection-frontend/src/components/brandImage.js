@@ -8,6 +8,7 @@ import 'react-images-uploader/styles.css';
 import 'react-images-uploader/font.css';
 import './train.css';
 import cookie from "react-cookies";
+import ToolTip from 'react-portal-tooltip';
 
   export default class BrandImage extends React.Component { 
     constructor(props) {
@@ -30,7 +31,9 @@ import cookie from "react-cookies";
     }
 
     imageClick = (brand_name, id) => {
-        this.handleChange(brand_name, id);
+        this.setState({
+          showToolTipActive: !this.state.showToolTipActive
+        });
     }
 
     handleChange (brand_name, id) {
@@ -73,10 +76,21 @@ import cookie from "react-cookies";
   
 
   render() {
+    console.log(this.state.showToolTipActive);
     return (
         <div className="dataSetBox" key = {this.state.title.toString()}> 
         <Loading show={this.state.loading} color="red"/>
-        <button> <img height="300px" width="300px" src={this.state.src.toString()} onClick={() => this.imageClick(this.state.title.toString(), this.state.id.toString())}/> {this.state.title.toString()}</button> 
+        <button> <img height="300px" width="300px" id="plus" src={this.state.src.toString()} onClick={() => this.imageClick(this.state.title.toString(), this.state.id.toString())}/> {this.state.title.toString()}</button> 
+        <ToolTip active={this.state.showToolTipActive} parent="#plus" position="right" arrow="center" >
+              <div> Test </div>
+              <div className="imgButton">
+                <Button onClick={() => this.handleChange(this.state.title.toString(), this.state.id.toString())}> See Data set </Button>
+              </div>
+              <div className="imgButton">
+                <Button> Delete Data set </Button>
+                <Loading show={this.state.loading} color="red" />
+              </div>
+            </ToolTip>
         </div>
     );
     
