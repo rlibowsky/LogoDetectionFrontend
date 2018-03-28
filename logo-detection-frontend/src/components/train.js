@@ -41,8 +41,9 @@ import cookie from "react-cookies";
       for (var i = 0; i < elements.length; i=i+3) {
         this.state.images.push(createImage(elements[i],elements[i+1], elements[i+2]));
       }
+      var hist = this.props.history;
       this.BrandNamesList = this.state.images.map(function(image, i){
-        return <BrandImage image={image}/>;
+        return <BrandImage history={hist} image={image}/>;
         {/* <div className="dataSetBox" key = {image.title.toString()}> 
         <button> <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString(), image.id.toString())}/> {image.title.toString()}</button> 
         </div>; */}

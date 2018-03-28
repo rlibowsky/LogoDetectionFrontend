@@ -16,6 +16,7 @@ import ScrapeInstagram from './components/scrapeInstagram.js';
 import FinishPage from './components/finishPage.js';
 import Upload from './components/upload.js';
 import TrainClassifiers from './components/trainClassifiers.js';
+import BrandImage from './components/brandImage.js';
 class App extends Component {
 
   render() {

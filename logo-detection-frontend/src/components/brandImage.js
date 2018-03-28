@@ -67,11 +67,10 @@ import ToolTip from 'react-portal-tooltip';
             cookie.save('imageJSONS', json.images.slice(0,20), { path: '/' , 'maxAge': 100000});
             cookie.remove('currentDataSet');
             cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
-  
             this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
           });
         });
-        
+        this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
       }
   
 
