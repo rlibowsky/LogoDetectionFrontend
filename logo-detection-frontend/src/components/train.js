@@ -2,6 +2,7 @@ import React from 'react';
 import Footer from './footer.js';
 import { Container,  Button, Form, FormGroup,  Input } from 'reactstrap';
 import ImagesUploader from 'react-images-uploader';
+import BrandImage from './brandImage.js'
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import 'react-images-uploader/styles.css';
@@ -12,10 +13,6 @@ import cookie from "react-cookies";
   export default class Train extends React.Component { 
     constructor(props) {
       super(props);
-      const imageClick = (brand_name, id) => {
-        console.log("clicked image");
-        this.handleChange(brand_name, id);
-      }
       this.state = { 
         pictures: [],
         token: cookie.load('token'),
@@ -38,27 +35,18 @@ import cookie from "react-cookies";
         img.id = id;
         return img; 
       };
-      // array of images
-      // push two images to the array
-      // images.push(createImage("http://1000logos.net/wp-content/uploads/2017/11/logo-Patagonia.jpg", "Patagonia"));
-      // images.push(createImage("https://www.shopirvinecompany.com/media/8524/store-logo-lululemon.jpg", "Lululemon"));
-      // images.push(createImage("https://seeklogo.com/images/A/adidas-logo-49D5BEBA90-seeklogo.com.png", "Adidas"));
-      // images.push(createImage("http://1000logos.net/wp-content/uploads/2017/06/Logo-Under-Armour.jpg", "Under Armour"));
-      // images.push(createImage("https://assets.lookbookspro.com/amanacliq/gm_5a29ffe2-7840-445e-bbaf-158fac11000a.jpg", "Converse"));
-
-      console.log(this.state.datasets);
 
       var elements = (this.state.datasets).split(',');
       this.state.datasetsElements = elements;
-      console.log(this.state.token)
       for (var i = 0; i < elements.length; i=i+3) {
-        console.log("dataset " + elements[i]);
         this.state.images.push(createImage(elements[i],elements[i+1], elements[i+2]));
       }
+      var hist = this.props.history;
       this.BrandNamesList = this.state.images.map(function(image, i){
-        return <div className="dataSetBox" key = {image.title.toString()}> 
+        return <BrandImage history={hist} image={image}/>;
+        {/* <div className="dataSetBox" key = {image.title.toString()}> 
         <button> <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString(), image.id.toString())}/> {image.title.toString()}</button> 
-        </div>;
+        </div>; */}
       })
       this.onSubmit = this.onSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);

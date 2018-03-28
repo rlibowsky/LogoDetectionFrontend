@@ -16,6 +16,7 @@ import ScrapeInstagram from './components/scrapeInstagram.js';
 import FinishPage from './components/finishPage.js';
 import Upload from './components/upload.js';
 import TrainClassifiers from './components/trainClassifiers.js';
+import BrandImage from './components/brandImage.js';
 class App extends Component {
 
   render() {
@@ -30,7 +31,7 @@ class App extends Component {
           <Route path="/datasetlanding" component={DataSetLanding}/>
           <Route exact path="/signup" component={SignUp}/>
           <Route path="/portal" component={Portal} />
-          <Route path="/train" component={Train} />
+          <Route path="/train" component={Train}/>
           <Route path="/upload" component={Upload} />
           <Route path="/search" component={Search} />
           <Route path="/searchresults" component={SearchResults} />
