@@ -66,12 +66,9 @@ export default class TrainClassifiers extends React.Component {
         <img vspace="50" height="150px" width="150px" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
         </div>;
       });
-
     }
-
     
     createLists() {
-
       const handleDeleteClassifier = (classifier) => {
         fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + classifier, {
           method: 'DELETE',
@@ -190,12 +187,14 @@ export default class TrainClassifiers extends React.Component {
               <div className="column">
                 <div className="row">
                 <Form className="addForm">
+                
                 <FormGroup>
+                   {/*
                     <Button className="brandNameButton" onClick={this.handleAddDataSet}>
                       <div align="left"> hashtag  + </div>
                     </Button>
+                    */}
                     <h1 align="left"> {this.state.brandName} </h1>
-                    <h1 align="left"> Other </h1>
                   <ul> {this.dataSetClassifierNames} </ul>
                 </FormGroup>
                 <FormGroup>
@@ -203,11 +202,12 @@ export default class TrainClassifiers extends React.Component {
                     type="string" 
                     name="newClassifier" 
                     id="newClassifier" 
-                    placeholder="New Classifier"
+                    placeholder="Classifier Name"
                     value={this.state.newClassifier}
                     onChange={this.handleNewClassifierChange}
                   />
                 </FormGroup>
+                {/*
                 <FormGroup>
                   <Input 
                     type="string" 
@@ -218,6 +218,7 @@ export default class TrainClassifiers extends React.Component {
                     onChange={this.handleNewClassifierDescriptionChange}
                   />
                 </FormGroup>
+                */}
                 <Button className="brandNameButton" onClick={this.handleAddClassifier}> 
                   <div align="left"> +  add classifier </div>
                 </Button>
