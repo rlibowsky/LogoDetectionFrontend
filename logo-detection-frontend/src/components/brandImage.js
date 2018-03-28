@@ -70,7 +70,6 @@ import ToolTip from 'react-portal-tooltip';
             this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
           });
         });
-        this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
       }
   
 
