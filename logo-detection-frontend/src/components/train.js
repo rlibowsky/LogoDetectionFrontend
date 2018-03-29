@@ -13,6 +13,7 @@ import cookie from "react-cookies";
   export default class Train extends React.Component { 
     constructor(props) {
       super(props);
+      console.log("in train constructor");
       this.state = { 
         pictures: [],
         token: cookie.load('token'),
@@ -42,14 +43,19 @@ import cookie from "react-cookies";
         this.state.images.push(createImage(elements[i],elements[i+1], elements[i+2]));
       }
       var hist = this.props.history;
+      console.log("this is ");
+      console.log(this);
+      var par = this;
       this.BrandNamesList = this.state.images.map(function(image, i){
-        return <BrandImage history={hist} image={image}/>;
+        return <BrandImage history={hist} image={image} parent={par}/>;
         {/* <div className="dataSetBox" key = {image.title.toString()}> 
         <button> <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString(), image.id.toString())}/> {image.title.toString()}</button> 
         </div>; */}
       })
       this.onSubmit = this.onSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
+      this.refresh = this.refresh.bind(this);
+      this.deleteDataSet = this.deleteDataSet.bind(this);
     }
     handleBrandNameChange = (e) => {
       this.setState({
@@ -79,6 +85,33 @@ import cookie from "react-cookies";
         var str = array.toString();
         cookie.save('datasets', str, { path: '/' , 'maxAge': 100000});
         window.location.reload();
+      });
+    }
+
+    deleteDataSet (brand_name, id) {
+      // cookie.save('brandName', this.state.brand_name, { path: '/' , 'maxAge': 100000});
+        console.log("in delete, BRAND NAME: " + brand_name)
+        fetch('http://localhost:2000/datasets/' + id.toString(), {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+        // body: JSON.stringify({
+        //   "name": (this.state.brand_name).toLowerCase(),
+        //   "datasetType": "0"
+        // })
+      }).then(response => {
+        console.log("made it to response");
+        if (response.status === 200) {
+          //good
+          console.log("good");
+        }
+        else {
+          //bad
+        }
+        this.refresh();
       });
     }
 

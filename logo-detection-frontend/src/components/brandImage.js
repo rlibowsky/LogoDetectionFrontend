@@ -25,6 +25,9 @@ import ToolTip from 'react-portal-tooltip';
       };
 
       console.log(this.props.image);
+      console.log("parent");
+      console.log(this.props.parent);
+      console.log(this.props.parent.deleteDataSet);
 
       this.imageClick = this.imageClick.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -35,6 +38,8 @@ import ToolTip from 'react-portal-tooltip';
           showToolTipActive: !this.state.showToolTipActive
         });
     }
+
+    
 
     handleChange (brand_name, id) {
         this.setState({
@@ -85,7 +90,7 @@ import ToolTip from 'react-portal-tooltip';
                 <Button onClick={() => this.handleChange(this.state.title.toString(), this.state.id.toString())}> See Data set </Button>
               </div>
               <div className="imgButton">
-                <Button> Delete Data set </Button>
+                <Button onClick={() => this.props.parent.deleteDataSet(this.state.title.toString(), this.state.id.toString())}> Delete Data set </Button>
                 <Loading show={this.state.loading} color="red" />
               </div>
             </ToolTip>
