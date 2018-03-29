@@ -21,7 +21,7 @@ export default class TrainClassifiers extends React.Component {
         currentClassifiers: cookie.load('currentClassifiers'),
         newClassifier: '',
         newClassifierDescription: '',
-        nodes: []
+        nodes: cookie.load('nodes')
       };
 
       if (this.state.token === undefined) {
@@ -34,10 +34,7 @@ export default class TrainClassifiers extends React.Component {
       this.loadClassifiers = this.loadClassifiers.bind(this);
       this.createLists = this.createLists.bind(this);
       this.createLists();
-      
-      this.setState({
-        nodes: cookie.load('nodes')
-      });
+
       const imageClick = (is_plus) => {
         console.log(is_plus);
         if (is_plus === "plus") {
@@ -145,7 +142,11 @@ export default class TrainClassifiers extends React.Component {
       });
       console.log(this.state.newClassifier)
       console.log(nodeArray)
-      }
+      var myMap = new Map()
+      myMap.set(this.state.newClassifier,nodeArray)
+      console.log(myMap)
+      cookie.save('nodes', myMap, { path: '/' , 'maxAge': 100000});
+    }
     
 
     loadClassifiers() {
