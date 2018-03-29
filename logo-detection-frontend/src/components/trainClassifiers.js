@@ -20,7 +20,8 @@ export default class TrainClassifiers extends React.Component {
         imageJSON: cookie.load('imageJSONS'),
         currentClassifiers: cookie.load('currentClassifiers'),
         newClassifier: '',
-        newClassifierDescription: ''
+        newClassifierDescription: '',
+        nodes: []
       };
 
       if (this.state.token === undefined) {
@@ -34,6 +35,9 @@ export default class TrainClassifiers extends React.Component {
       this.createLists = this.createLists.bind(this);
       this.createLists();
       
+      this.setState({
+        nodes: cookie.load('nodes')
+      });
       const imageClick = (is_plus) => {
         console.log(is_plus);
         if (is_plus === "plus") {
@@ -66,6 +70,7 @@ export default class TrainClassifiers extends React.Component {
         <img vspace="50" height="150px" width="150px" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
         </div>;
       });
+      console.log(this.state.nodes);
     }
     
     createLists() {
@@ -134,7 +139,14 @@ export default class TrainClassifiers extends React.Component {
       .then(json => {
         this.loadClassifiers();
       });
-    }
+      var nodeList = prompt("List the nodes within this classifer (seperated by comma)", "nodes");
+      var nodeArray = nodeList.split(",").map(function(item) {
+        return item.trim();
+      });
+      console.log(this.state.newClassifier)
+      console.log(nodeArray)
+      }
+    
 
     loadClassifiers() {
       fetch('http://localhost:2000/datasets/' + this.state.currentDataSet + '/classifiers', {
@@ -207,7 +219,7 @@ export default class TrainClassifiers extends React.Component {
                     onChange={this.handleNewClassifierChange}
                   />
                 </FormGroup>
-                {/*
+                
                 <FormGroup>
                   <Input 
                     type="string" 
@@ -218,7 +230,7 @@ export default class TrainClassifiers extends React.Component {
                     onChange={this.handleNewClassifierDescriptionChange}
                   />
                 </FormGroup>
-                */}
+                
                 <Button className="brandNameButton" onClick={this.handleAddClassifier}> 
                   <div align="left"> +  add classifier </div>
                 </Button>
