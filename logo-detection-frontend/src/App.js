@@ -17,6 +17,7 @@ import FinishPage from './components/finishPage.js';
 import Upload from './components/upload.js';
 import TrainClassifiers from './components/trainClassifiers.js';
 import BrandImage from './components/brandImage.js';
+import ScrapeResults from './components/scraperesults.js';
 class App extends Component {
 
   render() {
@@ -38,6 +39,7 @@ class App extends Component {
           <Route path="/scrapeInstagram" component={ScrapeInstagram} />
           <Route path="/finishPage" component={FinishPage} />
           <Route path="/trainclassifiers" component={TrainClassifiers} />
+          <Route path="/scraperesults" component={ScrapeResults} />
           </div>
         </div>
         </Container>
