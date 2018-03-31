@@ -29,10 +29,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         return;
       }
 
-      // this.classifierList = {};
-      // this.userList = {};
-      // this.hashtagList = {};
-
       this.nextPage = this.nextPage.bind(this);
       this.addUser = this.addUser.bind(this);
       this.addClassifier = this.addClassifier.bind(this);
@@ -40,7 +36,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       this.buildClassifierList = this.buildClassifierList.bind(this);
       this.buildHashtagList = this.buildHashtagList.bind(this);
       this.buildUserList = this.buildUserList.bind(this);
-
     }
     handleHashtagChange = (e) => {
       this.setState({
@@ -67,6 +62,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         users: userList,
         currentUser: ''
       })
+      this.buildUserList();
     }
 
     addHashtag() {
@@ -76,6 +72,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         hashtags: hashtagList,
         currentHashtag: ''
       })
+      this.buildHashtagList();
     }
 
     addClassifier() {
@@ -89,22 +86,77 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     }
 
     buildClassifierList () {
-      console.log("building classifier list");
+      const handleDeleteClassifier = (classifier) => {
+        var newClassifierList = [];
+        for (var c = 0; c < this.state.classifiers.length; c++) {
+          if (this.state.classifiers[c] !== classifier) {
+            newClassifierList.push(this.state.classifiers[c]);
+          }
+        }
+        this.state.classifiers = newClassifierList;
+        this.state.currentClassifier = '';
+        this.buildClassifierList();
+      };
       this.classifierList = this.state.classifiers.map(function(classifier){
-        console.log(classifier)
         return(
-         <div key = {classifier.toString()}> 
-         {classifier.toString()}
-        </div>);
+         <li align="left" key = {classifier.toString()} id ={classifier.toString()} className="listItem"> 
+        <h10 align="left"> {classifier.toString()} </h10>
+        <Button className="deleteClassifierBtn" onClick={() => handleDeleteClassifier(classifier.toString())}> 
+          <div align="center"> X </div> 
+          </Button>
+        </li>);
       })
+      this.forceUpdate();
     }
 
     buildUserList () {
-      
+      const handleDeleteUser = (user) => {
+        var newUserList = [];
+        for (var u = 0; u < this.state.users.length; u++) {
+          if (this.state.users[u] !== user) {
+            newUserList.push(this.state.users[u]);
+          }
+        }
+        this.state.users = newUserList;
+        this.state.currentUser = '';
+        console.log(this.state.users);
+        this.buildUserList();
+      };
+      this.userList = this.state.users.map(function(user){
+        return(
+         <li align="left" key = {user.toString()} id ={user.toString()} className="listItem"> 
+        <h10 align="left"> {user.toString()} </h10>
+        <Button className="deleteClassifierBtn" onClick={() => handleDeleteUser(user.toString())}> 
+          <div align="center"> X </div> 
+          </Button>
+        </li>);
+      })
+      this.forceUpdate();
     }
 
     buildHashtagList () {
-      
+      const handleDeleteHashtag = (hashtag) => {
+        var newHashtagList = [];
+        for (var h = 0; h < this.state.hashtags.length; h++) {
+          if (this.state.hashtags[h] !== hashtag) { 
+            newHashtagList.push(this.state.hashtags[h]);
+          }
+        }
+        this.state.hashtags = newHashtagList;
+        this.state.currentHashtag = '';
+        this.buildHashtagList();
+      };
+
+      this.hashtagList = this.state.hashtags.map(function(hashtag){
+        return(
+        <li align="left" key = {hashtag.toString()} id ={hashtag.toString()} className="listItem"> 
+        <h10 align="left"> {hashtag.toString()} </h10>
+        <Button className="deleteClassifierBtn" onClick={() => handleDeleteHashtag(hashtag.toString())}> 
+          <div align="center"> X </div> 
+          </Button>
+        </li>);
+      })
+      this.forceUpdate();
     }
 
     handleSubmit = (e) => {
@@ -154,10 +206,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
 
   render() {
-    console.log("rendering ");
-    console.log(this.classifierList);
     return (
-      
     <Container>
         <center>
             <h2> SEARCH </h2>
@@ -166,9 +215,15 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
             <div>
               <div>
                 Hashtags:
+                <ul>
+                  {this.hashtagList}
+                </ul>
               </div>
               <div>
                 Users:
+                <ul>
+                  {this.userList}
+                </ul>
               </div>
               <div>
                 Classifiers:
@@ -188,7 +243,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                 value={this.state.currentHashtag}
                 onChange={this.handleHashtagChange}
                 />
-                <Button onClick={this.Hashtag}> Add Hashtag </Button>
+                <Button className="addBtn" onClick={this.addHashtag}> Add Hashtag </Button>
                 </div>
                 <div>
                 <Input 
@@ -199,7 +254,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                 value={this.state.currentUser}
                 onChange={this.handleUsersChange}
                 />
-                <Button onClick={this.addUser}> Add User </Button>
+                <Button className="addBtn" onClick={this.addUser}> Add User </Button>
                 </div>
                 <div>
                 <Input 
@@ -210,7 +265,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                 value={this.state.currentClassifier}
                 onChange={this.handleClassifiersChange}
                 />
-                <Button onClick={this.addClassifier}> Add Classifier </Button>
+                <Button className="addBtn" onClick={this.addClassifier}> Add Classifier </Button>
                 </div>
               <Button onClick={this.handleSubmit}  className="searchBtn"> DONE </Button>
               <Loading
