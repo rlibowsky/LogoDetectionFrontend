@@ -1,27 +1,25 @@
 import React from 'react';
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink} from 'reactstrap';
+import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink, 
+  Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
 import cookie from "react-cookies";
 
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false
+      isOpen: false,
+      dropdownOpen: false
     }
     this.toggle = this.toggle.bind(this);
     this.logout = this.logout.bind(this);
+    this.datasets = this.datasets.bind(this);
+    this.search = this.search.bind(this);
+    this.profile = this.profile.bind(this);
   }
 
   toggle() {
     this.setState({
-      isOpen: !this.state.isOpen
+      dropdownOpen: !this.state.dropdownOpen
     });
   }
 
@@ -29,15 +27,29 @@ export default class Header extends React.Component {
     cookie.remove('token', { path: '/' });
   }
 
+  search() {
+    this.props.history.push('/search');
+  }
+
+  profile() {
+    this.props.history.push('/portal');
+  }
+
+  datasets() {
+    this.props.history.push('/train');
+  }
+
   render() {
     const tokenExists = cookie.load('token') !== undefined;
     var loginText = "Login/Sign Up";
     var portalText = "help@logodetect.com";
     var portalRef = "/";
+    var login = loginText;
     if (tokenExists) {
       loginText = "Logout";
       portalText = "View Portal";
       portalRef = "/portal";
+      login = "";
     }
     
 
@@ -49,10 +61,22 @@ export default class Header extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink  onClick={this.logout} href="/login"> { loginText } </NavLink>
+                <NavLink  onClick={this.logout} href="/login"> { login } </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href={portalRef}> {portalText} </NavLink>
+                <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                  <DropdownToggle caret>
+                  Options 
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem header> Options </DropdownItem>
+                    <DropdownItem onClick={this.datasets}> Datasets </DropdownItem>
+                    <DropdownItem onClick={this.search}> Search </DropdownItem>
+                    <DropdownItem onClick={this.profile}> Profile </DropdownItem>
+                    <DropdownItem divider />
+                    <DropdownItem onClick={this.logout} href="/login" > {loginText} </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
               </NavItem>
               <NavItem>
                 <NavLink>4254427300</NavLink>
