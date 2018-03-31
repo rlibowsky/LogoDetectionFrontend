@@ -41,15 +41,21 @@ export default class Header extends React.Component {
 
   render() {
     const tokenExists = cookie.load('token') !== undefined;
-    var loginText = "Login/Sign Up";
-    var portalText = "help@logodetect.com";
-    var portalRef = "/";
-    var login = loginText;
+    var domVariables = {
+      loginText: "Login/Sign Up",
+      login: "Login/Sign Up",
+      dataSetText: "",
+      searchText: "",
+      profileText: ""
+    };
     if (tokenExists) {
-      loginText = "Logout";
-      portalText = "View Portal";
-      portalRef = "/portal";
-      login = "";
+      domVariables = {
+        loginText: "Logout",
+        login: "",
+        dataSetText: "Datasets",
+        searchText: "Search",
+        profileText: "Profile"
+      };
     }
     
 
@@ -61,7 +67,7 @@ export default class Header extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink  onClick={this.logout} href="/login"> { login } </NavLink>
+                <NavLink  onClick={this.logout} href="/login"> { domVariables.login } </NavLink>
               </NavItem>
               <NavItem>
                 <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -70,11 +76,11 @@ export default class Header extends React.Component {
                   </DropdownToggle>
                   <DropdownMenu>
                     <DropdownItem header> Options </DropdownItem>
-                    <DropdownItem onClick={this.datasets}> Datasets </DropdownItem>
-                    <DropdownItem onClick={this.search}> Search </DropdownItem>
-                    <DropdownItem onClick={this.profile}> Profile </DropdownItem>
+                    <DropdownItem disabled={!tokenExists} onClick={this.datasets}> {domVariables.dataSetText} </DropdownItem>
+                    <DropdownItem disabled={!tokenExists} onClick={this.search}> {domVariables.searchText} </DropdownItem>
+                    <DropdownItem disabled={!tokenExists} onClick={this.profile}> {domVariables.profileText} </DropdownItem>
                     <DropdownItem divider />
-                    <DropdownItem onClick={this.logout} href="/login" > {loginText} </DropdownItem>
+                    <DropdownItem onClick={this.logout} href="/login" > {domVariables.loginText} </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </NavItem>
