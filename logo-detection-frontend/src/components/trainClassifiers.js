@@ -187,25 +187,57 @@ export default class TrainClassifiers extends React.Component {
     }
 
     imageClick(image_src){
-      if (this.selectedImages.includes(image_src)){
-
-        const index = this.selectedImages.indexOf(image_src);
-        this.selectedImages.splice(index, 1);
-      }
-      else {
-        this.selectedImages.push(image_src);
-      }
+        //if this.state.selectedClassifier doesnt exist
+        if (this.state.selectedClassifier === '') {
+          alert("Please select a classifier");
+        }
+        else {
+          if (this.selectedImages.length === 0) {
+            var arr = [image_src]
+            var obj = [this.state.selectedClassifier, arr]
+            this.selectedImages.push(obj);
+          }
+          else {
+            var found = false;
+            for (var i = 0, length = this.selectedImages.length; i < length; i++) {
+              if (this.selectedImages[i][0] === this.state.selectedClassifier) {
+                found = true;
+                if(this.selectedImages[i][1].includes(image_src)) {
+                  var index = this.selectedImages[i][1].indexOf(image_src);
+                  this.selectedImages[i][1].splice(index, 1);
+                }
+                else {
+                  var classifier = this.selectedImages[i][0];
+                  var arr = this.selectedImages[i][1];
+                  arr.push(image_src);
+                  var obj = [classifier, arr]
+                  this.selectedImages.splice(i, 1);
+                  this.selectedImages.push(obj);
+                }
+              }
+            }
+            if (found === false) {
+              var arr = [image_src]
+              var obj = [this.state.selectedClassifier, arr]
+              this.selectedImages.push(obj);
+            }
+          }
+        }
       this.forceUpdate()
-      //TrainClassifiers()
     }
 
     setBorder(image_src){
-      if (this.selectedImages.includes(image_src)){
-        return CSSVariables.border;
-      }
-      else {
-        return CSSVariables.noBorder;
-      }
+      for (var i = 0, length = this.selectedImages.length; i < length; i++) {
+        if (this.selectedImages[i].includes(this.state.selectedClassifier)) {
+          if(this.selectedImages[i][1].includes(image_src)) {
+            return CSSVariables.border;
+          }
+          else {
+            return CSSVariables.noBorder;
+          }
+        }
+      } 
+      return CSSVariables.noBorder;
     }
 
 
@@ -237,7 +269,7 @@ export default class TrainClassifiers extends React.Component {
                       }
                       var str = image;
                       return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()}> 
-                      <img vspace="50" height="150px" width="150px" src={image.src.toString()}  onClick={() => this.imageClick(image.src.toString())} style={this.setBorder(image.src.toString())}/>
+                      <img vspace="50" height="160px" width="160px" src={image.src.toString()}  onClick={() => this.imageClick(image.src.toString())} style={this.setBorder(image.src.toString())}/>
                       </div>;
                   })}
               </div>  
