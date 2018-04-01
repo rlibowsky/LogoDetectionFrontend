@@ -8,10 +8,19 @@ import './trainClassifiers.css';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
 import Box from 'react-layout-components';
 import { Scrollbars } from 'react-custom-scrollbars';
-export default class TrainClassifiers extends React.Component { 
-    constructor(props) {
-      super(props);
 
+const CSSVariables = {
+  border : {
+      border : '10px solid green'
+  },
+  noBorder : {
+      border : '10px solid transparent'
+  },
+};
+export default class TrainClassifiers extends React.Component { 
+    
+  constructor(props) {
+      super(props);
       this.state = {
         token: cookie.load('token'),
         brandName: cookie.load('brandName'),
@@ -21,27 +30,30 @@ export default class TrainClassifiers extends React.Component {
         currentClassifiers: cookie.load('currentClassifiers'),
         newClassifier: '',
         newClassifierDescription: '',
-        nodes: cookie.load('nodes')
+        nodes: {},
+        selectedClassifier:''
       };
+      this.selectedImages = [];
+      this.images = [];
 
+
+      if (document.cookie.indexOf('classifier-nodes') > -1) {
+        this.setState({
+          nodes:cookie.load('classifier-nodes')
+        })
+      }
       if (this.state.token === undefined) {
         this.props.history.push('/login');
         return;
       }
-
-      this.handleAddDataSet = this.handleAddDataSet.bind(this);
+      this.imageClick = this.imageClick.bind(this);
+      this.setBorder = this.setBorder.bind(this);
+      this.background = this.background.bind(this);
+      this.selectClassifier = this.selectClassifier.bind(this);
       this.handleAddClassifier = this.handleAddClassifier.bind(this);
       this.loadClassifiers = this.loadClassifiers.bind(this);
       this.createLists = this.createLists.bind(this);
       this.createLists();
-
-      const imageClick = (is_plus) => {
-        console.log(is_plus);
-        if (is_plus === "plus") {
-          this.showTip();
-        }
-        
-      }
       
       var createImage = function(src, title) {
         var img   = new Image();
@@ -51,23 +63,12 @@ export default class TrainClassifiers extends React.Component {
         return img; 
       };
       // array of images
-      var images = [];
 
       for (var i = 0; i < this.state.imageJSON.length; i++) {
         var str = ('http://localhost:2000/' + this.state.imageJSON[i]);
-        images.push(createImage(str), str);
+        this.images.push(createImage(str), str);
       }
-           
-      this.dataSetImages = images.map(function(image){
-        if (image.src === undefined) {
-          return;
-        }
-        var str = image;
-        return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()} > 
-        <img vspace="50" height="150px" width="150px" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
-        </div>;
-      });
-      console.log(this.state.nodes);
+          
     }
     
     createLists() {
@@ -82,23 +83,13 @@ export default class TrainClassifiers extends React.Component {
           this.loadClassifiers();
         });
       }
-
       this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
         return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
             <ClassifierImages classifierName="{classifier.name.toString()}"/>
         </li>
       });
-
-      this.dataSetClassifierNames = this.state.currentClassifiers.map(function(classifier, i){
-        return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> 
-        <h10 align="left"> {classifier.name.toString()} </h10>
-        <Button className="deleteClassifierBtn" onClick={() => handleDeleteClassifier(classifier.id.toString())}> 
-          <div align="center"> X </div> 
-          </Button>
-        </li>
-        
-      });
     }
+
 
     handleNewClassifierChange = (e) => {
       this.setState({
@@ -140,12 +131,39 @@ export default class TrainClassifiers extends React.Component {
       var nodeArray = nodeList.split(",").map(function(item) {
         return item.trim();
       });
-      console.log(this.state.newClassifier)
-      console.log(nodeArray)
-      var myMap = new Map()
-      myMap.set(this.state.newClassifier,nodeArray)
-      console.log(myMap)
-      cookie.save('nodes', myMap, { path: '/' , 'maxAge': 100000});
+      var obj = {
+        table: []
+      };
+    obj.table.push({name: this.state.newClassifier, array:nodeArray});
+    var json = JSON.stringify(obj);
+    console.log(json)
+     
+    /*var parsed = JSON.parse(json);
+     console.log("** PARSED: " + parsed)
+     parsed.table.push({name: "but", array:["hey", "cool"]})
+     var parsedJSON = JSON.stringify(parsed)
+     console.log("** PARSED JSON: " + parsedJSON)
+     var fs = require('fs');*/
+
+    }
+
+    selectClassifier(classifierName){
+      console.log('** :' + classifierName);
+      this.setState({
+        selectedClassifier: classifierName
+      })
+      console.log('** :' + this.state.selectedClassifier);
+      this.forceUpdate();
+    }
+
+    background(classifierName){
+      console.log("***** selected")
+      if (this.state.selectedClassifier === classifierName) {
+        return "powderblue"
+      }
+      else {
+        return "white"
+      }
     }
     
 
@@ -171,6 +189,32 @@ export default class TrainClassifiers extends React.Component {
       });
     }
 
+    imageClick(image_src){
+      console.log('** sup')
+      if (this.selectedImages.includes(image_src)){
+
+        const index = this.selectedImages.indexOf(image_src);
+        this.selectedImages.splice(index, 1);
+      }
+      else {
+        this.selectedImages.push(image_src);
+      }
+      this.forceUpdate()
+      //TrainClassifiers()
+    }
+
+    setBorder(image_src){
+      console.log("** made it here");
+      if (this.selectedImages.includes(image_src)){
+        console.log('** already selected')
+        return CSSVariables.border;
+      }
+      else {
+        console.log('** now selected')
+        return CSSVariables.noBorder;
+      }
+    }
+
 
   render() {
     return (
@@ -186,7 +230,7 @@ export default class TrainClassifiers extends React.Component {
                 <Button className="editDataset" onClick={this.handleEditDataset}> Edit Dataset </Button>
                 </div>
                 <div className="row">
-                <ul> {this.dataSetClassifiers} </ul>
+                {/*<ul> {this.dataSetClassifiers} </ul>*/}
                 </div>
               </div>
               
@@ -194,7 +238,15 @@ export default class TrainClassifiers extends React.Component {
               <div className="header-space"></div>
               <Scrollbars style={{ width: 650, height: 500 }}>
               <div className="box" id="dsImages">
-                  {this.dataSetImages}
+                  {this.images.map((image) => {
+                      if (image.src === undefined) {
+                        return;
+                      }
+                      var str = image;
+                      return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()}> 
+                      <img vspace="50" height="150px" width="150px" src={image.src.toString()}  onClick={() => this.imageClick(image.src.toString())} style={this.setBorder(image.src.toString())}/>
+                      </div>;
+                  })}
               </div>  
               </Scrollbars>
               <div className="column">
@@ -208,7 +260,17 @@ export default class TrainClassifiers extends React.Component {
                     </Button>
                     */}
                     <h1 align="left"> {this.state.brandName} </h1>
-                  <ul> {this.dataSetClassifierNames} </ul>
+                  <ul> 
+                  {this.state.currentClassifiers.map((classifier, i) =>{
+                    return <li style={{background: this.background(classifier.name.toString())}} onClick={() => this.selectClassifier(classifier.name.toString())} align="left" key = {classifier.name.toString()} id ={classifier.id.toString()} margin="50px"> 
+                    <h10 align="left"> {classifier.name.toString()} </h10>
+                    <Button className="deleteClassifierBtn" onClick={() => this.handleDeleteClassifier(classifier.id.toString())}> 
+                      <div align="center"> X </div> 
+                    </Button>
+                    </li>
+                  })}
+
+                  </ul>
                 </FormGroup>
                 <FormGroup>
                   <Input 
