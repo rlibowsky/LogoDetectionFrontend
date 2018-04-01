@@ -43,8 +43,6 @@ import cookie from "react-cookies";
         this.state.images.push(createImage(elements[i],elements[i+1], elements[i+2]));
       }
       var hist = this.props.history;
-      console.log("this is ");
-      console.log(this);
       var par = this;
       this.BrandNamesList = this.state.images.map(function(image, i){
         return <BrandImage history={hist} image={image} parent={par}/>;

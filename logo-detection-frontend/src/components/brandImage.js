@@ -80,11 +80,12 @@ import ToolTip from 'react-portal-tooltip';
 
   render() {
     console.log(this.state.showToolTipActive);
+    var parentStr = "#" + this.state.title.toString();
     return (
         <div className="dataSetBox" key = {this.state.title.toString()}> 
         <Loading show={this.state.loading} color="red"/>
-        <button> <img height="300px" width="300px" id="plus" src={this.state.src.toString()} onClick={() => this.imageClick(this.state.title.toString(), this.state.id.toString())}/> {this.state.title.toString()}</button> 
-        <ToolTip active={this.state.showToolTipActive} parent="#plus" position="right" arrow="center" >
+        <button> <img height="300px" width="300px" id={this.state.title.toString()} src={this.state.src.toString()} onClick={() => this.imageClick(this.state.title.toString(), this.state.id.toString())}/> {this.state.title.toString()}</button> 
+        <ToolTip active={this.state.showToolTipActive} parent={parentStr} position="right" arrow="center" >
               <div> Test </div>
               <div className="imgButton">
                 <Button onClick={() => this.handleChange(this.state.title.toString(), this.state.id.toString())}> See Data set </Button>
