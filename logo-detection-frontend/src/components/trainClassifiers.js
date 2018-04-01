@@ -3,6 +3,7 @@ import Footer from './footer.js';
 import cookie from "react-cookies";
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
+import FinishPage from './finishPage.js';
 import ClassifierImages from './classifierimages.js';
 import './trainClassifiers.css';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
@@ -30,18 +31,12 @@ export default class TrainClassifiers extends React.Component {
         currentClassifiers: cookie.load('currentClassifiers'),
         newClassifier: '',
         newClassifierDescription: '',
-        nodes: {},
-        selectedClassifier:''
+        selectedClassifier:'',
+        selectedNode: ''
       };
       this.selectedImages = [];
       this.images = [];
 
-
-      if (document.cookie.indexOf('classifier-nodes') > -1) {
-        this.setState({
-          nodes:cookie.load('classifier-nodes')
-        })
-      }
       if (this.state.token === undefined) {
         this.props.history.push('/login');
         return;
@@ -49,11 +44,14 @@ export default class TrainClassifiers extends React.Component {
       this.imageClick = this.imageClick.bind(this);
       this.setBorder = this.setBorder.bind(this);
       this.background = this.background.bind(this);
-      this.selectClassifier = this.selectClassifier.bind(this);
+      this.addToTrainingSet = this.addToTrainingSet.bind(this);
+      this.selectClassifierOrNode = this.selectClassifierOrNode.bind(this);
       this.handleAddClassifier = this.handleAddClassifier.bind(this);
       this.loadClassifiers = this.loadClassifiers.bind(this);
       this.createLists = this.createLists.bind(this);
       this.createLists();
+      this.returnNodes = this.returnNodes.bind(this);
+
       
       var createImage = function(src, title) {
         var img   = new Image();
@@ -112,6 +110,15 @@ export default class TrainClassifiers extends React.Component {
     }
 
 
+    addToTrainingSet() {
+      this.props.history.push({
+        pathname: '/finishPage',
+        params: {
+          selectedImages: this.selectedImages
+        }
+      });
+    }
+
     handleAddClassifier() {
       fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
         method: 'POST',
@@ -131,35 +138,60 @@ export default class TrainClassifiers extends React.Component {
       var nodeArray = nodeList.split(",").map(function(item) {
         return item.trim();
       });
-      var obj = {
-        table: []
-      };
-    obj.table.push({name: this.state.newClassifier, array:nodeArray});
-    var json = JSON.stringify(obj);
-    console.log(json)
-     
-    /*var parsed = JSON.parse(json);
-     console.log("** PARSED: " + parsed)
-     parsed.table.push({name: "but", array:["hey", "cool"]})
-     var parsedJSON = JSON.stringify(parsed)
-     console.log("** PARSED JSON: " + parsedJSON)
-     var fs = require('fs');*/
+      var nodeString = nodeArray.toString();
+      var classifierName = this.state.newClassifier.toLowerCase();
+      //if cookie exists
+      if (document.cookie.indexOf(classifierName + '=') > -1) {
+        console.log("*** EXISTING")
+        var cookieString = cookie.load(classifierName);
+        console.log("***" + cookieString)
+        var cookieArray = cookieString.split(',');
+        var newString = (nodeArray.concat(cookieArray)).toString();
+        cookie.save(classifierName, newString, { path: '/' , 'maxAge': 100000});
+      }
+      //if cookie does not exist
+      else {
+        cookie.save(classifierName, nodeString, { path: '/' , 'maxAge': 100000});
+      }
 
     }
 
-    selectClassifier(classifierName){
-      this.setState({
-        selectedClassifier: classifierName
-      })
+    selectClassifierOrNode(str){
+      //if it is a node
+      if(str.indexOf('-') >= 0){
+        this.setState({
+          selectedNode: str
+        })
+      }
+      //if it is a classifier
+      else{
+        if (this.state.selectedClassifier !== str) {
+          this.setState({
+            selectedNode: ''
+          })
+        }
+        this.setState({
+          selectedClassifier: str
+        })
+      }
       this.forceUpdate();
     }
 
-    background(classifierName){
-      if (this.state.selectedClassifier === classifierName) {
-        return "powderblue"
+    background(str){
+      //if it is a node
+      if(str.indexOf('-') >= 0){
+        if (this.state.selectedNode === str) {
+          return "salmon"
+        }
       }
-      else {
-        return "white"
+      //if it is a classifier
+      else{
+        if (this.state.selectedClassifier === str) {
+          return "powderblue"
+        }
+        else {
+          return "white"
+        }
       }
     }
     
@@ -186,21 +218,25 @@ export default class TrainClassifiers extends React.Component {
       });
     }
 
+    returnNodes(classifier) {
+      var nodeString = cookie.load(classifier);
+      return nodeString.split(',')
+    }
     imageClick(image_src){
         //if this.state.selectedClassifier doesnt exist
-        if (this.state.selectedClassifier === '') {
+        if (this.state.selectedNode === '') {
           alert("Please select a classifier");
         }
         else {
           if (this.selectedImages.length === 0) {
             var arr = [image_src]
-            var obj = [this.state.selectedClassifier, arr]
+            var obj = [this.state.selectedNode, arr]
             this.selectedImages.push(obj);
           }
           else {
             var found = false;
             for (var i = 0, length = this.selectedImages.length; i < length; i++) {
-              if (this.selectedImages[i][0] === this.state.selectedClassifier) {
+              if (this.selectedImages[i][0] === this.state.selectedNode) {
                 found = true;
                 if(this.selectedImages[i][1].includes(image_src)) {
                   var index = this.selectedImages[i][1].indexOf(image_src);
@@ -218,7 +254,7 @@ export default class TrainClassifiers extends React.Component {
             }
             if (found === false) {
               var arr = [image_src]
-              var obj = [this.state.selectedClassifier, arr]
+              var obj = [this.state.selectedNode, arr]
               this.selectedImages.push(obj);
             }
           }
@@ -228,7 +264,7 @@ export default class TrainClassifiers extends React.Component {
 
     setBorder(image_src){
       for (var i = 0, length = this.selectedImages.length; i < length; i++) {
-        if (this.selectedImages[i].includes(this.state.selectedClassifier)) {
+        if (this.selectedImages[i].includes(this.state.selectedNode)) {
           if(this.selectedImages[i][1].includes(image_src)) {
             return CSSVariables.border;
           }
@@ -286,8 +322,17 @@ export default class TrainClassifiers extends React.Component {
                     <h1 align="left"> {this.state.brandName} </h1>
                   <ul> 
                   {this.state.currentClassifiers.map((classifier, i) =>{
-                    return <li style={{background: this.background(classifier.name.toString())}} onClick={() => this.selectClassifier(classifier.name.toString())} align="left" key = {classifier.name.toString()} id ={classifier.id.toString()} margin="50px"> 
-                    <h10 align="left"> {classifier.name.toString()} </h10>
+                    return <li style={{background: this.background(classifier.name.toString())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString())} align="left" key = {classifier.name.toString()} id ={classifier.id.toString()} margin="50px"> 
+                    <h10 align="left"> {classifier.name.toString()} 
+                    
+
+                  {this.returnNodes(classifier.name.toString()).map((node) => {
+                      return <div align = 'right' style={{background: this.background(classifier.name.toString() + '-' + node.toString())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString() + '-' + node.toString())} > 
+                        {node}
+                      </div>;
+                  })}
+
+                    </h10>
                     <Button className="deleteClassifierBtn" onClick={() => this.handleDeleteClassifier(classifier.id.toString())}> 
                       <div align="center"> X </div> 
                     </Button>
@@ -323,9 +368,9 @@ export default class TrainClassifiers extends React.Component {
                 </Button>
                   
                 </Form>
-                <Button>
+                <Button onClick={() => this.addToTrainingSet()}>
                 <div align="left"> TRAIN IMAGES </div>
-              </Button>
+                </Button>
                
                   
                 </div>
