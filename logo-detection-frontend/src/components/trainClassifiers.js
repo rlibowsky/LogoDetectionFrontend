@@ -148,16 +148,13 @@ export default class TrainClassifiers extends React.Component {
     }
 
     selectClassifier(classifierName){
-      console.log('** :' + classifierName);
       this.setState({
         selectedClassifier: classifierName
       })
-      console.log('** :' + this.state.selectedClassifier);
       this.forceUpdate();
     }
 
     background(classifierName){
-      console.log("***** selected")
       if (this.state.selectedClassifier === classifierName) {
         return "powderblue"
       }
@@ -190,7 +187,6 @@ export default class TrainClassifiers extends React.Component {
     }
 
     imageClick(image_src){
-      console.log('** sup')
       if (this.selectedImages.includes(image_src)){
 
         const index = this.selectedImages.indexOf(image_src);
@@ -204,13 +200,10 @@ export default class TrainClassifiers extends React.Component {
     }
 
     setBorder(image_src){
-      console.log("** made it here");
       if (this.selectedImages.includes(image_src)){
-        console.log('** already selected')
         return CSSVariables.border;
       }
       else {
-        console.log('** now selected')
         return CSSVariables.noBorder;
       }
     }
@@ -236,7 +229,7 @@ export default class TrainClassifiers extends React.Component {
               
               <div className="header-space"></div>
               <div className="header-space"></div>
-              <Scrollbars style={{ width: 650, height: 500 }}>
+              <Scrollbars style={{ width: 500, height: 500 }}>
               <div className="box" id="dsImages">
                   {this.images.map((image) => {
                       if (image.src === undefined) {
@@ -252,7 +245,6 @@ export default class TrainClassifiers extends React.Component {
               <div className="column">
                 <div className="row">
                 <Form className="addForm">
-                
                 <FormGroup>
                    {/*
                     <Button className="brandNameButton" onClick={this.handleAddDataSet}>
@@ -299,6 +291,9 @@ export default class TrainClassifiers extends React.Component {
                 </Button>
                   
                 </Form>
+                <Button>
+                <div align="left"> TRAIN IMAGES </div>
+              </Button>
                
                   
                 </div>
