@@ -22,7 +22,9 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         imageJSON: [],
         ready: false,
         token: cookie.load('token'),
-        loading: false
+        loading: false,
+        currentDataSet: null,
+        hashtagToScrape: ''
       }
       if (this.state.token === undefined) {
         this.props.history.push('/login');
@@ -36,6 +38,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       this.buildClassifierList = this.buildClassifierList.bind(this);
       this.buildHashtagList = this.buildHashtagList.bind(this);
       this.buildUserList = this.buildUserList.bind(this);
+      this.refresh = this.refresh.bind(this);
     }
     handleHashtagChange = (e) => {
       this.setState({
@@ -159,49 +162,104 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       this.forceUpdate();
     }
 
+    refresh() {
+      fetch('http://localhost:2000/datasets/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Content-Type': 'application/json',
+        }
+      }).then(response => 
+        response.json())
+      .then(json => {
+        var data = json.datasets;
+        var array = [];
+        for(var i in data)
+        {
+          var src = data[i].src;
+          var name = data[i].name;
+          var id = data[i]._id;
+          var data_set = [src, name, id];
+          array.push(data_set);
+          if (name === this.state.hashtagToScrape) {
+            this.state.currentDataSet = id;
+          }
+        }
+        var str = array.toString();
+        cookie.save('datasets', str, { path: '/' , 'maxAge': 100000});
+        this.nextPage();
+      });
+    }
+
     handleSubmit = (e) => {
-      // console.log(this.state.logoName);
-      // e.preventDefault();
-      // this.setState({
-      //   loading: true
-      // })
-      // fetch('http://localhost:2000/scraper/', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     "hashtag": (this.state.logoName).toLowerCase(),
-      //     "image_count": "30"
-      //   })
-      // }).then(response => response.json())
-      // .then(json => {
-      //   this.state.imageJSON = json;
-      //   console.log(this.state.imageJSON );
-      //   this.setState({
-      //     loading: false
-      //   })
-      // })
-      // .then(this.nextPage);
-      this.nextPage();
+      if (this.state.hashtags.length === 0) {
+        return;
+      }
+      this.setState({
+        loading: true
+      })
+      // get hashtag
+      this.state.hashtagToScrape = this.state.hashtags[0];
+
+      // create a new dataset
+      cookie.save('brandName', this.state.hashtagToScrape, { path: '/' , 'maxAge': 100000});
+        // console.log("BRAND NAME: " + hashtagToScrape)
+        fetch('http://localhost:2000/datasets', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "name": (this.state.hashtagToScrape).toLowerCase(),
+          "datasetType": "0"
+        })
+      }).then(response => {
+        if (response.status === 200) {
+          //good
+        }
+        else {
+          //bad
+        }
+        this.refresh();
+      });
+
+      // scrape that dataset
+      
     }
 
     nextPage() {
-      // const data = {
-      //   val: document.getElementById("searchTerms").value
-      // }
-      // cookie.save('searchTerms', data.val, { path: '/' , 'maxAge': 100000});
-      // cookie.save('searchResults', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
-      // this.props.history.push({
-      //   pathname: '/searchresults',
-      //   params: {
-      //     email: this.email,
-      //     searchTerms: data.val,
-      //     searchResults: this.state.imageJSON
-      //   }
-      // })
-      this.props.history.push('/scraperesults');
+      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/scrape', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + this.state.token,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "hashtag": this.state.hashtagToScrape.toLowerCase(),
+        "image_count": "10"
+      })
+    }).then(response => response.json())
+    .then(json => {
+      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet +'/', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      }).then(response => response.json())
+      .then(json => {
+        this.setState({
+          imageJSON: json.images.slice(0,20)
+        })
+        cookie.remove('imageJSONS');
+        cookie.save('imageJSONS', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
+        this.props.history.push('/scraperesults');
+      });
+    });
+      
     }
 
 
@@ -209,6 +267,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     return (
     <Container>
         <center>
+        <Loading show={this.state.loading} color="red" />
             <h2> SEARCH </h2>
             <div className="header-space"></div>
             <h3> Currently Scraping for: </h3>
