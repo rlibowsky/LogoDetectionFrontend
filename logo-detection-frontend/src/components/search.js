@@ -26,6 +26,10 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         currentDataSet: null,
         hashtagToScrape: ''
       }
+
+      this.classifierArray = [];
+      this.allUserClassifiers = [];
+
       if (this.state.token === undefined) {
         this.props.history.push('/login');
         return;
@@ -39,7 +43,83 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       this.buildHashtagList = this.buildHashtagList.bind(this);
       this.buildUserList = this.buildUserList.bind(this);
       this.refresh = this.refresh.bind(this);
+      this.setClassifiers = this.setClassifiers.bind(this);
+      this.getUserClassifiers = this.getUserClassifiers.bind(this);
+      this.getUserClassifiers();
     }
+
+    getUserClassifiers() {
+      console.log("in getUserClassifiers");
+      fetch('http://localhost:2000/classifiers/', {
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Content-Type': 'application/json',
+        }
+      }).then(response => 
+        response.json())
+      .then(json => {
+        var data = json.classifiers;
+        var array = [];
+        for(var i in data)
+        {
+          var data_set = {
+            name: data[i].name,
+            url: data[i].request.url,
+            id: data[i].id
+          };
+          this.classifierArray.push(data_set);
+          this.allUserClassifiers.push(data_set);
+        }
+        this.setClassifiers();
+      });
+    }
+
+    setClassifiers() {
+      const handleAddClassifier = (classifier) => {
+        this.state.currentClassifier = classifier;
+        this.addClassifier();
+        this.removeUserClassifier(classifier);
+      };
+
+      this.userClassifiers = this.classifierArray.map(function(classifier){
+        return(
+         <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()} className="listItem"> 
+        <h10 align="left"> {classifier.name.toString()} </h10>
+        <Button className="deleteClassifierBtn" onClick={() => handleAddClassifier(classifier.name.toString())}> 
+          <div align="center"> + </div> 
+          </Button>
+        </li>);
+      })
+      this.forceUpdate();
+    }
+
+    removeUserClassifier(classifierToRemove) {
+      console.log("removing classifier " + classifierToRemove);
+      var array = [];
+      for (var i = 0; i < this.classifierArray.length; i++ ) {
+        if (this.classifierArray[i].name !== classifierToRemove) {
+          array.push(this.classifierArray[i]);
+        } else {
+          console.log("found classifier to remove");
+        }
+      }
+      this.classifierArray = array;
+      this.setClassifiers();
+    }
+
+    addUserClassifier(classifierName) {
+      console.log("adding user classifier" + classifierName);
+      // find id and url
+      for (var i = 0; i < this.allUserClassifiers.length; i++) {
+        if (this.allUserClassifiers[i].name === classifierName) {
+          console.log("got em");
+          this.classifierArray.push(this.allUserClassifiers[i]);
+          this.setClassifiers();
+          return;
+        }
+      }
+    }
+    
     handleHashtagChange = (e) => {
       this.setState({
         currentHashtag: e.target.value
@@ -99,6 +179,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         this.state.classifiers = newClassifierList;
         this.state.currentClassifier = '';
         this.buildClassifierList();
+        this.addUserClassifier(classifier);
       };
       this.classifierList = this.state.classifiers.map(function(classifier){
         return(
@@ -182,6 +263,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
           array.push(data_set);
           if (name === this.state.hashtagToScrape) {
             this.state.currentDataSet = id;
+            cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
           }
         }
         var str = array.toString();
@@ -223,9 +305,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         }
         this.refresh();
       });
-
-      // scrape that dataset
-      
     }
 
     nextPage() {
@@ -264,6 +343,8 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
 
   render() {
+    console.log("user classifiers");
+    console.log(this.userClassifiers);
     return (
     <Container>
         <center>
@@ -316,15 +397,10 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                 <Button className="addBtn" onClick={this.addUser}> Add User </Button>
                 </div>
                 <div>
-                <Input 
-                type="text" 
-                id="currentClassifier" 
-                placeholder="Add classifiers to use" 
-                className="searchBox"
-                value={this.state.currentClassifier}
-                onChange={this.handleClassifiersChange}
-                />
-                <Button className="addBtn" onClick={this.addClassifier}> Add Classifier </Button>
+                <h1> Add Classifiers </h1>
+                <li>
+                {this.userClassifiers}
+              </li>
                 </div>
               <Button onClick={this.handleSubmit}  className="searchBtn"> DONE </Button>
               <Loading

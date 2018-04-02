@@ -14,7 +14,12 @@ import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
       this.state = {
         token: cookie.load('token'),
         loading: false,
-        sortBy: 'classifierAccuracy'
+        sortBy: 'classifierAccuracy',
+        currentDataSet: cookie.load('currentDataSet'),
+        imageJSON: cookie.load('imageJSONS'),
+        brandName: cookie.load('brandName'),
+        loading: false,
+        datasets: cookie.load('datasets')
       }
       if (this.state.token === undefined) {
         this.props.history.push('/login');
@@ -22,6 +27,34 @@ import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
       }
       this.nextPage = this.nextPage.bind(this);
       this.handleSortChange = this.handleSortChange.bind(this);
+
+            // Image factory
+            var createImage = function(src, title) {
+                var img   = new Image();
+                img.src   = src;
+                img.alt   = title;
+                img.title = title;
+                return img; 
+              };
+              // array of images
+              var images = [];
+        
+              for (var i = 0; i < this.state.imageJSON.length; i++) {
+                var str = ('http://localhost:2000/' + this.state.imageJSON[i]);
+                images.push(createImage(str), str);
+              }
+                   
+              this.dataSetImages = images.map(function(image){
+                if (image.src === undefined) {
+                  return;
+                }
+                var str = image;
+                return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()}> 
+                <img height="200" width="250" hspace="20" src={image.src.toString()}/>
+                </div>;
+                
+              });
+
     }
     handleSortChange(event) {
         this.setState({
@@ -75,6 +108,9 @@ import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
                 </div>
               
             </Form>
+            <div className="box" id="dsImages">
+                  {this.dataSetImages}
+            </div>
             <div>
           </div>
         </center>
