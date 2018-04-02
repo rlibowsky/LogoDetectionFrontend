@@ -153,7 +153,7 @@ export default class TrainClassifiers extends React.Component {
       else {
         cookie.save(classifierName, nodeString, { path: '/' , 'maxAge': 100000});
       }
-
+      this.forceUpdate();
     }
 
     selectClassifierOrNode(str){
