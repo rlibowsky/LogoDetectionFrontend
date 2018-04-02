@@ -322,15 +322,14 @@ export default class TrainClassifiers extends React.Component {
                     <h1 align="left"> {this.state.brandName} </h1>
                   <ul> 
                   {this.state.currentClassifiers.map((classifier, i) =>{
-                    return <li style={{background: this.background(classifier.name.toString())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString())} align="left" key = {classifier.name.toString()} id ={classifier.id.toString()} margin="50px"> 
+                    return <li class="borderlist" style={{background: this.background(classifier.name.toString())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString())} align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> 
                     <h5 align="left"> {classifier.name.toString()} 
-                  {this.returnNodes(classifier.name.toString()).map((node) => {
-                      return <div align = 'right' style={{background: this.background(classifier.name.toString() + '-' + node.toString())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString() + '-' + node.toString())} > 
+                    </h5>
+                    {this.returnNodes(classifier.name.toString()).map((node) => {
+                      return <div align = 'center' style={{background: this.background(classifier.name.toString() + '-' + node.toString())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString() + '-' + node.toString())} > 
                         {node}
                       </div>;
                   })}
-
-                    </h5>
                     <Button className="deleteClassifierBtn" onClick={() => this.handleDeleteClassifier(classifier.id.toString())}> 
                       <div align="center"> X </div> 
                     </Button>

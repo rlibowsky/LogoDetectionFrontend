@@ -14,3 +14,11 @@
     width: 30px;
     display: inline-block;
 }
+
+.borderlist {
+    list-style-position:inside;
+    border: 2px solid black;
+}
+li {
+    list-style-type : none;
+  }
