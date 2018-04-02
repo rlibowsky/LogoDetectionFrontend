@@ -219,8 +219,14 @@ export default class TrainClassifiers extends React.Component {
     }
 
     returnNodes(classifier) {
-      var nodeString = cookie.load(classifier);
-      return nodeString.split(',')
+      var arr = [];
+      if (document.cookie.indexOf(classifier + '=') === -1) {
+        return arr;
+      }
+      else {
+        var nodeString = cookie.load(classifier);
+        return nodeString.split(',')
+      }
     }
     imageClick(image_src){
         //if this.state.selectedClassifier doesnt exist
