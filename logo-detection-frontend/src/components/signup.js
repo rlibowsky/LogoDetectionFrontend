@@ -17,6 +17,7 @@ export default class SignUp extends React.Component {
       token: cookie.load('token')
     }
     this.clearForm = this.clearForm.bind(this);
+    this.login = this.login.bind(this);
   }
 
   clearForm(errorStr) {
@@ -62,6 +63,32 @@ export default class SignUp extends React.Component {
     })
   }
 
+  login(email, password) {
+    fetch('http://localhost:2000/users/login/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "email": email,
+        "password": password
+      })
+    }).then(response => {
+      console.log(response.json);
+      if (response.status === 200) {
+        response.json().then(json => {
+          console.log(json.token);
+          this.state.wrongLogin = false;
+          cookie.save('token', json.token, { path: '/' , 'maxAge': 100000});
+          this.props.history.push('/portal');
+        });
+      }
+      else {
+      }
+    }) 
+  }
+
   handleSubmit = (e) => {
     if (this.state.password !== this.state.passwordVerify){
       this.clearForm("passwords don't match");
@@ -84,9 +111,7 @@ export default class SignUp extends React.Component {
       console.log(response.status)
       if (response.status === 201) {
         response.json().then(json => {
-          this.state.error = '';
-          cookie.save('token', json.token, { path: '/' , 'maxAge': 100000});
-          this.props.history.push('/portal');
+          this.login(this.state.email, this.state.password);
       });
       }
       else if (response.status === 409) {

@@ -115,7 +115,7 @@ import cookie from "react-cookies";
 
     onSubmit(ev) {
         cookie.save('brandName', this.state.brand_name, { path: '/' , 'maxAge': 100000});
-        console.log("BRAND NAME: " + this.state.brand_name)
+        console.log("cookie " + this.state.token);
         fetch('http://localhost:2000/datasets', {
         method: 'POST',
         headers: {
@@ -130,6 +130,7 @@ import cookie from "react-cookies";
       }).then(response => {
         if (response.status === 200) {
           //good
+          console.log("good response");
         }
         else {
           //bad
