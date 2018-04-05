@@ -5,7 +5,6 @@ import cookie from "react-cookies";
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import ProgressButton from 'react-progress-button';
-
 import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
   export default class Search extends React.Component { 
@@ -24,7 +23,8 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         token: cookie.load('token'),
         loading: false,
         currentDataSet: null,
-        hashtagToScrape: ''
+        hashtagToScrape: '',
+        searchError: ''
       }
 
       this.classifierArray = [];
@@ -94,13 +94,10 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     }
 
     removeUserClassifier(classifierToRemove) {
-      console.log("removing classifier " + classifierToRemove);
       var array = [];
       for (var i = 0; i < this.classifierArray.length; i++ ) {
         if (this.classifierArray[i].name !== classifierToRemove) {
           array.push(this.classifierArray[i]);
-        } else {
-          console.log("found classifier to remove");
         }
       }
       this.classifierArray = array;
@@ -108,11 +105,9 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     }
 
     addUserClassifier(classifierName) {
-      console.log("adding user classifier" + classifierName);
       // find id and url
       for (var i = 0; i < this.allUserClassifiers.length; i++) {
         if (this.allUserClassifiers[i].name === classifierName) {
-          console.log("got em");
           this.classifierArray.push(this.allUserClassifiers[i]);
           this.setClassifiers();
           return;
@@ -273,10 +268,14 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     }
 
     handleSubmit = (e) => {
-      if (this.state.hashtags.length === 0) {
+      if ((this.state.hashtags.length === 0) && (this.state.classifiers.length === 0) && (this.state.users.length === 0)) {
+        this.setState({
+          searchError: 'Please enter at least 1 hashtag, user, or classifier'
+        });
         return;
       }
       this.setState({
+        searchError: '',
         loading: true
       })
       // get hashtag
@@ -284,7 +283,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
       // create a new dataset
       cookie.save('brandName', this.state.hashtagToScrape, { path: '/' , 'maxAge': 100000});
-        // console.log("BRAND NAME: " + hashtagToScrape)
         fetch('http://localhost:2000/datasets', {
         method: 'POST',
         headers: {
@@ -372,6 +370,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                 </ul>
               </div>
             </div>
+            <h5 className="searchError"> {this.state.searchError} </h5>
             <Form>
             <FormGroup> 
               <div>
