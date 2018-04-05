@@ -49,7 +49,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     }
 
     getUserClassifiers() {
-      console.log("in getUserClassifiers");
       fetch('http://localhost:2000/classifiers/', {
         headers: {
           'Authorization': 'Bearer ' + this.state.token,
@@ -83,12 +82,12 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
       this.userClassifiers = this.classifierArray.map(function(classifier){
         return(
-         <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()} className="listItem"> 
+         <div align="left" key = {classifier.name.toString()} id ={classifier.id.toString()} className="listItem"> 
         <h10 align="left"> {classifier.name.toString()} </h10>
         <Button className="deleteClassifierBtn" onClick={() => handleAddClassifier(classifier.name.toString())}> 
           <div align="center"> + </div> 
           </Button>
-        </li>);
+        </div>);
       })
       this.forceUpdate();
     }
@@ -198,7 +197,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         }
         this.state.users = newUserList;
         this.state.currentUser = '';
-        console.log(this.state.users);
         this.buildUserList();
       };
       this.userList = this.state.users.map(function(user){
@@ -341,8 +339,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
 
   render() {
-    console.log("user classifiers");
-    console.log(this.userClassifiers);
     return (
     <Container>
         <center>
