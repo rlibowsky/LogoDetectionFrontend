@@ -1,9 +1,7 @@
 import React from 'react';
 import Footer from './footer.js';
 import cookie from "react-cookies";
-import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
-import ProgressButton from 'react-progress-button';
 import './scraperesults.css';
 
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';

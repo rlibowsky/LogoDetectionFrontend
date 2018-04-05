@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Container, Button } from 'reactstrap';
+import { Container } from 'reactstrap';
 
 const CSSVariables = {
     border : {
@@ -74,7 +74,7 @@ const CSSVariables = {
         <center>
             <div className="box">
             {this.images.map((photo) => {
-              return <div className="dataSetBox" key={photo.src.toString()} margin= '30px' ><img id={this.state.ID} src={photo.src.toString()} onClick={() => { this.imageClick(photo.src.toString()) }} style={this.setBorder(photo.src.toString())} alt="Image" height="100" width="100" /></div>;
+              return <div className="dataSetBox" key={photo.src.toString()} margin= '30px' ><img id={this.state.ID} src={photo.src.toString()} onClick={() => { this.imageClick(photo.src.toString()) }} style={this.setBorder(photo.src.toString())} alt={photo.src} height="100" width="100" /></div>;
             })}
             </div>
             

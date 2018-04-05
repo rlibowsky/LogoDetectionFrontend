@@ -18,7 +18,7 @@ import './searchresults.css';
       this.searchResults = cookie.load("searchResults").filePaths;
 
       this.searchResultsList = this.searchResults.map(function(photo){
-        return <div className="dataSetBox" key={photo.toString()} ><img src={photo} alt="Image" height="350" width="450" margin="10px" /></div>;
+        return <div className="dataSetBox" key={photo.toString()} ><img src={photo} alt={photo} height="350" width="450" margin="10px" /></div>;
       })
     }
 

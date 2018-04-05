@@ -13,13 +13,13 @@ import { Container, Button } from 'reactstrap';
   export default class DataSetLanding extends React.Component { 
     constructor(props) {
       super(props);
+
       const imageClick = (is_plus) => {
-        console.log(is_plus);
         if (is_plus === "plus") {
           this.showTip();
         }
-        
       }
+
       this.state = {
         isOpen: false,
         pictures: [],
@@ -36,7 +36,7 @@ import { Container, Button } from 'reactstrap';
         return;
       }
       
-            // Image factory
+      // Image factory
       var createImage = function(src, title) {
         var img   = new Image();
         img.src   = src;
@@ -44,6 +44,7 @@ import { Container, Button } from 'reactstrap';
         img.title = title;
         return img; 
       };
+
       // array of images
       var images = [];
 
@@ -61,10 +62,7 @@ import { Container, Button } from 'reactstrap';
         return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()}> 
         <img height="200" width="250" hspace="20" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
         </div>;
-        
       });
-
-
 
       this.onAddImages = this.onAddImages.bind(this);
       this.onScrape = this.onScrape.bind(this);
@@ -75,25 +73,6 @@ import { Container, Button } from 'reactstrap';
     }
 
     trainClassifiers() {
-      console.log("training those classifiers");
-      // fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Authorization': 'Bearer ' + this.state.token,
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({
-      //     "name": ("swimming").toLowerCase(),
-      //     "description": ("front stroke, back stroke").toLowerCase(),
-      //   })
-      // }).then(response => response.json())
-      // .then(json => {
-      //   this.state.imageJSON = json;
-      //   console.log(this.state.imageJSON);
-      //   this.setState({
-      //     loading: false
-      //   })
-      // });
       fetch('http://localhost:2000/datasets/' + this.state.currentDataSet + '/classifiers', {
         method: 'GET',
         headers: {
@@ -115,8 +94,12 @@ import { Container, Button } from 'reactstrap';
     onAddImages(ev) {
       this.props.history.push('/upload');
     }
+    
     onScrape = (e) => {
       var hashtag = prompt("Enter the #hashtag you want to scrape", "hashtag");
+      if (hashtag === null) { // if user hit "Cancel"
+        return;
+      }
       e.preventDefault();
       this.setState({
         loading: true
@@ -152,8 +135,9 @@ import { Container, Button } from 'reactstrap';
         window.location.reload();
       });
     });
-
     }
+
+
     nextPage() {
       cookie.save('searchTerms', this.state.brandName, { path: '/' , 'maxAge': 100000});
       cookie.save('searchResults', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
