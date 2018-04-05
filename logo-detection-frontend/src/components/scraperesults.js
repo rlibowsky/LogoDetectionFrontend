@@ -3,8 +3,7 @@ import Footer from './footer.js';
 import cookie from "react-cookies";
 import 'react-loading-bar/dist/index.css';
 import './scraperesults.css';
-
-import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap';
+import { Container, Form, FormGroup, Input, Label } from 'reactstrap';
 
   export default class ScrapeResults extends React.Component { 
     constructor(props) {

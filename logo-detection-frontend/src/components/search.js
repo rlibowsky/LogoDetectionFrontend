@@ -4,7 +4,6 @@ import Footer from './footer.js';
 import cookie from "react-cookies";
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
-import ProgressButton from 'react-progress-button';
 import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
 
   export default class Search extends React.Component { 
@@ -58,7 +57,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         response.json())
       .then(json => {
         var data = json.classifiers;
-        var array = [];
         for(var i in data)
         {
           var data_set = {

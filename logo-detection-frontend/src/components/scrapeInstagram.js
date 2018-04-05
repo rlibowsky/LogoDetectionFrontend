@@ -72,7 +72,7 @@ const CSSVariables = {
             <h5> SELECT IMAGES THAT SHOW YOUR LOGO </h5>
             <div className="box">
             {this.searchResults.map((photo) => {
-              return <div className="dataSetBox" key={photo.toString()} margin= '30px' ><img id={this.state.ID} src={photo} onClick={() => { this.imageClick(photo.toString()) }} style={this.setBorder(photo.toString())} alt="Image" height="200" width="250" /></div>;
+              return <div className="dataSetBox" key={photo.toString()} margin= '30px' ><img id={this.state.ID} src={photo} onClick={() => { this.imageClick(photo.toString()) }} style={this.setBorder(photo.toString())} alt={photo.toString()} height="200" width="250" /></div>;
             })}
             </div>
         </center>

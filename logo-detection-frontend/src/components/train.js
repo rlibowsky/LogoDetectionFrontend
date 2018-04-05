@@ -44,7 +44,7 @@ import cookie from "react-cookies";
       var hist = this.props.history;
       var par = this;
       this.BrandNamesList = this.state.images.map(function(image, i){
-        return <BrandImage history={hist} image={image} parent={par}/>;
+        return <BrandImage history={hist} image={image} parent={par} key={i}/>;
       })
       this.onSubmit = this.onSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
