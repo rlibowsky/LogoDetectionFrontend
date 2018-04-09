@@ -47,6 +47,7 @@ export default class TrainClassifiers extends React.Component {
       this.addToTrainingSet = this.addToTrainingSet.bind(this);
       this.selectClassifierOrNode = this.selectClassifierOrNode.bind(this);
       this.handleAddClassifier = this.handleAddClassifier.bind(this);
+      this.handleDeleteClassifier = this.handleDeleteClassifier.bind(this);
       this.loadClassifiers = this.loadClassifiers.bind(this);
       this.createLists = this.createLists.bind(this);
       this.createLists();
@@ -109,6 +110,17 @@ export default class TrainClassifiers extends React.Component {
       this.props.history.push('/datasetlanding/' + this.state.brandName.toLowerCase());
     }
 
+    handleDeleteClassifier (classifier) {
+      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + classifier, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Content-Type': 'application/json',
+        }
+      }).then(response => {
+        this.loadClassifiers();
+      });
+    }
 
     addToTrainingSet() {
       this.props.history.push({
