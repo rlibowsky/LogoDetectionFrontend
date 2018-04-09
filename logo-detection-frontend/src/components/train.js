@@ -1,7 +1,6 @@
 import React from 'react';
 import Footer from './footer.js';
 import { Container,  Button, Form, FormGroup,  Input } from 'reactstrap';
-import ImagesUploader from 'react-images-uploader';
 import BrandImage from './brandImage.js'
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
@@ -13,7 +12,6 @@ import cookie from "react-cookies";
   export default class Train extends React.Component { 
     constructor(props) {
       super(props);
-      console.log("in train constructor");
       this.state = { 
         pictures: [],
         token: cookie.load('token'),
@@ -27,7 +25,8 @@ import cookie from "react-cookies";
         this.props.history.push('/login');
         return;
       }
-            // Image factory
+      
+      // Image factory
       var createImage = function(src, title, id) {
         var img   = new Image();
         img.src   = src;
@@ -45,10 +44,7 @@ import cookie from "react-cookies";
       var hist = this.props.history;
       var par = this;
       this.BrandNamesList = this.state.images.map(function(image, i){
-        return <BrandImage history={hist} image={image} parent={par}/>;
-        {/* <div className="dataSetBox" key = {image.title.toString()}> 
-        <button> <img height="300px" width="300px" src={image.src.toString()} onClick={() => imageClick(image.title.toString(), image.id.toString())}/> {image.title.toString()}</button> 
-        </div>; */}
+        return <BrandImage history={hist} image={image} parent={par} key={i}/>;
       })
       this.onSubmit = this.onSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -87,8 +83,6 @@ import cookie from "react-cookies";
     }
 
     deleteDataSet (brand_name, id) {
-      // cookie.save('brandName', this.state.brand_name, { path: '/' , 'maxAge': 100000});
-        console.log("in delete, BRAND NAME: " + brand_name)
         fetch('http://localhost:2000/datasets/' + id.toString(), {
         method: 'DELETE',
         headers: {
@@ -96,12 +90,7 @@ import cookie from "react-cookies";
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         }
-        // body: JSON.stringify({
-        //   "name": (this.state.brand_name).toLowerCase(),
-        //   "datasetType": "0"
-        // })
       }).then(response => {
-        console.log("made it to response");
         if (response.status === 200) {
           //good
           console.log("good");
@@ -115,7 +104,6 @@ import cookie from "react-cookies";
 
     onSubmit(ev) {
         cookie.save('brandName', this.state.brand_name, { path: '/' , 'maxAge': 100000});
-        console.log("cookie " + this.state.token);
         fetch('http://localhost:2000/datasets', {
         method: 'POST',
         headers: {
@@ -130,7 +118,6 @@ import cookie from "react-cookies";
       }).then(response => {
         if (response.status === 200) {
           //good
-          console.log("good response");
         }
         else {
           //bad
@@ -171,7 +158,6 @@ import cookie from "react-cookies";
           cookie.save('imageJSONS', json.images.slice(0,20), { path: '/' , 'maxAge': 100000});
           cookie.remove('currentDataSet');
           cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
-
           this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
         });
       });

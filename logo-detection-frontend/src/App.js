@@ -10,13 +10,11 @@ import DataSetLanding from './components/datasetlanding.js';
 import Train from './components/train.js';
 import Search from './components/search.js';
 import SearchResults from './components/searchresults.js';
-import cookie from "react-cookies";
 import Header from './components/header.js';
 import ScrapeInstagram from './components/scrapeInstagram.js';
 import FinishPage from './components/finishPage.js';
 import Upload from './components/upload.js';
 import TrainClassifiers from './components/trainClassifiers.js';
-import BrandImage from './components/brandImage.js';
 import ScrapeResults from './components/scraperesults.js';
 class App extends Component {
 

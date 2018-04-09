@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container,  Button, Form, FormGroup,  Input } from 'reactstrap';
 import './login.css';
-import Header from './header.js';
 import cookie from "react-cookies";
 
 export default class Login extends React.Component {
@@ -11,7 +10,7 @@ export default class Login extends React.Component {
       email: '',
       password: '',
       data: '',
-      wrongLogin: false,
+      wrongLogin: '',
       token: cookie.load('token')
     }
     this.clearForm = this.clearForm.bind(this);
@@ -43,7 +42,7 @@ export default class Login extends React.Component {
     e.preventDefault();
     console.log(this.state.email)
     console.log(this.state.password)
-    fetch('http://localhost:2000/users/login/', {
+     var valid = fetch('http://localhost:2000/users/login/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -54,21 +53,22 @@ export default class Login extends React.Component {
         "password": this.state.password
       })
     }).then(response => {
-      console.log(response.json);
       if (response.status === 200) {
         response.json().then(json => {
           console.log(json.token);
-          this.state.wrongLogin = false;
+          this.state.wrongLogin = '';
           cookie.save('token', json.token, { path: '/' , 'maxAge': 100000});
           this.props.history.push('/portal');
         });
       }
       else {
-        this.clearForm(true);
+        this.clearForm('Invalid username or password');
       }
     }).then(data => {
       this.setState({data: data })
-  });  
+  }).catch((error) => {
+    this.clearForm('Cannot connect to server');
+  }); 
   }
 
   render() {
@@ -100,7 +100,7 @@ export default class Login extends React.Component {
 
         <div> 
               {this.state.wrongLogin ? (
-              <h5 className="errorText"> Invalid username or password </h5>
+              <h5 className="errorText"> {this.state.wrongLogin} </h5>
             ) : (
               <h5> </h5>
             )}

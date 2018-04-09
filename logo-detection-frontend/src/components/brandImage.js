@@ -1,7 +1,5 @@
 import React from 'react';
-import Footer from './footer.js';
-import { Container,  Button, Form, FormGroup,  Input } from 'reactstrap';
-import ImagesUploader from 'react-images-uploader';
+import { Button } from 'reactstrap';
 import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
 import 'react-images-uploader/styles.css';
@@ -23,11 +21,6 @@ import ToolTip from 'react-portal-tooltip';
         loading: false,
         token: cookie.load('token') 
       };
-
-      console.log(this.props.image);
-      console.log("parent");
-      console.log(this.props.parent);
-      console.log(this.props.parent.deleteDataSet);
 
       this.imageClick = this.imageClick.bind(this);
       this.handleChange = this.handleChange.bind(this);
@@ -79,14 +72,12 @@ import ToolTip from 'react-portal-tooltip';
   
 
   render() {
-    console.log(this.state.showToolTipActive);
     var parentStr = "#" + this.state.title.toString();
     return (
         <div className="dataSetBox" key = {this.state.title.toString()}> 
         <Loading show={this.state.loading} color="red"/>
         <button> <img height="300px" width="300px" id={this.state.title.toString()} src={this.state.src.toString()} onClick={() => this.imageClick(this.state.title.toString(), this.state.id.toString())}/> {this.state.title.toString()}</button> 
         <ToolTip active={this.state.showToolTipActive} parent={parentStr} position="right" arrow="center" >
-              <div> Test </div>
               <div className="imgButton">
                 <Button onClick={() => this.handleChange(this.state.title.toString(), this.state.id.toString())}> See Data set </Button>
               </div>

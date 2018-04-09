@@ -1,13 +1,10 @@
 import React from 'react';
 import Footer from './footer.js';
 import cookie from "react-cookies";
-import Loading from 'react-loading-bar';
 import 'react-loading-bar/dist/index.css';
-import FinishPage from './finishPage.js';
 import ClassifierImages from './classifierimages.js';
 import './trainClassifiers.css';
 import { Container, Button, Form, FormGroup, Input } from 'reactstrap';
-import Box from 'react-layout-components';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 const CSSVariables = {

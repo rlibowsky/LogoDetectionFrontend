@@ -29,3 +29,7 @@
     background-color: black;
     width: 20%;
 }
+
+.searchError {
+    color: red;
+}

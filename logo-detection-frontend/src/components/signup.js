@@ -78,7 +78,6 @@ export default class SignUp extends React.Component {
       console.log(response.json);
       if (response.status === 200) {
         response.json().then(json => {
-          console.log(json.token);
           this.state.wrongLogin = false;
           cookie.save('token', json.token, { path: '/' , 'maxAge': 100000});
           this.props.history.push('/portal');
