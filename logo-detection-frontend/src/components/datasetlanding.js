@@ -96,52 +96,13 @@ import { Container, Button } from 'reactstrap';
     }
     
     onScrape = (e) => {
-      var hashtag = prompt("Enter the #hashtag you want to scrape", "hashtag");
-      if (hashtag === null) { // if user hit "Cancel"
-        return;
-      }
-      e.preventDefault();
-      this.setState({
-        loading: true
-      })
 
-      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/scrape', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + this.state.token,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "hashtag": hashtag.toLowerCase(),
-        "image_count": "10"
-      })
-    }).then(response => response.json())
-    .then(json => {
-      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet +'/', {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + this.state.token,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }
-      }).then(response => response.json())
-      .then(json => {
-        this.setState({
-          imageJSON: json.images.slice(0,20)
-        })
-        cookie.remove('imageJSONS');
-        cookie.save('imageJSONS', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
-        window.location.reload();
-      });
-    });
     }
 
 
     nextPage() {
       cookie.save('searchTerms', this.state.brandName, { path: '/' , 'maxAge': 100000});
       cookie.save('searchResults', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
-      this.props.history.push('/scrapeInstagram');
     }
 
     showTip(ev) {

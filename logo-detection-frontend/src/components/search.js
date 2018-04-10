@@ -45,6 +45,8 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       this.setClassifiers = this.setClassifiers.bind(this);
       this.getUserClassifiers = this.getUserClassifiers.bind(this);
       this.getUserClassifiers();
+
+      
     }
 
     getUserClassifiers() {
@@ -264,41 +266,64 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     }
 
     handleSubmit = (e) => {
-      if ((this.state.hashtags.length === 0) && (this.state.classifiers.length === 0) && (this.state.users.length === 0)) {
-        this.setState({
-          searchError: 'Please enter at least 1 hashtag, user, or classifier'
-        });
-        return;
-      }
-      this.setState({
-        searchError: '',
-        loading: true
-      })
-      // get hashtag
-      this.state.hashtagToScrape = this.state.hashtags[0];
 
-      // create a new dataset
-      cookie.save('brandName', this.state.hashtagToScrape, { path: '/' , 'maxAge': 100000});
-        fetch('http://localhost:2000/datasets', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + this.state.token,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "name": (this.state.hashtagToScrape).toLowerCase(),
-          "datasetType": "0"
-        })
-      }).then(response => {
-        if (response.status === 200) {
-          //good
-        }
-        else {
-          //bad
-        }
-        this.refresh();
-      });
+      let https = require('https');
+
+      // **********************************************
+      // *** Update or verify the following values. ***
+      // **********************************************
+      
+      // Replace the subscriptionKey string value with your valid subscription key.
+      let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
+      
+      // Verify the endpoint URI.  At this writing, only one endpoint is used for Bing
+      // search APIs.  In the future, regional endpoints may be available.  If you
+      // encounter unexpected authorization errors, double-check this host against
+      // the endpoint for your Bing Web search instance in your Azure dashboard.
+      let host = 'api.cognitive.microsoft.com';
+      let path = '/bing/v7.0/search';
+      let term = 'Patagonia';
+      let response_handler = function (response) {
+          let body = '';
+          response.on('data', function (d) {
+              body += d;
+          });
+          response.on('end', function () {
+              console.log('\nRelevant Headers:\n');
+              for (var header in response.headers)
+                  // header keys are lower-cased by Node.js
+                  if (header.startsWith("bingapis-") || header.startsWith("x-msedge-"))
+                       console.log(header + ": " + response.headers[header]);
+              body = JSON.stringify(JSON.parse(body), null, '  ');
+              console.log('\nJSON Response:\n');
+              console.log(body);
+          });
+          response.on('error', function (e) {
+              console.log('Error: ' + e.message);
+          });
+      };
+      
+      let bing_web_search = function (search) {
+        console.log('Searching the Web for: ' + term);
+        let request_params = {
+              method : 'GET',
+              hostname : host,
+              path : path + '?q=' + encodeURIComponent(search),
+              headers : {
+                  'Ocp-Apim-Subscription-Key' : subscriptionKey,
+              }
+          };
+      
+          let req = https.request(request_params, response_handler);
+          req.end();
+      }
+      
+      if (subscriptionKey.length === 32) {
+          bing_web_search(term);
+      } else {
+          console.log('Invalid Bing Search API subscription key!');
+          console.log('Please paste yours into the source code.');
+      }
     }
 
     nextPage() {

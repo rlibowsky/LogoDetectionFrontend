@@ -39,19 +39,6 @@ import ToolTip from 'react-portal-tooltip';
           loading: true
         })
           cookie.save('brandName', brand_name, { path: '/' , 'maxAge': 100000});
-          fetch('http://localhost:2000/datasets/'+ id + '/scrape', {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Bearer ' + this.state.token,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            "hashtag": (brand_name).toLowerCase(),
-            "image_count": "10"
-          })
-        }).then(response => response.json())
-        .then(json => {
           fetch('http://localhost:2000/datasets/'+ id +'/', {
             method: 'GET',
             headers: {
@@ -67,11 +54,11 @@ import ToolTip from 'react-portal-tooltip';
             cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
             this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
           });
-        });
       }
   
 
   render() {
+
     var parentStr = "#" + this.state.title.toString();
     return (
         <div className="dataSetBox" key = {this.state.title.toString()}> 

@@ -26,6 +26,7 @@ import cookie from "react-cookies";
         return;
       }
       
+      
       // Image factory
       var createImage = function(src, title, id) {
         var img   = new Image();
@@ -132,19 +133,6 @@ import cookie from "react-cookies";
         loading: true
       })
         cookie.save('brandName', brand_name, { path: '/' , 'maxAge': 100000});
-        fetch('http://localhost:2000/datasets/'+ id + '/scrape', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + this.state.token,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "hashtag": (brand_name).toLowerCase(),
-          "image_count": "10"
-        })
-      }).then(response => response.json())
-      .then(json => {
         fetch('http://localhost:2000/datasets/'+ id +'/', {
           method: 'GET',
           headers: {
@@ -160,18 +148,19 @@ import cookie from "react-cookies";
           cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
           this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
         });
-      });
-      
     }
 
     render() {
       return (
+        
       <Container>
+        
       <Loading
                 show={this.state.loading}
                 color="red"
               />
           <center>
+            
               <h5> CREATE A NEW DATA SET </h5>
               <Form>
                 <FormGroup>
