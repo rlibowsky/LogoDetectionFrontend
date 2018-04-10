@@ -44,6 +44,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       this.refresh = this.refresh.bind(this);
       this.setClassifiers = this.setClassifiers.bind(this);
       this.getUserClassifiers = this.getUserClassifiers.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
       this.getUserClassifiers();
 
       
@@ -266,43 +267,46 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     }
 
     handleSubmit = (e) => {
-
+      const nextPage = () => {
+        this.props.history.push('/scraperesults');
+      };
       let https = require('https');
-
-      // **********************************************
-      // *** Update or verify the following values. ***
-      // **********************************************
-      
-      // Replace the subscriptionKey string value with your valid subscription key.
       let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
-      
-      // Verify the endpoint URI.  At this writing, only one endpoint is used for Bing
-      // search APIs.  In the future, regional endpoints may be available.  If you
-      // encounter unexpected authorization errors, double-check this host against
-      // the endpoint for your Bing Web search instance in your Azure dashboard.
       let host = 'api.cognitive.microsoft.com';
       let path = '/bing/v7.0/images/search';
       let term = 'Patagonia';
+      var arr = [];
       let response_handler = function (response) {
           let body = '';
           response.on('data', function (d) {
               body += d;
           });
           response.on('end', function () {
-              console.log('\nRelevant Headers:\n');
-              for (var header in response.headers)
-                  // header keys are lower-cased by Node.js
-                  if (header.startsWith("bingapis-") || header.startsWith("x-msedge-"))
-                       console.log(header + ": " + response.headers[header]);
+              let json = JSON.parse(body);
               body = JSON.stringify(JSON.parse(body), null, '  ');
               console.log('\nJSON Response:\n');
-              console.log(body);
+              console.log(json);
+              var images = json['value']
+              for (var key in images) {
+                  console.log("over here!")
+                  var val = images[key];
+                  console.log(val);
+                  var contentURL = val['contentUrl'];
+                  console.log(contentURL);
+                  arr.push(contentURL);
+              }
+              cookie.remove('imageJSONS');
+              cookie.save('imageJSONS', arr, { path: '/' , 'maxAge': 100000});
+              nextPage();
           });
           response.on('error', function (e) {
               console.log('Error: ' + e.message);
           });
       };
-      
+      // this.setState({
+      //   imageJSON: arr
+      // })
+      // this.nextPage();
       let bing_web_search = function (search) {
         console.log('Searching the Web for: ' + term);
         let request_params = {
@@ -313,7 +317,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                   'Ocp-Apim-Subscription-Key' : subscriptionKey,
               }
           };
-      
           let req = https.request(request_params, response_handler);
           req.end();
       }
@@ -327,37 +330,9 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     }
 
     nextPage() {
-      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/scrape', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + this.state.token,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "hashtag": this.state.hashtagToScrape.toLowerCase(),
-        "image_count": "10"
-      })
-    }).then(response => response.json())
-    .then(json => {
-      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet +'/', {
-        method: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + this.state.token,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }
-      }).then(response => response.json())
-      .then(json => {
-        this.setState({
-          imageJSON: json.images.slice(0,20)
-        })
         cookie.remove('imageJSONS');
         cookie.save('imageJSONS', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
         this.props.history.push('/scraperesults');
-      });
-    });
-      
     }
 
 
@@ -371,17 +346,12 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
             <h3> Currently Scraping for: </h3>
             <div>
               <div>
-                Hashtags:
+                Search items:
                 <ul>
                   {this.hashtagList}
                 </ul>
               </div>
-              <div>
-                Users:
-                <ul>
-                  {this.userList}
-                </ul>
-              </div>
+              
               <div>
                 Classifiers:
                 <ul>

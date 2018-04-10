@@ -37,7 +37,7 @@ import { Container, Form, FormGroup, Input, Label } from 'reactstrap';
               var images = [];
         
               for (var i = 0; i < this.state.imageJSON.length; i++) {
-                var str = ('http://localhost:2000/' + this.state.imageJSON[i]);
+                var str = (this.state.imageJSON[i]);
                 images.push(createImage(str), str);
               }
                    
