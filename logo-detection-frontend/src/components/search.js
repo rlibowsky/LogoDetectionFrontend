@@ -274,7 +274,13 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
       let host = 'api.cognitive.microsoft.com';
       let path = '/bing/v7.0/images/search';
-      let term = 'Patagonia';
+      let term = 'Adidas+Patagonia';
+      // for (var h = 0; h < this.state.hashtags.length(); h++) {
+
+      // }
+      // for (var c = 0; h < this.state.classifiers.length(); c++) {
+        
+      // }
       var arr = [];
       let response_handler = function (response) {
           let body = '';
@@ -296,7 +302,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                   arr.push(contentURL);
               }
               cookie.remove('imageJSONS');
-              cookie.save('imageJSONS', arr, { path: '/' , 'maxAge': 100000});
+              cookie.save('imageJSONS', arr.slice(0,20), { path: '/' , 'maxAge': 100000});
               nextPage();
           });
           response.on('error', function (e) {
