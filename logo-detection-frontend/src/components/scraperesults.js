@@ -75,36 +75,6 @@ import { Container, Form, FormGroup, Input, Label } from 'reactstrap';
         <center>
             <h2> RESULTS </h2>
             <div className="header-space"></div>
-            <Form>
-                <div>
-                Sort by:
-                <FormGroup className="sortRadioBtn">
-                    <Label>
-                        <Input type="radio" 
-                        name="classifierAccuracy" 
-                        id="classifierAccuracy" 
-                        value="classifierAccuracy"
-                        
-                        checked={this.state.sortBy === "classifierAccuracy"} 
-                        onChange={this.handleSortChange}/>{' '}
-                        Accuracy of Classifier {'   '}
-                    </Label>
-                    
-                </FormGroup>
-                <FormGroup className="sortRadioBtn">
-                    <Label>
-                        <Input type="radio" 
-                        name="numClassifiers" 
-                        id="numClassifiers" 
-                        value="numClassifiers"
-                        checked={this.state.sortBy === "numClassifiers"} 
-                        onChange={this.handleSortChange}/>{' '}
-                        Number of Classifiers
-                    </Label>
-                </FormGroup>
-                </div>
-              
-            </Form>
             <div className="box" id="dsImages">
                   {this.dataSetImages}
             </div>

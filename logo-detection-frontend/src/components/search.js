@@ -101,6 +101,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         }
       }
       this.classifierArray = array;
+      this.state.classifiers = array;
       this.setClassifiers();
     }
 
@@ -267,6 +268,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     }
 
     handleSubmit = (e) => {
+      console.log(this.state.classifiers);
       const nextPage = () => {
         this.props.history.push('/scraperesults');
       };
@@ -274,7 +276,20 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
       let host = 'api.cognitive.microsoft.com';
       let path = '/bing/v7.0/images/search';
-      let term = 'nike';
+      let term = '';
+      for (var h = 0; h < this.state.hashtags.length; h++) {
+        term += this.state.hashtags[h];
+        if (((h + 1) < this.state.hashtags.length) || (this.state.classifiers.length > 0)) {
+          term += '+';
+        }
+      }
+      for (var c = 0; c < this.state.classifiers.length; c++) {
+        term += this.state.classifiers[c];
+        if (((c + 1) < this.state.classifiers.length)) {
+          term += '+';
+        }
+      }
+      console.log("term is " + term);
       var arr = [];
       let response_handler = function (response) {
           let body = '';
@@ -288,25 +303,20 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
               console.log(json);
               var images = json['value']
               for (var key in images) {
-                  console.log("over here!")
                   var val = images[key];
-                  console.log(val);
                   var contentURL = val['contentUrl'];
-                  console.log(contentURL);
                   arr.push(contentURL);
               }
+              var shuffle = require('shuffle-array');
+              shuffle(arr);
               cookie.remove('imageJSONS');
-              cookie.save('imageJSONS', arr, { path: '/' , 'maxAge': 100000});
+              cookie.save('imageJSONS', arr.slice(0,20), { path: '/' , 'maxAge': 100000});
               nextPage();
           });
           response.on('error', function (e) {
               console.log('Error: ' + e.message);
           });
       };
-      // this.setState({
-      //   imageJSON: arr
-      // })
-      // this.nextPage();
       let bing_web_search = function (search) {
         console.log('Searching the Web for: ' + term);
         let request_params = {
@@ -373,7 +383,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                 />
                 <Button className="addBtn" onClick={this.addHashtag}> Add Hashtag </Button>
                 </div>
-                <div>
+                {/* <div>
                 <Input 
                 type="text" 
                 id="currentUser" 
@@ -383,7 +393,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                 onChange={this.handleUsersChange}
                 />
                 <Button className="addBtn" onClick={this.addUser}> Add User </Button>
-                </div>
+                </div> */}
                 <div>
                 <h1> Add Classifiers </h1>
                 <li>
