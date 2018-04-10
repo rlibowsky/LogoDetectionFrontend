@@ -307,6 +307,8 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
                   var contentURL = val['contentUrl'];
                   arr.push(contentURL);
               }
+              var shuffle = require('shuffle-array');
+              shuffle(arr);
               cookie.remove('imageJSONS');
               cookie.save('imageJSONS', arr.slice(0,20), { path: '/' , 'maxAge': 100000});
               nextPage();
