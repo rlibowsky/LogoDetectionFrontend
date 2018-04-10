@@ -274,7 +274,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
       let host = 'api.cognitive.microsoft.com';
       let path = '/bing/v7.0/images/search';
-      let term = 'Patagonia';
+      let term = 'nike';
       var arr = [];
       let response_handler = function (response) {
           let body = '';
@@ -346,7 +346,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
             <h3> Currently Scraping for: </h3>
             <div>
               <div>
-                Search items:
+                Hashtags:
                 <ul>
                   {this.hashtagList}
                 </ul>
