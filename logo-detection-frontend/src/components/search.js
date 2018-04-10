@@ -281,7 +281,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       // encounter unexpected authorization errors, double-check this host against
       // the endpoint for your Bing Web search instance in your Azure dashboard.
       let host = 'api.cognitive.microsoft.com';
-      let path = '/bing/v7.0/search';
+      let path = '/bing/v7.0/images/search';
       let term = 'Patagonia';
       let response_handler = function (response) {
           let body = '';
