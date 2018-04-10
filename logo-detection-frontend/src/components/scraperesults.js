@@ -75,7 +75,7 @@ import { Container, Form, FormGroup, Input, Label } from 'reactstrap';
         <center>
             <h2> RESULTS </h2>
             <div className="header-space"></div>
-            <Form>
+            {/* <Form>
                 <div>
                 Sort by:
                 <FormGroup className="sortRadioBtn">
@@ -104,7 +104,7 @@ import { Container, Form, FormGroup, Input, Label } from 'reactstrap';
                 </FormGroup>
                 </div>
               
-            </Form>
+            </Form> */}
             <div className="box" id="dsImages">
                   {this.dataSetImages}
             </div>
