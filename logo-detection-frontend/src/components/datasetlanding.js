@@ -49,7 +49,7 @@ import { Container, Button } from 'reactstrap';
       var images = [];
 
       for (var i = 0; i < this.state.imageJSON.length; i++) {
-        var str = ('http://localhost:2000/' + this.state.imageJSON[i]);
+        var str = (this.state.imageJSON[i]);
         images.push(createImage(str), str);
       }
       images.push(createImage(require("./images/services/plus.png"), "plus"));
@@ -129,8 +129,6 @@ import { Container, Button } from 'reactstrap';
                 <Loading show={this.state.loading} color="red" />
               </div>
             </ToolTip>
-            
-
           <Button onClick={this.trainClassifiers}> Train Classifiers </Button>
           <div className="bt-space"></div>
           <h5> Interested in how our services can help you? Give us a call! </h5>

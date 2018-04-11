@@ -61,7 +61,7 @@ export default class TrainClassifiers extends React.Component {
       // array of images
 
       for (var i = 0; i < this.state.imageJSON.length; i++) {
-        var str = ('http://localhost:2000/' + this.state.imageJSON[i]);
+        var str = (this.state.imageJSON[i]);
         this.images.push(createImage(str), str);
       }
           
@@ -129,6 +129,9 @@ export default class TrainClassifiers extends React.Component {
     }
 
     handleAddClassifier() {
+      console.log(this.state.newClassifier);
+      console.log(this.state.newClassifierDescription);
+
       fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
         method: 'POST',
         headers: {
