@@ -32,29 +32,92 @@ import ToolTip from 'react-portal-tooltip';
         });
     }
 
+
+
     
 
     handleChange (brand_name, id) {
+
+      const postBing = () => {
+        fetch('http://localhost:2000/datasets/'+ id +'/uploadImages', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            "images":arr,
+          })
+        }).then(response => {
+          console.log(response);
+        })             .then(json => {
+          console.log("JSON from GET request: " + json)
+          //cookie.remove('imageJSONS');
+          //cookie.save('imageJSONS', json.images.slice(0,20), { path: '/' , 'maxAge': 100000});
+          //cookie.remove('currentDataSet');
+          //cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
+          //this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
+        });
         this.setState({
-          loading: true
-        })
-          cookie.save('brandName', brand_name, { path: '/' , 'maxAge': 100000});
-          fetch('http://localhost:2000/datasets/'+ id +'/', {
-            method: 'GET',
-            headers: {
-              'Authorization': 'Bearer ' + this.state.token,
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            }
-          }).then(response => response.json())
-          .then(json => {
-            cookie.remove('imageJSONS');
-            cookie.save('imageJSONS', json.images.slice(0,20), { path: '/' , 'maxAge': 100000});
-            cookie.remove('currentDataSet');
-            cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
-            this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
+            loading: true
+          })
+      };
+
+      let https = require('https');
+      let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
+      let host = 'api.cognitive.microsoft.com';
+      let path = '/bing/v7.0/images/search';
+      let term = brand_name;
+      console.log("term is " + term);
+      var arr = [];
+      let response_handler = function (response) {
+          let body = '';
+          response.on('data', function (d) {
+              body += d;
           });
+          response.on('end', function () {
+              let json = JSON.parse(body);
+              body = JSON.stringify(JSON.parse(body), null, '  ');
+              console.log('\nJSON Response:\n');
+              console.log(json);
+              var images = json['value']
+              for (var key in images) {
+                  var val = images[key];
+                  var contentURL = val['contentUrl'];
+                  arr.push(contentURL);
+              }
+              var shuffle = require('shuffle-array');
+              shuffle(arr);
+          });
+          response.on('error', function (e) {
+              console.log('Error: ' + e.message);
+          });
+      };
+      let bing_web_search = function (search) {
+        console.log('Searching the Web for: ' + term);
+        let request_params = {
+              method : 'GET',
+              hostname : host,
+              path : path + '?q=' + encodeURIComponent(search),
+              headers : {
+                  'Ocp-Apim-Subscription-Key' : subscriptionKey,
+              }
+          };
+          let req = https.request(request_params, response_handler);
+          req.end();
+      }  
+      if (subscriptionKey.length === 32) {
+          bing_web_search(term);
+      } else {
+          console.log('Invalid Bing Search API subscription key!');
+          console.log('Please paste yours into the source code.');
       }
+      setTimeout(function(){
+        postBing(arr);
+      }, 2000);
+
+    }
   
 
   render() {

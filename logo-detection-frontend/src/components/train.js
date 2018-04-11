@@ -129,9 +129,6 @@ import cookie from "react-cookies";
     }
 
     handleChange (brand_name, id) {
-      this.setState({
-        loading: true
-      })
         cookie.save('brandName', brand_name, { path: '/' , 'maxAge': 100000});
         fetch('http://localhost:2000/datasets/'+ id +'/', {
           method: 'GET',
