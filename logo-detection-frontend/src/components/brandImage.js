@@ -7,6 +7,7 @@ import 'react-images-uploader/font.css';
 import './train.css';
 import cookie from "react-cookies";
 import ToolTip from 'react-portal-tooltip';
+import { stringify } from 'querystring';
 
   export default class BrandImage extends React.Component { 
     constructor(props) {
@@ -37,8 +38,9 @@ import ToolTip from 'react-portal-tooltip';
     
 
     handleChange (brand_name, id) {
-
+      var jsonImg;
       const postBing = () => {
+        console.log("in post bing!")
         fetch('http://localhost:2000/datasets/'+ id +'/uploadImages', {
           method: 'POST',
           headers: {
@@ -49,20 +51,16 @@ import ToolTip from 'react-portal-tooltip';
           body: JSON.stringify({
             "images":arr,
           })
-        }).then(response => {
-          console.log(response);
-        })             .then(json => {
-          console.log("JSON from GET request: " + json)
-          //cookie.remove('imageJSONS');
-          //cookie.save('imageJSONS', json.images.slice(0,20), { path: '/' , 'maxAge': 100000});
-          //cookie.remove('currentDataSet');
-          //cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
-          //this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());
+        }).then(response => response.json())
+        .then(data => {
+          console.log(data['images']);
         });
         this.setState({
             loading: true
           })
       };
+
+
 
       let https = require('https');
       let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
