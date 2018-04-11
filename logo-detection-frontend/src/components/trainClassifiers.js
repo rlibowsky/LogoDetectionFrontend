@@ -29,7 +29,8 @@ export default class TrainClassifiers extends React.Component {
         newClassifier: '',
         newClassifierDescription: '',
         selectedClassifier:'',
-        selectedNode: ''
+        selectedNode: '',
+        newClassifierID: ''
       };
       this.selectedImages = [];
       this.images = [];
@@ -120,18 +121,16 @@ export default class TrainClassifiers extends React.Component {
     }
 
     addToTrainingSet() {
-      this.props.history.push({
-        pathname: '/finishPage',
-        params: {
-          selectedImages: this.selectedImages
-        }
-      });
+      console.log(this.selectedImages);
+      //this.props.history.push({
+      //  pathname: '/finishPage',
+      //  params: {
+      //    selectedImages: this.selectedImages
+      //  }
+      //});
     }
 
     handleAddClassifier() {
-      console.log(this.state.newClassifier);
-      console.log(this.state.newClassifierDescription);
-
       fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
         method: 'POST',
         headers: {
@@ -144,28 +143,47 @@ export default class TrainClassifiers extends React.Component {
         })
       }).then(response => response.json())
       .then(json => {
-        this.loadClassifiers();
+        var id = (json['createdClassifier']['classifierId']);
+        this.setState({
+          newClassifierID: id
+        })
+        var nodeList = prompt("List the nodes within this classifer (seperated by comma)", "nodes");
+        var nodeArray = nodeList.split(",").map(function(item) {
+          return item.trim();
+        });
+        var nodeString = nodeArray.toString();
+        var classifierName = this.state.newClassifier.toLowerCase();
+        //if cookie exists
+        if (document.cookie.indexOf(classifierName + '=') > -1) {
+          var cookieString = cookie.load(classifierName);
+          var cookieArray = cookieString.split(',');
+          var newString = (nodeArray.concat(cookieArray)).toString();
+          cookie.save(classifierName, newString, { path: '/' , 'maxAge': 100000});
+        }
+        //if cookie does not exist
+        else {
+          cookie.save(classifierName, nodeString, { path: '/' , 'maxAge': 100000});
+        }
+        for (var element in nodeArray) {
+          //post nodes as categories to rest API
+          fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + this.state.newClassifierID, {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + this.state.token,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              "name": nodeArray[element].toLowerCase(),
+            })
+          }).then(response => response.json())
+          .then(json => {
+            this.loadClassifiers();
+          });
+        }
       });
-      var nodeList = prompt("List the nodes within this classifer (seperated by comma)", "nodes");
-      var nodeArray = nodeList.split(",").map(function(item) {
-        return item.trim();
-      });
-      var nodeString = nodeArray.toString();
-      var classifierName = this.state.newClassifier.toLowerCase();
-      //if cookie exists
-      if (document.cookie.indexOf(classifierName + '=') > -1) {
-        console.log("*** EXISTING")
-        var cookieString = cookie.load(classifierName);
-        console.log("***" + cookieString)
-        var cookieArray = cookieString.split(',');
-        var newString = (nodeArray.concat(cookieArray)).toString();
-        cookie.save(classifierName, newString, { path: '/' , 'maxAge': 100000});
-      }
-      //if cookie does not exist
-      else {
-        cookie.save(classifierName, nodeString, { path: '/' , 'maxAge': 100000});
-      }
-      this.forceUpdate();
+
+
+
     }
 
     selectClassifierOrNode(str){
