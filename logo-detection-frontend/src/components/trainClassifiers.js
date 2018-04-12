@@ -50,7 +50,6 @@ export default class TrainClassifiers extends React.Component {
       this.createLists = this.createLists.bind(this);
       this.createLists();
       this.returnNodes = this.returnNodes.bind(this);
-
       
       var createImage = function(src, title) {
         var img   = new Image();
@@ -130,7 +129,29 @@ export default class TrainClassifiers extends React.Component {
       //});
     }
 
+
     handleAddClassifier() {
+      const postCategories= (nodeArray) => {
+        for (var element in nodeArray) {
+          console.log(nodeArray[element]);
+          console.log(this.state.currentDataSet);
+          //post nodes as categories to rest API
+          fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + this.state.newClassifierID, {
+            method: 'POST',
+            headers: {
+              'Authorization': 'Bearer ' + this.state.token,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              "name": nodeArray[element].toLowerCase(),
+            })
+          }).then(response => response.json)
+          .then(json => {
+            console.log("returned JSON: " + json)
+          });
+        }
+      }
+
       fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
         method: 'POST',
         headers: {
@@ -152,38 +173,25 @@ export default class TrainClassifiers extends React.Component {
           return item.trim();
         });
         var nodeString = nodeArray.toString();
-        var classifierName = this.state.newClassifier.toLowerCase();
         //if cookie exists
-        if (document.cookie.indexOf(classifierName + '=') > -1) {
-          var cookieString = cookie.load(classifierName);
+        console.log(this.state.newClassifierID)
+        if (document.cookie.indexOf(this.state.newClassifierID + '=') > -1) {
+          var cookieString = cookie.load(this.state.newClassifierID);
           var cookieArray = cookieString.split(',');
           var newString = (nodeArray.concat(cookieArray)).toString();
-          cookie.save(classifierName, newString, { path: '/' , 'maxAge': 100000});
+          console.log("new string: " + newString);
+          cookie.save(this.state.newClassifierID, newString, { path: '/' , 'maxAge': 100000});
         }
         //if cookie does not exist
         else {
-          cookie.save(classifierName, nodeString, { path: '/' , 'maxAge': 100000});
+          console.log("node string: " + nodeString);
+          cookie.save(this.state.newClassifierID, nodeString, { path: '/' , 'maxAge': 100000});
         }
-        for (var element in nodeArray) {
-          //post nodes as categories to rest API
-          fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + this.state.newClassifierID, {
-            method: 'POST',
-            headers: {
-              'Authorization': 'Bearer ' + this.state.token,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              "name": nodeArray[element].toLowerCase(),
-            })
-          }).then(response => response.json())
-          .then(json => {
-            this.loadClassifiers();
-          });
-        }
+        this.loadClassifiers();
+        setTimeout(function(){
+          postCategories(nodeArray);
+        }, 2000);
       });
-
-
-
     }
 
     selectClassifierOrNode(str){
@@ -248,13 +256,13 @@ export default class TrainClassifiers extends React.Component {
       });
     }
 
-    returnNodes(classifier) {
+    returnNodes(classifierID) {
       var arr = [];
-      if (document.cookie.indexOf(classifier + '=') === -1) {
+      if (document.cookie.indexOf(classifierID + '=') === -1) {
         return arr;
       }
       else {
-        var nodeString = cookie.load(classifier);
+        var nodeString = cookie.load(classifierID);
         return nodeString.split(',')
       }
     }
@@ -361,7 +369,7 @@ export default class TrainClassifiers extends React.Component {
                     return <li class="borderlist" style={{background: this.background(classifier.name.toString())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString())} align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> 
                     <h5 align="left"> {classifier.name.toString()} 
                     </h5>
-                    {this.returnNodes(classifier.name.toString()).map((node) => {
+                    {this.returnNodes(classifier.id.toString()).map((node) => {
                       return <div align = 'center' style={{background: this.background(classifier.name.toString() + '-' + node.toString())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString() + '-' + node.toString())} > 
                         {node}
                       </div>;
