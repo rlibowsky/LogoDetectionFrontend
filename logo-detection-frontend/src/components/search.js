@@ -34,7 +34,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         return;
       }
 
-      this.nextPage = this.nextPage.bind(this);
+      // this.nextPage = this.nextPage.bind(this);
       this.addUser = this.addUser.bind(this);
       this.addClassifier = this.addClassifier.bind(this);
       this.addHashtag = this.addHashtag.bind(this);
@@ -45,6 +45,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       this.setClassifiers = this.setClassifiers.bind(this);
       this.getUserClassifiers = this.getUserClassifiers.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
+      this.callBing = this.callBing.bind(this);
       this.getUserClassifiers();
 
       
@@ -256,22 +257,45 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
           var id = data[i]._id;
           var data_set = [src, name, id];
           array.push(data_set);
-          if (name === this.state.hashtagToScrape) {
+          if (name === this.state.hashtags[0]) {
             this.state.currentDataSet = id;
             cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
           }
         }
         var str = array.toString();
         cookie.save('datasets', str, { path: '/' , 'maxAge': 100000});
-        this.nextPage();
+        this.callBing();
       });
     }
 
-    handleSubmit = (e) => {
-      console.log(this.state.classifiers);
-      const nextPage = () => {
-        this.props.history.push('/scraperesults');
+    // adds data scraped from bing to data set
+    callBing() {
+      var jsonImg;
+      const postBing = () => {
+        fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet +'/uploadImages', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            "images":arr,
+          })
+        }).then(response => response.json())
+        .then(data => {
+          var imageArray = data['images'];
+          cookie.remove('imageJSONS');
+          cookie.save('imageJSONS', imageArray.slice(0,20), { path: '/' , 'maxAge': 100000});
+          this.props.history.push('/scraperesults');
+        });
+        this.setState({
+            loading: true
+          })
       };
+
+
+
       let https = require('https');
       let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
       let host = 'api.cognitive.microsoft.com';
@@ -309,9 +333,6 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
               }
               var shuffle = require('shuffle-array');
               shuffle(arr);
-              cookie.remove('imageJSONS');
-              cookie.save('imageJSONS', arr.slice(0,20), { path: '/' , 'maxAge': 100000});
-              nextPage();
           });
           response.on('error', function (e) {
               console.log('Error: ' + e.message);
@@ -329,21 +350,56 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
           };
           let req = https.request(request_params, response_handler);
           req.end();
-      }
-      
+      }  
       if (subscriptionKey.length === 32) {
           bing_web_search(term);
       } else {
           console.log('Invalid Bing Search API subscription key!');
           console.log('Please paste yours into the source code.');
       }
+      setTimeout(function(){
+        postBing(arr);
+      }, 2000);
+
     }
 
-    nextPage() {
-        cookie.remove('imageJSONS');
-        cookie.save('imageJSONS', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
-        this.props.history.push('/scraperesults');
+    handleSubmit = (e) => {
+      // create a new data set with name as first hashtag
+      if (this.state.hashtags.length === 0) {
+        this.setState({
+          searchError: "Please enter at least one hashtag"
+        });
+        return;
+      }
+      // create a new data set
+      cookie.save('brandName', this.state.hashtags[0], { path: '/' , 'maxAge': 100000});
+        fetch('http://localhost:2000/datasets', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "name": (this.state.hashtags[0]).toLowerCase(),
+          "datasetType": "0"
+        })
+      }).then(response => {
+        if (response.status === 200) {
+          //good
+        }
+        else {
+          //bad
+        }
+        this.refresh();
+      });
     }
+
+    // nextPage() {
+    //     cookie.remove('imageJSONS');
+    //     cookie.save('imageJSONS', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
+    //     this.props.history.push('/scraperesults');
+    // }
 
 
   render() {
