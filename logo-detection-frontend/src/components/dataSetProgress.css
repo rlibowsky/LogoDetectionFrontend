@@ -1,0 +1,12 @@
+.statusNum {
+    display: inline-block;
+    padding-left: 20px;
+}
+
+.dataSet {
+    text-align: left;
+    width: 100%;
+}
+.datasetButton {
+    width: 15%;
+}

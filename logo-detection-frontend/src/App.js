@@ -16,6 +16,7 @@ import FinishPage from './components/finishPage.js';
 import Upload from './components/upload.js';
 import TrainClassifiers from './components/trainClassifiers.js';
 import ScrapeResults from './components/scraperesults.js';
+import DataSetProgress from './components/dataSetProgress.js';
 class App extends Component {
 
   render() {
@@ -38,6 +39,7 @@ class App extends Component {
           <Route path="/finishPage" component={FinishPage} />
           <Route path="/trainclassifiers" component={TrainClassifiers} />
           <Route path="/scraperesults" component={ScrapeResults} />
+          <Route path="/dataSetProgress" component={DataSetProgress} />
           </div>
         </div>
         </Container>
