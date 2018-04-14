@@ -15,6 +15,7 @@ export default class Header extends React.Component {
     this.datasets = this.datasets.bind(this);
     this.search = this.search.bind(this);
     this.profile = this.profile.bind(this);
+    this.progress = this.progress.bind(this);
   }
 
   toggle() {
@@ -39,6 +40,10 @@ export default class Header extends React.Component {
     this.props.history.push('/train');
   }
 
+  progress() {
+    this.props.history.push('/datasetProgress');
+  }
+
   render() {
     const tokenExists = cookie.load('token') !== undefined;
     var domVariables = {
@@ -46,7 +51,8 @@ export default class Header extends React.Component {
       login: "Login/Sign Up",
       dataSetText: "",
       searchText: "",
-      profileText: ""
+      profileText: "",
+      progressText: ""
     };
     if (tokenExists) {
       domVariables = {
@@ -54,7 +60,8 @@ export default class Header extends React.Component {
         login: "",
         dataSetText: "Datasets",
         searchText: "Search",
-        profileText: "Profile"
+        profileText: "Profile",
+        progressText: "Progress"
       };
     }
     
@@ -79,6 +86,7 @@ export default class Header extends React.Component {
                     <DropdownItem disabled={!tokenExists} onClick={this.datasets}> {domVariables.dataSetText} </DropdownItem>
                     <DropdownItem disabled={!tokenExists} onClick={this.search}> {domVariables.searchText} </DropdownItem>
                     <DropdownItem disabled={!tokenExists} onClick={this.profile}> {domVariables.profileText} </DropdownItem>
+                    <DropdownItem disabled={!tokenExists} onClick={this.progress}> {domVariables.progressText} </DropdownItem>
                     <DropdownItem divider />
                     <DropdownItem onClick={this.logout} href="/login" > {domVariables.loginText} </DropdownItem>
                   </DropdownMenu>

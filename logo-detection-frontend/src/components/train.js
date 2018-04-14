@@ -158,7 +158,10 @@ import cookie from "react-cookies";
                 color="red"
               />
           <center>
-            
+            <h5> See your datasets and create new ones </h5>
+            <h5> Click on a dataset to delete it or to see the images it contains </h5>
+            <div className="header-space"></div>
+
               <h5> CREATE A NEW DATA SET </h5>
               <Form>
                 <FormGroup>

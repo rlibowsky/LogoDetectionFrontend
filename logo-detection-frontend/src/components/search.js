@@ -324,9 +324,10 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     <Container>
         <center>
         <Loading show={this.state.loading} color="red" />
-            <h2> SEARCH </h2>
+            <h5> Customize your search with hashtags and classifiers </h5>
+            <h5> Learn More about classifiers <a href="/"> Here </a> </h5>
             <div className="header-space"></div>
-            <h3> Currently Scraping for: </h3>
+            <h3> Currently Searching for: </h3>
             <div>
               <div>
                 Hashtags:

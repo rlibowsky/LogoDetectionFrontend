@@ -80,7 +80,8 @@ import { Container, Button } from 'reactstrap';
     <Container>
         <center>
             <h2> OUR SERVICES </h2>
-            <h5> Here for you </h5>
+
+            <h5> Click to train your datasets or to search online for more logos </h5>
             <div className="header-space"></div>
 
             <div className="row">
@@ -92,7 +93,7 @@ import { Container, Button } from 'reactstrap';
                       <img src={require('./images/services/train.jpg')} alt="Image" height="350" width="450"/>
                     </div>
                     <div className="imgButton">
-                      <Button onClick={this.onTrain}> Train Your Logo</Button>
+                      <Button onClick={this.onTrain}> Train </Button>
                     </div>
                   </div>
                 </div>
@@ -107,7 +108,7 @@ import { Container, Button } from 'reactstrap';
                       <img src={require('./images/services/search.jpg')} alt="Image" height="350" width="450"/>
                     </div>
                     <div className="imgButton">
-                      <Button onClick ={this.onSearch}> Search Social Media </Button>
+                      <Button onClick ={this.onSearch}> Search </Button>
                     </div>
                   </div>
                 </div>

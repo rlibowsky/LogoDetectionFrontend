@@ -61,6 +61,27 @@ import cookie from "react-cookies";
     }
 
     createDisplay() {
+        const seeDataset = (dataset) => {
+            console.log("id is " + dataset.id);
+            cookie.save('brandName', dataset.name, { path: '/' , 'maxAge': 100000});
+            fetch('http://localhost:2000/datasets/'+ dataset.id, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + this.state.token,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+            }).then(response => response.json())
+            .then(json => {
+                console.log("json response");
+                console.log(json);
+            cookie.remove('imageJSONS');
+            cookie.save('imageJSONS', json.images.slice(0,20), { path: '/' , 'maxAge': 100000});
+            cookie.remove('currentDataSet');
+            cookie.save('currentDataSet', dataset.id, { path: '/' , 'maxAge': 100000});
+            this.props.history.push('/datasetcontext/' + dataset.name.toLowerCase());
+            });
+        }
         this.dataSetInfo = this.state.dataSetElements.map(function(dataset){
             var status = dataset.status;
             var statusText = "";
@@ -89,7 +110,7 @@ import cookie from "react-cookies";
             }
             return(
                 <div className="dataSet" key={dataset.id.toString()}>
-                    <div> <Button className="datasetButton" > { dataset.name }  </Button> </div>
+                    <div> <Button className="datasetButton" onClick={() => seeDataset(dataset)} > { dataset.name }  </Button> </div>
                     <div className="statusNum" >  Status: { statusText }</div>
                 </div>
             );

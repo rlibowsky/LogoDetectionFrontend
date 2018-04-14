@@ -17,6 +17,7 @@ import Upload from './components/upload.js';
 import TrainClassifiers from './components/trainClassifiers.js';
 import ScrapeResults from './components/scraperesults.js';
 import DataSetProgress from './components/dataSetProgress.js';
+import DataSetContext from './components/dataSetContext.js';
 class App extends Component {
 
   render() {
@@ -40,6 +41,7 @@ class App extends Component {
           <Route path="/trainclassifiers" component={TrainClassifiers} />
           <Route path="/scraperesults" component={ScrapeResults} />
           <Route path="/dataSetProgress" component={DataSetProgress} />
+          <Route path="/dataSetContext" component={DataSetContext} />
           </div>
         </div>
         </Container>
