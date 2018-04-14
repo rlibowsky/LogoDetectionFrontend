@@ -25,6 +25,7 @@ import cookie from "react-cookies";
         this.props.history.push('/login');
         return;
       }
+      console.log(this.state.datasets);
       
       
       // Image factory

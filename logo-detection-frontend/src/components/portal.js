@@ -25,6 +25,14 @@ import { Container, Button } from 'reactstrap';
     }
 
     onTrain(ev) {
+      const next = () => {
+        this.props.history.push({
+          pathname: '/train',
+          params: {
+            email: this.state.email
+          }
+        })
+      } 
       console.log("in train yo");
       console.log(this.state.token);
       // call here to get data sets
@@ -49,12 +57,9 @@ import { Container, Button } from 'reactstrap';
         }
         var str = array.toString();
         cookie.save('datasets', str, { path: '/' , 'maxAge': 100000});
-        this.props.history.push({
-          pathname: '/train',
-          params: {
-            email: this.state.email
-          }
-        })
+        setTimeout(function(){
+          next();
+        }, 2000);
       });
     }
     onSearch(ev) {

@@ -77,13 +77,14 @@ export default class TrainClassifiers extends React.Component {
           }
         }).then(response => {
           this.loadClassifiers();
+        }). then (json => {
+          this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
+            return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
+                <ClassifierImages classifierName="{classifier.name.toString()}"/>
+            </li>
+          });
         });
       }
-      this.dataSetClassifiers = this.state.currentClassifiers.map(function(classifier, i){
-        return <li align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> {classifier.name.toString()} 
-            <ClassifierImages classifierName="{classifier.name.toString()}"/>
-        </li>
-      });
     }
 
 
@@ -121,20 +122,42 @@ export default class TrainClassifiers extends React.Component {
 
     addToTrainingSet() {
       console.log(this.selectedImages);
-      //this.props.history.push({
-      //  pathname: '/finishPage',
-      //  params: {
-      //    selectedImages: this.selectedImages
-      //  }
-      //});
+      for (var item in this.selectedImages) {
+        console.log(this.selectedImages[item][0]);
+        console.log("COOKIE for " + this.selectedImages[item][0] + " is " + cookie.load(this.selectedImages[item][0]));
+      }
     }
 
 
     handleAddClassifier() {
+      const getEverything = () => {
+        console.log("IN GET EVERYTHING!!!")
+        var nodeArray = [];
+        //post nodes as categories to rest API
+          fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + this.state.newClassifierID, {
+            method: 'GET',
+            headers: {
+              'Authorization': 'Bearer ' + this.state.token,
+              'Content-Type': 'application/json',
+            }
+          }).then(response => response.json())
+          .then(json => {
+            console.log(json);
+            var categories = json['categories'];
+            for (var i in categories) {
+              var nodeName = (categories[i]['name']);
+              nodeName= nodeName.toLowerCase();
+              var nodeID = (categories[i]['categoryId']);
+              var classifier = this.state.newClassifier.toLowerCase();
+              console.log("classifier: " + classifier);
+              console.log(classifier+'-'+nodeName);
+              cookie.save(classifier+"-"+nodeName, nodeID, { path: '/' , 'maxAge': 100000})  
+            }
+          })
+          this.loadClassifiers();
+      }
       const postCategories= (nodeArray) => {
         for (var element in nodeArray) {
-          console.log(nodeArray[element]);
-          console.log(this.state.currentDataSet);
           //post nodes as categories to rest API
           fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + this.state.newClassifierID, {
             method: 'POST',
@@ -145,13 +168,13 @@ export default class TrainClassifiers extends React.Component {
             body: JSON.stringify({
               "name": nodeArray[element].toLowerCase(),
             })
-          }).then(response => response.json)
+          }).then(response => response.json())
           .then(json => {
-            console.log("returned JSON: " + json)
-          });
+            console.log(json);
+            getEverything()
+          })
         }
       }
-
       fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
         method: 'POST',
         headers: {
@@ -164,9 +187,12 @@ export default class TrainClassifiers extends React.Component {
         })
       }).then(response => response.json())
       .then(json => {
+        console.log(json);
         var id = (json['createdClassifier']['classifierId']);
+        var name = (json['createdClassifier']['name']);
         this.setState({
-          newClassifierID: id
+          newClassifierID: id,
+          newClassifier: name
         })
         var nodeList = prompt("List the nodes within this classifer (seperated by comma)", "nodes");
         var nodeArray = nodeList.split(",").map(function(item) {
@@ -187,7 +213,7 @@ export default class TrainClassifiers extends React.Component {
           console.log("node string: " + nodeString);
           cookie.save(this.state.newClassifierID, nodeString, { path: '/' , 'maxAge': 100000});
         }
-        this.loadClassifiers();
+        
         setTimeout(function(){
           postCategories(nodeArray);
         }, 2000);
@@ -235,6 +261,7 @@ export default class TrainClassifiers extends React.Component {
     
 
     loadClassifiers() {
+      console.log("Load Classifiers");
       fetch('http://localhost:2000/datasets/' + this.state.currentDataSet + '/classifiers', {
         method: 'GET',
         headers: {
@@ -326,7 +353,6 @@ export default class TrainClassifiers extends React.Component {
       <Container>
         <center>
         <div className="row">
-
               <div className="column">
                 <div className="row">
                 <h1> {this.state.brandName} </h1>
@@ -365,12 +391,13 @@ export default class TrainClassifiers extends React.Component {
                     */}
                     <h1 align="left"> {this.state.brandName} </h1>
                   <ul> 
+                  {this.loadClassifiers}
                   {this.state.currentClassifiers.map((classifier, i) =>{
                     return <li class="borderlist" style={{background: this.background(classifier.name.toString())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString())} align="left" key = {classifier.name.toString()} id ={classifier.id.toString()}> 
                     <h5 align="left"> {classifier.name.toString()} 
                     </h5>
                     {this.returnNodes(classifier.id.toString()).map((node) => {
-                      return <div align = 'center' style={{background: this.background(classifier.name.toString() + '-' + node.toString())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString() + '-' + node.toString())} > 
+                      return <div align = 'center' style={{background: this.background(classifier.name.toString().toLowerCase() + '-' + node.toString().toLowerCase())}} onClick={() => this.selectClassifierOrNode(classifier.name.toString() + '-' + node.toString())} > 
                         {node}
                       </div>;
                   })}
