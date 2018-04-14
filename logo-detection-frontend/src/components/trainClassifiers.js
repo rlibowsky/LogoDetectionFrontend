@@ -164,6 +164,9 @@ export default class TrainClassifiers extends React.Component {
           this.setStatus();
         });
       }
+      this.props.history.push({
+        pathname: '/finishPage',
+      });
     }
 
 
