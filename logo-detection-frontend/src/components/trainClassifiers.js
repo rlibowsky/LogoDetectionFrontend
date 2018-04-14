@@ -43,6 +43,7 @@ export default class TrainClassifiers extends React.Component {
       this.setBorder = this.setBorder.bind(this);
       this.background = this.background.bind(this);
       this.addToTrainingSet = this.addToTrainingSet.bind(this);
+      this.setStatus = this.setStatus.bind(this);
       this.selectClassifierOrNode = this.selectClassifierOrNode.bind(this);
       this.handleAddClassifier = this.handleAddClassifier.bind(this);
       this.handleDeleteClassifier = this.handleDeleteClassifier.bind(this);
@@ -120,11 +121,48 @@ export default class TrainClassifiers extends React.Component {
       });
     }
 
+    setStatus() {
+      fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/setStatus', {
+        method: 'PATCH',
+        headers: {
+          'Authorization': 'Bearer ' + this.state.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "datasetStatus": '1'
+        })
+      }).then(response => response.json())
+      .then(json => {
+        console.log(json);
+      });
+    }
+
     addToTrainingSet() {
       console.log(this.selectedImages);
       for (var item in this.selectedImages) {
-        console.log(this.selectedImages[item][0]);
-        console.log("COOKIE for " + this.selectedImages[item][0] + " is " + cookie.load(this.selectedImages[item][0]));
+        var ids = cookie.load(this.selectedImages[item][0]);
+        var arrayURL = this.selectedImages[item][1];
+        var idArray = ids.split('-');
+        var classifierID = idArray[0];
+        var categoryID = idArray[1];
+        console.log("classifier ID: " + idArray[0]);
+        console.log("category ID: " + idArray[1]);
+        console.log("****");
+        ///:datasetId/classifiers/:classifierId/:categoryId'
+        fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + classifierID + '/' + categoryID, {
+          method: 'PATCH',
+          headers: {
+            'Authorization': 'Bearer ' + this.state.token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            "trainingData": arrayURL
+          })
+        }).then(response => response.json())
+        .then(json => {
+          console.log(json);
+          this.setStatus();
+        });
       }
     }
 
@@ -144,14 +182,16 @@ export default class TrainClassifiers extends React.Component {
           .then(json => {
             console.log(json);
             var categories = json['categories'];
+            var classifier_ = json['name'].toLowerCase();
             for (var i in categories) {
               var nodeName = (categories[i]['name']);
               nodeName= nodeName.toLowerCase();
               var nodeID = (categories[i]['categoryId']);
-              var classifier = this.state.newClassifier.toLowerCase();
-              console.log("classifier: " + classifier);
-              console.log(classifier+'-'+nodeName);
-              cookie.save(classifier+"-"+nodeName, nodeID, { path: '/' , 'maxAge': 100000})  
+              console.log("classifier: " + classifier_);
+              console.log(classifier_+'-'+nodeName);
+              var id = this.state.newClassifierID + "-" + nodeID;
+              console.log("ID COMBINED" + id);
+              cookie.save(classifier_+"-"+nodeName, id, { path: '/' , 'maxAge': 100000})  
             }
           })
           this.loadClassifiers();
@@ -171,9 +211,9 @@ export default class TrainClassifiers extends React.Component {
           }).then(response => response.json())
           .then(json => {
             console.log(json);
-            getEverything()
           })
         }
+        getEverything()
       }
       fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers', {
         method: 'POST',
