@@ -81,7 +81,6 @@ import { Container, Button } from 'reactstrap';
             <div className="box" id="dsImages">
                   {this.dataSetImages}
             </div>
-          <Button onClick={this.trainClassifiers}> Train Classifiers </Button>
           <div className="bt-space"></div>
           <h5> Interested in how our services can help you? Give us a call! </h5>
           <Button className="learnMoreButton" onClick={this.learnMore}> Learn More </Button>

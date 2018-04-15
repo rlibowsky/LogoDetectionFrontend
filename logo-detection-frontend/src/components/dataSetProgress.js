@@ -63,24 +63,50 @@ import cookie from "react-cookies";
     createDisplay() {
         const seeDataset = (dataset) => {
             console.log("id is " + dataset.id);
-            cookie.save('brandName', dataset.name, { path: '/' , 'maxAge': 100000});
-            fetch('http://localhost:2000/datasets/'+ dataset.id, {
-            method: 'GET',
+            // cookie.save('brandName', dataset.name, { path: '/' , 'maxAge': 100000});
+            // fetch('http://localhost:2000/datasets/'+ dataset.id, {
+            // method: 'GET',
+            // headers: {
+            //     'Authorization': 'Bearer ' + this.state.token,
+            //     'Accept': 'application/json',
+            //     'Content-Type': 'application/json',
+            // }
+            // }).then(response => response.json())
+            // .then(json => {
+            //     console.log("json response");
+            //     console.log(json);
+            // cookie.remove('imageJSONS');
+            // cookie.save('imageJSONS', json.images.slice(0,20), { path: '/' , 'maxAge': 100000});
+            // cookie.remove('currentDataSet');
+            // cookie.save('currentDataSet', dataset.id, { path: '/' , 'maxAge': 100000});
+            // this.props.history.push('/datasetcontext/' + dataset.name.toLowerCase());
+            // });
+            var arr = [];
+            fetch('http://localhost:2000/datasets/'+ dataset.id +'/uploadImages', {
+            method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + this.state.token,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-            }
+            },
+            body: JSON.stringify({
+                "images":arr,
+            })
             }).then(response => response.json())
-            .then(json => {
-                console.log("json response");
-                console.log(json);
+            .then(data => {
+                console.log("data is ");
+                console.log(data);
+            var imageArray = data['images'];
+            cookie.save('brandName', dataset.name, { path: '/' , 'maxAge': 100000});
             cookie.remove('imageJSONS');
-            cookie.save('imageJSONS', json.images.slice(0,20), { path: '/' , 'maxAge': 100000});
+            cookie.save('imageJSONS', imageArray.slice(0,20), { path: '/' , 'maxAge': 100000});
             cookie.remove('currentDataSet');
             cookie.save('currentDataSet', dataset.id, { path: '/' , 'maxAge': 100000});
             this.props.history.push('/datasetcontext/' + dataset.name.toLowerCase());
             });
+            this.setState({
+                loading: true
+            })
         }
         this.dataSetInfo = this.state.dataSetElements.map(function(dataset){
             var status = dataset.status;
