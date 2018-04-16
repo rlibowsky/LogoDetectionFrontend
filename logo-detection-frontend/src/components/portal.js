@@ -41,7 +41,8 @@ import { Container, Button } from 'reactstrap';
           const AUTH_KEY = "8703238-5ba1c3ae204d8beb21f648965";
           searchImages(AUTH_KEY, term, {per_page: 5})
           .then((r) => {
-            var imgArray = r['hits'];
+            var imgArray = [];
+            imgArray = r['hits'];
             if (imgArray.length == 0) {
               url = "https://www.iconsdb.com/icons/preview/caribbean-blue/database-5-xxl.png";
               var datasetName = "datasetURL: " + term;
