@@ -84,6 +84,7 @@ import cookie from "react-cookies";
         var str = array.toString();
         cookie.save('datasets', str, { path: '/' , 'maxAge': 100000});
         window.location.reload();
+        this.forceUpdate();
       });
     }
 
@@ -141,6 +142,7 @@ import cookie from "react-cookies";
             var imgSrc = imgArray[0]['largeImageURL'];
             var datasetName = "datasetURL: " + term;
             cookie.save(datasetName, imgSrc, { path: '/' , 'maxAge': 100000});
+            callRefresh();
           }
         }
       );
