@@ -73,8 +73,9 @@ import cookie from "react-cookies";
         var array = [];
         for(var i in data)
         {
-          var src = data[i].src;
           var name = data[i].name;
+          var key = "datasetURL: " + name;
+          var src = cookie.load(key);
           var id = data[i]._id;
           var data_set = [src, name, id];
           array.push(data_set);
@@ -106,6 +107,9 @@ import cookie from "react-cookies";
     }
 
     onSubmit(ev) {
+       const callRefresh = () => {
+          this.refresh();
+       }
         cookie.save('brandName', this.state.brand_name, { path: '/' , 'maxAge': 100000});
         fetch('http://localhost:2000/datasets', {
         method: 'POST',
@@ -119,15 +123,59 @@ import cookie from "react-cookies";
           "datasetType": "0"
         })
       }).then(response => {
-        if (response.status === 200) {
-          //good
-        }
-        else {
-          //bad
-        }
-        this.refresh();
+            let https = require('https');
+            let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
+            let host = 'api.cognitive.microsoft.com';
+            let path = '/bing/v7.0/images/search';
+            let term = (this.state.brand_name).toLowerCase();
+            var url;
+            let response_handler = function (response) {
+                let body = '';
+                response.on('data', function (d) {
+                    body += d;
+                });
+                response.on('end', function () {
+                    let json = JSON.parse(body);
+                    body = JSON.stringify(JSON.parse(body), null, '  ');
+                    var images = json['value']
+                        var val = images[1];
+                        var contentURL = val['contentUrl'];
+                          url = contentURL;
+                          console.log(term);
+                          console.log(url);
+                          var datasetName = "datasetURL: " + term;
+                          cookie.save(datasetName, url, { path: '/' , 'maxAge': 100000});
+                          callRefresh();
+                        });
+                response.on('error', function (e) {
+                    console.log('Error: ' + e.message);
+                });
+            };
+            let bing_web_search = function (search) {
+              console.log('Searching the Web for: ' + term);
+              let request_params = {
+                    method : 'GET',
+                    hostname : host,
+                    path : path + '?q=' + encodeURIComponent(search),
+                    headers : {
+                        'Ocp-Apim-Subscription-Key' : subscriptionKey,
+                    }
+                };
+                let req = https.request(request_params, response_handler);
+                req.end();
+            }  
+            if (subscriptionKey.length === 32) {
+                bing_web_search(term);
+            }
       });
-
+    }
+    sleep(milliseconds) {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+          break;
+        }
+      }
     }
 
     handleChange (brand_name, id) {
