@@ -62,6 +62,7 @@ import cookie from "react-cookies";
 
     createDisplay() {
         const seeDataset = (dataset) => {
+            return;
             console.log("id is " + dataset.id);
             // cookie.save('brandName', dataset.name, { path: '/' , 'maxAge': 100000});
             // fetch('http://localhost:2000/datasets/'+ dataset.id, {
@@ -159,7 +160,7 @@ import cookie from "react-cookies";
             
               {/* <h3> DATA SET PROGRESS </h3> */}
               <h5> See the status of the datasets you've created</h5>
-              <h5> Click on a data set to learn more about the images it contains</h5>
+              {/* <h5> Click on a data set to learn more about the images it contains</h5> */}
               <div className="header-space"></div>
               <li> { this.dataSetInfo } </li>
           

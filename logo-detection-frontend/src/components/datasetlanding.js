@@ -96,7 +96,7 @@ import { Container, Button } from 'reactstrap';
     }
     
     onScrape = (e) => {
-
+      
     }
 
 
@@ -125,7 +125,7 @@ import { Container, Button } from 'reactstrap';
                 <Button onClick={this.onAddImages}> Upload Images </Button>
               </div>
               <div className="imgButton">
-                <Button onClick ={this.onScrape}> Scrape Instagram </Button>
+                <Button onClick ={this.onScrape}> Scrape </Button>
                 <Loading show={this.state.loading} color="red" />
               </div>
             </ToolTip>
