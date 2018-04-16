@@ -40,6 +40,7 @@ import cookie from "react-cookies";
 
       var elements = (this.state.datasets).split(',');
       this.state.datasetsElements = elements;
+      console.log(elements);
       for (var i = 0; i < elements.length; i=i+3) {
         this.state.images.push(createImage(elements[i],elements[i+1], elements[i+2]));
       }
