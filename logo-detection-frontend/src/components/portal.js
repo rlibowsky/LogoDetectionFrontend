@@ -3,7 +3,7 @@ import './portal.css';
 
 import Footer from './footer.js';
 import cookie from "react-cookies";
-
+import { searchImages } from 'pixabay-api';
 import { Container, Button } from 'reactstrap';
 
   export default class Portal extends React.Component { 
@@ -33,54 +33,28 @@ import { Container, Button } from 'reactstrap';
       .then(json => {
         //this.state.datasets[i].cover,this.state.datasets[i].name, this.state.datasets[i]._id))
         var data = json.datasets;
-        var array = [];
         for(var i in data)
-          {
-            var name = data[i].name;
-            let https = require('https');
-            let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
-            let host = 'api.cognitive.microsoft.com';
-            let path = '/bing/v7.0/images/search';
-            let term = name.toString().toLowerCase();
-            var url;
-            let response_handler = function (response) {
-                let body = '';
-                response.on('data', function (d) {
-                    body += d;
-                });
-                response.on('end', function () {
-                    let json = JSON.parse(body);
-                    body = JSON.stringify(JSON.parse(body), null, '  ');
-                    var images = json['value']
-                        var val = images[1];
-                        var contentURL = val['contentUrl'];
-                        var extension = contentURL.slice( -3 );
-                          url = contentURL;
-                          //add in a cookie
-                          var datasetName = "datasetURL: " + term;
-                          cookie.save(datasetName, url, { path: '/' , 'maxAge': 100000});
-                });
-                response.on('error', function (e) {
-                    console.log('Error: ' + e.message);
-                });
-            };
-            let bing_web_search = function (search) {
-              console.log('Searching the Web for: ' + term);
-              let request_params = {
-                    method : 'GET',
-                    hostname : host,
-                    path : path + '?q=' + encodeURIComponent(search),
-                    headers : {
-                        'Ocp-Apim-Subscription-Key' : subscriptionKey,
-                    }
-                };
-                let req = https.request(request_params, response_handler);
-                req.end();
-            }  
-            if (subscriptionKey.length === 32) {
-                bing_web_search(term);
+        {
+          var name = data[i].name;
+          var url = "";
+          let term = name.toString().toLowerCase();
+          const AUTH_KEY = "8703238-5ba1c3ae204d8beb21f648965";
+          searchImages(AUTH_KEY, term, {per_page: 5})
+          .then((r) => {
+            var imgArray = r['hits'];
+            if (imgArray.length == 0) {
+              url = "https://www.iconsdb.com/icons/preview/caribbean-blue/database-5-xxl.png";
+              var datasetName = "datasetURL: " + term;
+              cookie.save(datasetName, url, { path: '/' , 'maxAge': 100000});
+            }
+            else {
+              var imgSrc = imgArray[0]['largeImageURL'];
+              var datasetName = "datasetURL: " + term;
+              cookie.save(datasetName, imgSrc, { path: '/' , 'maxAge': 100000});
             }
           }
+        );
+        }
         });
     }
 
