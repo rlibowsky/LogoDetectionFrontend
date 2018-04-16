@@ -34,20 +34,16 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
         return;
       }
 
-      // this.nextPage = this.nextPage.bind(this);
       this.addUser = this.addUser.bind(this);
       this.addClassifier = this.addClassifier.bind(this);
       this.addHashtag = this.addHashtag.bind(this);
       this.buildClassifierList = this.buildClassifierList.bind(this);
       this.buildHashtagList = this.buildHashtagList.bind(this);
       this.buildUserList = this.buildUserList.bind(this);
-      this.refresh = this.refresh.bind(this);
       this.setClassifiers = this.setClassifiers.bind(this);
       this.getUserClassifiers = this.getUserClassifiers.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
-      this.callBing = this.callBing.bind(this);
       this.getUserClassifiers();
-
       
     }
 
@@ -239,62 +235,22 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       this.forceUpdate();
     }
 
-    refresh() {
-      fetch('http://localhost:2000/datasets/', {
-        headers: {
-          'Authorization': 'Bearer ' + this.state.token,
-          'Content-Type': 'application/json',
-        }
-      }).then(response => 
-        response.json())
-      .then(json => {
-        var data = json.datasets;
-        var array = [];
-        for(var i in data)
-        {
-          var src = data[i].src;
-          var name = data[i].name;
-          var id = data[i]._id;
-          var data_set = [src, name, id];
-          array.push(data_set);
-          if (name === this.state.hashtags[0]) {
-            this.state.currentDataSet = id;
-            cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
-          }
-        }
-        var str = array.toString();
-        cookie.save('datasets', str, { path: '/' , 'maxAge': 100000});
-        this.callBing();
-      });
-    }
-
-    // adds data scraped from bing to data set
-    callBing() {
-      var jsonImg;
-      const postBing = () => {
-        fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet +'/uploadImages', {
-          method: 'POST',
-          headers: {
-            'Authorization': 'Bearer ' + this.state.token,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            "images":arr,
-          })
-        }).then(response => response.json())
-        .then(data => {
-          var imageArray = data['images'];
-          cookie.remove('imageJSONS');
-          cookie.save('imageJSONS', imageArray.slice(0,20), { path: '/' , 'maxAge': 100000});
-          this.props.history.push('/scraperesults');
-        });
+    handleSubmit = (e) => {
+      if (this.state.hashtags.length === 0) {
         this.setState({
-            loading: true
-          })
+          searchError: "Please enter at least one hashtag"
+        });
+        return;
+      }
+      this.setState({
+        loading: true
+      })
+      var jsonImg;
+      const postBing = (arr) => {
+        cookie.remove('imageJSONS');
+        cookie.save('imageJSONS', arr.slice(0,20), { path: '/' , 'maxAge': 100000});
+        this.props.history.push('/scraperesults');
       };
-
-
 
       let https = require('https');
       let subscriptionKey = 'ebf811d0d7bb493089f573dae59b08ab';
@@ -360,46 +316,7 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
       setTimeout(function(){
         postBing(arr);
       }, 2000);
-
     }
-
-    handleSubmit = (e) => {
-      // create a new data set with name as first hashtag
-      if (this.state.hashtags.length === 0) {
-        this.setState({
-          searchError: "Please enter at least one hashtag"
-        });
-        return;
-      }
-      // create a new data set
-      cookie.save('brandName', this.state.hashtags[0], { path: '/' , 'maxAge': 100000});
-        fetch('http://localhost:2000/datasets', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer ' + this.state.token,
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "name": (this.state.hashtags[0]).toLowerCase(),
-          "datasetType": "0"
-        })
-      }).then(response => {
-        if (response.status === 200) {
-          //good
-        }
-        else {
-          //bad
-        }
-        this.refresh();
-      });
-    }
-
-    // nextPage() {
-    //     cookie.remove('imageJSONS');
-    //     cookie.save('imageJSONS', this.state.imageJSON, { path: '/' , 'maxAge': 100000});
-    //     this.props.history.push('/scraperesults');
-    // }
 
 
   render() {
@@ -407,9 +324,10 @@ import { Button, Container, Form, FormGroup, Input } from 'reactstrap';
     <Container>
         <center>
         <Loading show={this.state.loading} color="red" />
-            <h2> SEARCH </h2>
+            <h5> Customize your search with hashtags and classifiers </h5>
+            <h5> Learn More about classifiers <a href="/"> Here </a> </h5>
             <div className="header-space"></div>
-            <h3> Currently Scraping for: </h3>
+            <h3> Currently Searching for: </h3>
             <div>
               <div>
                 Hashtags:
