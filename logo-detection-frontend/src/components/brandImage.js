@@ -100,10 +100,13 @@ import { stringify } from 'querystring';
       };
       let bing_web_search = function (search) {
         console.log('Searching the Web for: ' + term);
+        var options = [];
+        options.push("width=600");
+        options.push("height=600");
         let request_params = {
               method : 'GET',
               hostname : host,
-              path : path + '?q=' + encodeURIComponent(search),
+              path : path + '?q=' + encodeURIComponent(search) + "&" + options.join("&"),
               headers : {
                   'Ocp-Apim-Subscription-Key' : subscriptionKey,
               }
