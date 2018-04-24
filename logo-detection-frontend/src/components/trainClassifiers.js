@@ -140,34 +140,41 @@ export default class TrainClassifiers extends React.Component {
     addToTrainingSet() {
       console.log(this.selectedImages);
       for (var item in this.selectedImages) {
-        var ids = cookie.load(this.selectedImages[item][0]);
-        var arrayURL = this.selectedImages[item][1];
-        var idArray = ids.split('-');
-        var classifierID = idArray[0];
-        var categoryID = idArray[1];
-        console.log("classifier ID: " + idArray[0]);
-        console.log("category ID: " + idArray[1]);
-        console.log("****");
-        ///:datasetId/classifiers/:classifierId/:categoryId'
-        fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + classifierID + '/' + categoryID, {
-          method: 'PATCH',
-          headers: {
-            'Authorization': 'Bearer ' + this.state.token,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            "trainingData": arrayURL
-          })
-        }).then(response => response.json())
-        .then(json => {
-          console.log(json);
-          this.setStatus();
-        });
-      }
-      this.props.history.push({
-        pathname: '/finishPage',
-      });
-    }
+        if ((document.cookie.indexOf(this.selectedImages[item][0]) + '=') > -1) {
+          var ids = cookie.load(this.selectedImages[item][0]);
+          var arrayURL = this.selectedImages[item][1];
+          console.log(ids);
+          var idArray = ids.split('-');
+          var classifierID = idArray[0];
+          var categoryID = idArray[1];
+          console.log("classifier ID: " + idArray[0]);
+          console.log("category ID: " + idArray[1]);
+          console.log("****");
+          ///:datasetId/classifiers/:classifierId/:categoryId'
+          fetch('http://localhost:2000/datasets/'+ this.state.currentDataSet + '/classifiers/' + classifierID + '/' + categoryID, {
+            method: 'PATCH',
+            headers: {
+              'Authorization': 'Bearer ' + this.state.token,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              "trainingData": arrayURL
+            })
+            }).then(response => response.json())
+            .then(json => {
+              console.log(json);
+              this.setStatus();
+            });
+          }
+          else {
+            console.log("doesnt do anything");
+          }
+          this.props.history.push({
+            pathname: '/finishPage',
+          });
+          }
+        }
+    
 
 
     handleAddClassifier() {
