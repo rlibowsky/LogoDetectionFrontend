@@ -39,17 +39,20 @@ import cookie from "react-cookies";
         return img; 
       };
 
-      var elements = (this.state.datasets).split(',');
-      this.state.datasetsElements = elements;
-      console.log(elements);
-      for (var i = 0; i < elements.length; i=i+3) {
-        this.state.images.push(createImage(elements[i],elements[i+1], elements[i+2]));
+      if (this.state.datasets.length > 0) {
+        var elements = (this.state.datasets).split(',');
+        this.state.datasetsElements = elements;
+        console.log(elements);
+        for (var i = 0; i < elements.length; i=i+3) {
+          this.state.images.push(createImage(elements[i],elements[i+1], elements[i+2]));
+        }
+        var hist = this.props.history;
+        var par = this;
+        this.BrandNamesList = this.state.images.map(function(image, i){
+          return <BrandImage history={hist} image={image} parent={par} key={i}/>;
+        })
       }
-      var hist = this.props.history;
-      var par = this;
-      this.BrandNamesList = this.state.images.map(function(image, i){
-        return <BrandImage history={hist} image={image} parent={par} key={i}/>;
-      })
+      
       this.onSubmit = this.onSubmit.bind(this);
       this.handleChange = this.handleChange.bind(this);
       this.refresh = this.refresh.bind(this);
