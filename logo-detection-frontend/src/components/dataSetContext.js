@@ -17,44 +17,56 @@ import { Container, Button } from 'reactstrap';
         token: cookie.load('token'),
         currentDataSet: cookie.load('currentDataSet'),
         imageJSON: cookie.load('imageJSONS'),
+        imagesWithContexts: cookie.load('imagesWithContexts'),
         brandName: cookie.load('brandName'),
         loading: false,
         showToolTipActive: false,
         datasets: cookie.load('datasets')
       };
+      console.log("images w contexts");
+      console.log(this.state.imagesWithContexts);
       if (this.state.token === undefined) {
         this.props.history.push('/login');
         return;
       }
       
       // Image factory
-      var createImage = function(src, title) {
+      var createImage = function(src, title, context) {
         var img   = new Image();
         img.src   = src;
         img.alt   = title;
         img.title = title;
+        img.context = context;
         return img; 
       };
 
       // array of images
       var images = [];
 
-      for (var i = 0; i < this.state.imageJSON.length; i++) {
-        var str = (this.state.imageJSON[i]);
-        images.push(createImage(str), str);
+      for (var i = 0; i < this.state.imagesWithContexts.length; i++) {
+        var str = (this.state.imagesWithContexts[i].url);
+        var results;
+        if (this.state.imagesWithContexts[i].results !== undefined) {
+          results = this.state.imagesWithContexts[i].results[0][0];
+        }
+        images.push(createImage(str, str, results), str);
       }
-
-      const imageClick = (image) => {
-        return;
-      };
            
       this.dataSetImages = images.map(function(image){
         if (image.src === undefined) {
           return;
         }
-        var str = image;
+        console.log("image context is ");
+        console.log(image.context);
+        var vals = "";
+        for (var i = 0; i < image.context.values.length; i++) {
+          if (image.context.values[i] !== "'") {
+            vals = vals + image.context.values[i];
+          }
+        }
         return <div className="dataSetBox" key = {image.src.toString()} id ={image.title.toString()}> 
-        <img height="200" width="250" hspace="20" src={image.src.toString()} onClick={() => imageClick(image.title.toString())}/>
+        <img height="200" width="250" hspace="20" src={image.src.toString()}/>
+        <div> {vals} </div>
         </div>;
       });
 
@@ -76,7 +88,7 @@ import { Container, Button } from 'reactstrap';
     return (
       <Container>
         <center>
-            <h2> {this.state.brandName} </h2>
+            <h2> Get Insights on your {this.state.brandName} dataset </h2>
             <div className="header-space"></div>
             <div className="box" id="dsImages">
                   {this.dataSetImages}

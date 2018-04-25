@@ -62,22 +62,33 @@ import cookie from "react-cookies";
 
     createDisplay() {
         const seeDataset = (dataset) => {
-            return;
+            // return;
             console.log("id is " + dataset.id);
             // this.setState({
             //     loading: true
             // })
             // var arr = [];
             fetch('http://localhost:2000/datasets/results/6', {
+            method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + this.state.token,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
             })
-            .then(response => {
-                console.log("response is ");
-                console.log(response);
+            .then(response => response.json() )
+            .then(json => {
+                console.log("json is ");
+                console.log(json.datasets);
+                for (var i = 0; i < json.datasets.length; i++) {
+                    if (json.datasets[i].datasetId === dataset.id) {
+                        var images = json.datasets[i].images;
+                        cookie.save('brandName', dataset.name, { path: '/' , 'maxAge': 100000});
+                        cookie.save('imagesWithContexts', images.slice(0,20), { path: '/' , 'maxAge': 100000});
+                        this.props.history.push('/datasetcontext/' + dataset.name.toLowerCase());
+                        break;
+                    }
+                }
             // var imageArray = data['images'];
             // cookie.save('brandName', dataset.name, { path: '/' , 'maxAge': 100000});
             // cookie.remove('imageJSONS');
@@ -141,6 +152,7 @@ import cookie from "react-cookies";
             
               {/* <h3> DATA SET PROGRESS </h3> */}
               <h5> See the status of the datasets you've created</h5>
+              <h5> If a dataset is done classifying, click on it to see the image contexts</h5>
               {/* <h5> Click on a data set to learn more about the images it contains</h5> */}
               <div className="header-space"></div>
               <li> { this.dataSetInfo } </li>
