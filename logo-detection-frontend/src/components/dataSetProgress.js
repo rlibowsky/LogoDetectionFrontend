@@ -111,7 +111,7 @@ import cookie from "react-cookies";
         }
         this.dataSetInfo = this.state.dataSetElements.map(function(dataset){
             var status = dataset.status;
-            var statusText = "";
+            var statusText;
             switch(status) {
                 case 0:
                     statusText = "Created";
@@ -133,6 +133,9 @@ import cookie from "react-cookies";
                     break;
                 case 6:
                     statusText = "Finished Classifying";
+                    break;
+                default: 
+                    statusText = "Training";
                     break;
             }
             return(
