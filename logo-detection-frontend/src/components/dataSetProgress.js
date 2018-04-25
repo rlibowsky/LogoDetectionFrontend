@@ -83,8 +83,10 @@ import cookie from "react-cookies";
                 for (var i = 0; i < json.datasets.length; i++) {
                     if (json.datasets[i].datasetId === dataset.id) {
                         var images = json.datasets[i].images;
+                        console.log("images is " );
+                        console.log(images);
                         cookie.save('brandName', dataset.name, { path: '/' , 'maxAge': 100000});
-                        cookie.save('imagesWithContexts', images.slice(0,20), { path: '/' , 'maxAge': 100000});
+                        cookie.save('imagesWithContexts', images.slice(0,10), { path: '/' , 'maxAge': 100000});
                         this.props.history.push('/datasetcontext/' + dataset.name.toLowerCase());
                         break;
                     }
