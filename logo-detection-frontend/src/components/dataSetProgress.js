@@ -105,7 +105,7 @@ import cookie from "react-cookies";
             var statusText;
             switch(status) {
                 case 0:
-                    statusText = "Created";
+                    statusText = "Ready to be Trained";
                     break;
                 case 1:
                     statusText = "Ready to be Trained";

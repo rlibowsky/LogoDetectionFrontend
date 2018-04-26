@@ -56,7 +56,7 @@ import { stringify } from 'querystring';
           var imageArray = data['images'];
           cookie.save('brandName', brand_name, { path: '/' , 'maxAge': 100000});
           cookie.remove('imageJSONS');
-          cookie.save('imageJSONS', imageArray.slice(0,20), { path: '/' , 'maxAge': 100000});
+          cookie.save('imageJSONS', arr.slice(0,20), { path: '/' , 'maxAge': 100000});
           cookie.remove('currentDataSet');
           cookie.save('currentDataSet', id, { path: '/' , 'maxAge': 100000});
           this.props.history.push('/datasetlanding/' + brand_name.toLowerCase());

@@ -78,8 +78,9 @@ import cookie from "react-cookies";
         for(var i in data)
         {
           var name = data[i].name;
-          var key = "datasetURL: " + name;
+          var key = "datasetURL: " + name.toLowerCase();
           var src = cookie.load(key);
+          console.log("src is " + src);
           var id = data[i]._id;
           var data_set = [src, name, id];
           array.push(data_set);

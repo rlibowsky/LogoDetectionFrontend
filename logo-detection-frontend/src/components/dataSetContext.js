@@ -39,7 +39,7 @@ import { Container, Button } from 'reactstrap';
         img.context = context.map(function(c) {
           console.log("c is ");
           console.log(c);
-          return <div align="left"> Classifier: {c[0].classifier} <div align="center"> Values: {c[0].values}</div> </div>
+          return <div align="left"> Classifier: {c.classifier} <div align="center"> Values: {c.values}</div> </div>
         });
         return img; 
       };
